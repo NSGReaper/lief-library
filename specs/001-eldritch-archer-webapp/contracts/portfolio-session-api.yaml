@@ -1,0 +1,192 @@
+openapi: 3.0.3
+info:
+  title: Portfolio Session API
+  version: 0.1.0
+  description: |
+    Local API for loading a Hero Lab portfolio, returning canonical character data,
+    and streaming source file updates. Combat calculations are intentionally excluded.
+servers:
+  - url: http://localhost:3000
+paths:
+  /api/sessions:
+    post:
+      summary: Create or replace active portfolio session
+      operationId: createSession
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [portfolioPath]
+              properties:
+                portfolioPath:
+                  type: string
+                  description: Absolute or workspace-relative path to `.por` file.
+      responses:
+        '201':
+          description: Session created and canonical payload returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SessionPayload'
+        '400':
+          description: Invalid path or unsupported portfolio structure
+        '422':
+          description: Required authoritative combat fields missing
+  /api/sessions/{sessionId}:
+    get:
+      summary: Fetch current canonical session payload
+      operationId: getSession
+      parameters:
+        - $ref: '#/components/parameters/SessionId'
+      responses:
+        '200':
+          description: Current canonical payload
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SessionPayload'
+        '404':
+          description: Session not found
+    delete:
+      summary: End session and stop watcher
+      operationId: deleteSession
+      parameters:
+        - $ref: '#/components/parameters/SessionId'
+      responses:
+        '204':
+          description: Session terminated
+  /api/sessions/{sessionId}/events:
+    get:
+      summary: Subscribe to portfolio update events (SSE)
+      operationId: sessionEvents
+      parameters:
+        - $ref: '#/components/parameters/SessionId'
+      responses:
+        '200':
+          description: SSE stream
+          content:
+            text/event-stream:
+              schema:
+                type: string
+                example: |
+                  event: portfolio.updated
+                  data: {"sessionId":"abc123","status":"ready","loadedAt":"2026-03-21T12:00:00Z"}
+        '404':
+          description: Session not found
+components:
+  parameters:
+    SessionId:
+      name: sessionId
+      in: path
+      required: true
+      schema:
+        type: string
+  schemas:
+    SessionPayload:
+      type: object
+      required:
+        - sessionId
+        - status
+        - loadedAt
+        - character
+        - activeBuffs
+        - optionDefaults
+      properties:
+        sessionId:
+          type: string
+        status:
+          type: string
+          enum: [loading, ready, error, stale]
+        loadedAt:
+          type: string
+          format: date-time
+        errorSummary:
+          type: string
+          nullable: true
+        character:
+          $ref: '#/components/schemas/CharacterPayload'
+        activeBuffs:
+          type: array
+          items:
+            $ref: '#/components/schemas/BuffPayload'
+        optionDefaults:
+          type: array
+          items:
+            $ref: '#/components/schemas/OptionDefaultPayload'
+    CharacterPayload:
+      type: object
+      required:
+        - characterName
+        - characterIndex
+        - baseAttack
+        - rangedAttackBase
+        - weapon
+        - baselineAttacks
+      properties:
+        characterName:
+          type: string
+        characterIndex:
+          type: string
+        baseAttack:
+          type: integer
+        rangedAttackBase:
+          type: integer
+        weapon:
+          type: object
+          required: [name, attack, damage, crit, damageType]
+          properties:
+            name:
+              type: string
+            attack:
+              type: string
+            damage:
+              type: string
+            crit:
+              type: string
+            damageType:
+              type: string
+            rangeIncrement:
+              type: string
+              nullable: true
+            situationalModifiers:
+              type: string
+              nullable: true
+        baselineAttacks:
+          type: array
+          items:
+            $ref: '#/components/schemas/AttackLinePayload'
+    AttackLinePayload:
+      type: object
+      required: [index, attackBonus, damageExpression, critical]
+      properties:
+        index:
+          type: integer
+        attackBonus:
+          type: string
+        damageExpression:
+          type: string
+        critical:
+          type: string
+    BuffPayload:
+      type: object
+      required: [buffId, displayName, isActive]
+      properties:
+        buffId:
+          type: string
+        displayName:
+          type: string
+        isActive:
+          type: boolean
+    OptionDefaultPayload:
+      type: object
+      required: [optionId, enabledByDefault, source]
+      properties:
+        optionId:
+          type: string
+        enabledByDefault:
+          type: boolean
+        source:
+          type: string
+          enum: [default-buff, default-off]

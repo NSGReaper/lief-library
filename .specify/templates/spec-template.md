@@ -72,8 +72,10 @@
   Fill them out with the right edge cases.
 -->
 
-- What happens when [boundary condition]?
-- How does system handle [error scenario]?
+- What happens when required XML nodes, attributes, or handler data are missing,
+  duplicated, or malformed?
+- How does the system handle an option or buff whose default-enabled state conflicts
+  with the current UI selection?
 
 ## Requirements *(mandatory)*
 
@@ -84,11 +86,17 @@
 
 ### Functional Requirements
 
+<!--
+  Include requirements for source-of-truth inputs, extension strategy, and user-visible
+  state whenever the feature changes parsing, rules evaluation, or interactive controls.
+-->
+
 - **FR-001**: System MUST [specific capability, e.g., "allow users to create accounts"]
 - **FR-002**: System MUST [specific capability, e.g., "validate email addresses"]  
 - **FR-003**: Users MUST be able to [key interaction, e.g., "reset their password"]
 - **FR-004**: System MUST [data requirement, e.g., "persist user preferences"]
-- **FR-005**: System MUST [behavior, e.g., "log all security events"]
+- **FR-005**: System MUST [behavior, e.g., "keep derived output synchronized with the
+  current option and buff state"]
 
 *Example of marking unclear requirements:*
 
@@ -111,5 +119,7 @@
 
 - **SC-001**: [Measurable metric, e.g., "Users can complete account creation in under 2 minutes"]
 - **SC-002**: [Measurable metric, e.g., "System handles 1000 concurrent users without degradation"]
-- **SC-003**: [User satisfaction metric, e.g., "90% of users successfully complete primary task on first attempt"]
-- **SC-004**: [Business metric, e.g., "Reduce support tickets related to [X] by 50%"]
+- **SC-003**: [User understanding metric, e.g., "90% of users correctly predict the full
+  attack result after changing an option on first attempt"]
+- **SC-004**: [Maintainability metric, e.g., "A new rule or option can be added by editing
+  only the documented extension points and accompanying tests"]

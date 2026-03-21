@@ -31,7 +31,16 @@
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-[Gates determined based on constitution file]
+- [ ] Parsing integrity: all behavior-affecting data comes from `index.xml`,
+  `statblocks_xml/`, or required `herolab/` data rather than text/html statblocks.
+- [ ] Extension strategy: new rules, buffs, and attack options fit declared domain
+  seams or registries without UI-specific rule branching.
+- [ ] Verification scope: automated tests and fixtures cover parser changes, combat
+  calculations, and regression-sensitive rule branches.
+- [ ] UX synchronization: the plan defines default option states, recalculation
+  behavior, and user-facing handling for missing or invalid portfolio data.
+- [ ] Documentation sync: requirements, samples, and quickstart or usage guidance are
+  identified for update when behavior changes.
 
 ## Project Structure
 
@@ -58,12 +67,14 @@ specs/[###-feature]/
 ```text
 # [REMOVE IF UNUSED] Option 1: Single project (DEFAULT)
 src/
+├── parsers/
+├── rules/
 ├── models/
-├── services/
-├── cli/
+├── ui/
 └── lib/
 
 tests/
+├── fixtures/
 ├── contract/
 ├── integration/
 └── unit/
