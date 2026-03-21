@@ -3,138 +3,175 @@
 **Input**: Design documents from `/specs/001-eldritch-archer-webapp/`
 **Prerequisites**: `plan.md`, `spec.md`, `research.md`, `data-model.md`, `contracts/portfolio-session-api.yaml`, `quickstart.md`
 
-**Tests**: Include automated tests for parsing, calculations, contracts, and integration flows.
+**Tests**: Include automated tests for parsing, calculations, and user-visible option state changes.
 
-**Organization**: Tasks are grouped by user story so each story can be implemented and tested independently.
+**Organization**: Tasks are grouped by user story to enable independent implementation and testing of each story.
 
-## Format: `[ID] [P?] [Story] Description`
+**Current Structure Note**: Project uses `src/` for backend and `public/` for frontend (not the backend/frontend split shown in plan.md).
+
+## Format: `- [ ] [ID] [P?] [Story] Description`
 
 - **[P]**: Can run in parallel (different files, no dependencies)
-- **[Story]**: User story label (`[US1]`, `[US2]`, `[US3]`)
-- Every task includes an exact file path
+- **[Story]**: User story label (US1, US2, US3)
+- Include exact file paths in descriptions
+
+---
 
 ## Phase 1: Setup (Shared Infrastructure)
 
-**Purpose**: Initialize backend/frontend/shared/testing structure and tooling for a split web app.
+**Purpose**: Project initialization, test infrastructure, and fixture setup
 
-- [ ] T001 Create backend project scaffold and npm scripts in `backend/package.json`
-- [ ] T002 [P] Create frontend project scaffold and npm scripts in `frontend/package.json`
-- [ ] T003 [P] Add shared contract workspace path config in `shared/contracts/.gitkeep`
-- [ ] T004 [P] Configure backend test runner and fixtures glob in `backend/vitest.config.js`
-- [ ] T005 [P] Configure frontend test runner and jsdom setup in `frontend/vitest.config.js`
-- [ ] T006 Create end-to-end and integration test package scripts in `tests/package.json`
+- [ ] T001 Create test directory structure: `tests/backend/`, `tests/frontend/`, `tests/fixtures/`
+- [ ] T002 Install testing dependencies: Vitest, Supertest, Playwright per plan.md
+- [ ] T003 [P] Copy sample portfolios to `tests/fixtures/portfolios/` (Lief lvl 8, Vasiel)
+- [ ] T004 [P] Create expected output fixtures in `tests/fixtures/expected/` for baseline attacks
 
 ---
 
 ## Phase 2: Foundational (Blocking Prerequisites)
 
-**Purpose**: Build core boundaries and shared models that block all user stories until complete.
+**Purpose**: Core backend parsing and frontend architecture that MUST be complete before ANY user story can be implemented
 
-**Critical boundary**: Backend is ingestion/watch only; frontend performs all combat calculations.
+**⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T007 Implement backend HTTP bootstrap and route registration in `backend/src/server.js`
-- [ ] T008 [P] Implement canonical session store with in-memory lifecycle only in `backend/src/services/session-store/sessionStore.js`
-- [ ] T009 [P] Implement portfolio file watcher service using chokidar in `backend/src/services/watcher/portfolioWatcher.js`
-- [ ] T010 [P] Implement shared session payload schema for backend/frontend alignment in `shared/contracts/sessionPayloadSchema.js`
-- [ ] T011 [P] Implement frontend application state container for session + options in `frontend/src/state/appState.js`
-- [ ] T012 [P] Implement frontend localStorage adapter scoped by portfolio path key in `frontend/src/storage/portfolioScopedStorage.js`
-- [ ] T013 Define data-driven attack option type and validation helpers in `frontend/src/options/optionDefinitionModel.js`
-- [ ] T014 Add contract regression test proving no combat-calculation API surface in `backend/tests/contract/no-calculation-endpoints.contract.test.js`
+### Backend Parser Foundation
 
-**Checkpoint**: Foundation complete. User story work can start.
+- [ ] T005 Create portfolio loader service in `src/services/portfolio-loader.js` for `.por` zip reading
+- [ ] T006 [P] Implement index.xml parser in `src/parsers/index-parser.js` to extract character identity and statblock references
+- [ ] T007 [P] Implement XML statblock parser in `src/parsers/statblock-parser.js` for ranged weapon and attack data
+- [ ] T008 [P] Implement buff parser in `src/parsers/buff-parser.js` for `herolab/lead1.xml` active buff detection
+- [ ] T009 Create canonical payload builder in `src/services/character-extractor.js` that combines parser outputs
+- [ ] T010 Add parser tests in `tests/backend/parsers/` using fixture portfolios
+
+### Backend Session & API
+
+- [ ] T011 Create session store service in `src/services/session-store.js` for in-memory session management
+- [ ] T012 Create file watcher service in `src/services/watcher.js` using chokidar for portfolio change detection
+- [ ] T013 Implement SSE endpoint in `src/api/sse.js` for portfolio update events
+- [ ] T014 Implement session API routes in `src/api/routes/session.js` (POST /session, GET /session/:id)
+- [ ] T015 Update `src/server.js` to wire up session routes and SSE endpoints
+- [ ] T016 Add session API contract tests in `tests/backend/api/` using Supertest
+
+### Frontend Architecture Foundation
+
+- [ ] T017 Create state management module in `public/js/state.js` for centralized state and localStorage persistence
+- [ ] T018 Create calculation engine module in `public/js/calculations.js` for attack sequence generation
+- [ ] T019 Create options registry structure in `public/js/options.js` with initial empty option definitions
+- [ ] T020 Create spells registry structure in `public/js/spells.js` with whitelisting and description generators
+- [ ] T021 Create API client module in `public/js/api-client.js` for backend session and SSE communication
+- [ ] T022 Add frontend calculation regression tests in `tests/frontend/calculations.test.js`
+
+**Checkpoint**: Foundation ready - user story implementation can now begin in parallel
 
 ---
 
 ## Phase 3: User Story 1 - Load Character Combat Data (Priority: P1) 🎯 MVP
 
-**Goal**: Load supported portfolio data and render trustworthy baseline ranged full-attack information.
+**Goal**: Load Hero Lab portfolio and display character identity, base ranged weapon, active buff defaults, and baseline full-attack sequence
 
-**Independent Test**: Create a session from a valid portfolio path and verify baseline character/weapon/attack data plus buff-derived defaults appear without manual overrides.
-
-### Tests for User Story 1
-
-- [ ] T015 [P] [US1] Add parser fixture coverage for valid and invalid index/statblock cases in `backend/tests/fixtures/portfolio-load.fixtures.json`
-- [ ] T016 [P] [US1] Add parser test for hard error when `characterindex="1"` supported PC cannot be resolved in `backend/tests/integration/character-resolution.integration.test.js`
-- [ ] T017 [P] [US1] Add parser test that unknown `herolab/lead1.xml` buffs are ignored in `backend/tests/integration/unknown-buffs-ignored.integration.test.js`
-- [ ] T018 [P] [US1] Add session API contract test for create/get/delete session behavior in `backend/tests/contract/portfolio-session-api.contract.test.js`
-- [ ] T019 [P] [US1] Add frontend integration test for baseline load rendering from canonical payload in `frontend/tests/integration/baseline-load.integration.test.js`
+**Independent Test**: Load supported portfolio, verify character name, weapon details, baseline attacks, and default-enabled options match expected fixture outputs
 
 ### Implementation for User Story 1
 
-- [ ] T020 [P] [US1] Implement `index.xml` parser for top-level PC selection rules in `backend/src/parsers/index-parser/parseIndexXml.js`
-- [ ] T021 [P] [US1] Implement XML statblock parser for primary ranged weapon fields (`equipped="mainhand"`) in `backend/src/parsers/statblock-parser/parseRangedWeapon.js`
-- [ ] T022 [P] [US1] Implement buff parser for supported buff extraction from `herolab/lead1.xml` in `backend/src/parsers/buff-parser/parseSupportedBuffs.js`
-- [ ] T023 [US1] Implement portfolio loader orchestration (zip read + canonical payload assembly) in `backend/src/services/portfolio-loader/loadPortfolioSession.js`
-- [ ] T024 [US1] Implement session routes (`POST/GET/DELETE /api/sessions`) with hard-error mapping for unsupported character in `backend/src/api/routes/sessions.js`
-- [ ] T025 [US1] Implement baseline character and full-attack card rendering from backend payload in `frontend/src/views/fullAttackCardView.js`
-- [ ] T026 [US1] Implement frontend API client for session lifecycle calls in `frontend/src/services/sessionApiClient.js`
-- [ ] T027 [US1] Implement frontend bootstrap flow and missing-data error banner handling in `frontend/src/app/bootstrapSession.js`
+- [ ] T023 [P] [US1] Implement character identity display in `public/index.html` (character name section)
+- [ ] T024 [P] [US1] Implement weapon details card in `public/index.html` (weapon stats section)
+- [ ] T025 [P] [US1] Implement baseline attack display in `public/index.html` (full-attack card section)
+- [ ] T026 [US1] Create session initialization flow in `public/js/app.js` (portfolio path input, session creation)
+- [ ] T027 [US1] Implement SSE connection handler in `public/js/app.js` for portfolio reload events
+- [ ] T028 [US1] Implement baseline attack calculation in `public/js/calculations.js` (iterative attack generation)
+- [ ] T029 [US1] Wire character data rendering in `public/js/app.js` (character, weapon, baseline attacks)
+- [ ] T030 [US1] Implement error state handling in `public/js/app.js` for missing/invalid portfolio data
+- [ ] T031 [US1] Add localStorage scoping per portfolio path in `public/js/state.js`
+- [ ] T032 [US1] Add validation messages for missing required combat data
 
-**Checkpoint**: US1 is independently functional as MVP.
+**Checkpoint**: User Story 1 should be fully functional - load portfolio and see baseline character combat data
 
 ---
 
 ## Phase 4: User Story 2 - Adjust Attack Options (Priority: P2)
 
-**Goal**: Let players toggle supported attack options and see deterministic recalculation, including Spellstrike spell selection.
+**Goal**: Toggle attack options and immediately see recalculated full-attack output, including Spellstrike with spell selection
 
-**Independent Test**: Starting from loaded character data, toggle options and Spellstrike spell selection; verify deterministic full-attack recalculation and correct state reconciliation after file reload.
+**Independent Test**: Load character, toggle options (Spell Combat, Deadly Aim, Rapid Shot, Spellstrike), verify full-attack card updates attack count, bonuses, and damage correctly
 
-### Tests for User Story 2
+### Option Definitions
 
-- [ ] T028 [P] [US2] Add frontend unit tests for data-driven option definitions covering initial in-scope options in `frontend/tests/unit/option-definitions.unit.test.js`
-- [ ] T029 [P] [US2] Add frontend calculation regression test for combined option stacking order in `frontend/tests/unit/full-attack-calculator.unit.test.js`
-- [ ] T030 [P] [US2] Add frontend integration test for Spellstrike spell selection using separate spell definitions in `frontend/tests/integration/spellstrike-selection.integration.test.js`
-- [ ] T031 [P] [US2] Add frontend integration test for reload reconciliation resetting only buff-aligned toggles whose buff state changed in `frontend/tests/integration/reload-buff-reconciliation.integration.test.js`
-- [ ] T032 [P] [US2] Add frontend integration test ensuring non-toggle modifiers are not rendered as selectable options in `frontend/tests/integration/options-visibility.integration.test.js`
-- [ ] T033 [P] [US2] Add backend/frontend SSE integration test for file-watch refresh event propagation in `tests/integration/session-events.integration.test.js`
+- [ ] T033 [P] [US2] Define Spell Combat option in `public/js/options.js` (-2 hit, enables spellcasting)
+- [ ] T034 [P] [US2] Define Spellstrike option in `public/js/options.js` (marks option as spell delivery)
+- [ ] T035 [P] [US2] Define Arcane Accuracy option in `public/js/options.js` (INT bonus to hit, 1 arcane point)
+- [ ] T036 [P] [US2] Define Haste option in `public/js/options.js` (extra attack at highest BAB)
+- [ ] T037 [P] [US2] Define Deadly Aim option in `public/js/options.js` (-3 hit, +6 damage)
+- [ ] T038 [P] [US2] Define Rapid Shot option in `public/js/options.js` (-2 hit, extra attack)
+- [ ] T039 [P] [US2] Define Manyshot option in `public/js/options.js` (double damage first attack)
 
-### Implementation for User Story 2
+### Spell Definitions
 
-- [ ] T034 [P] [US2] Implement attack option definitions (Spell Combat, Spellstrike, Arcane Accuracy, Haste, Deadly Aim, Rapid Shot) in `frontend/src/options/attackOptionDefinitions.js`
-- [ ] T035 [P] [US2] Implement dedicated Spellstrike spell definitions separate from option definitions in `frontend/src/options/spellDefinitions.js`
-- [ ] T036 [P] [US2] Implement deterministic full-attack calculation engine in frontend only in `frontend/src/calculations/fullAttackCalculator.js`
-- [ ] T037 [P] [US2] Implement option effect applicators and priority ordering in `frontend/src/calculations/optionEffectPipeline.js`
-- [ ] T038 [US2] Implement options state reducer tracking `enabledSource` (default-buff vs user-toggle) in `frontend/src/state/optionStateReducer.js`
-- [ ] T039 [US2] Implement SSE client subscription and session refresh handling in `frontend/src/services/sessionEventsClient.js`
-- [ ] T040 [US2] Implement file-change reconciliation logic that only resets toggles for changed buff states in `frontend/src/state/reconcileOnReload.js`
-- [ ] T041 [US2] Implement options panel rendering to show only toggleable options and separate Spellstrike spell picker UI in `frontend/src/views/optionsPanelView.js`
-- [ ] T042 [US2] Wire watcher-triggered session reload events in backend SSE route in `backend/src/api/sse/sessionEvents.js`
+- [ ] T040 [P] [US2] Create spell whitelist structure in `public/js/spells.js` (whitelisted spells only)
+- [ ] T041 [P] [US2] Add Shocking Grasp to `public/js/spells.js` with caster-level-based description generator
+- [ ] T042 [P] [US2] Add Frostbite to `public/js/spells.js` with caster-level-based description generator
+- [ ] T043 [P] [US2] Add Arcane Mark placeholder to `public/js/spells.js` (for testing non-combat spell filtering)
 
-**Checkpoint**: US2 is independently functional with deterministic toggles and reload behavior.
+### Attack Calculation Engine
+
+- [ ] T044 [US2] Implement option effect accumulation in `public/js/calculations.js` (hit/damage bonuses)
+- [ ] T045 [US2] Implement extra attack injection in `public/js/calculations.js` (Rapid Shot, Haste)
+- [ ] T046 [US2] Implement Spellstrike attack marking in `public/js/calculations.js` (first attack becomes spell delivery)
+- [ ] T047 [US2] Implement clean base calculation in `public/js/calculations.js` (subtract default-enabled effects)
+- [ ] T048 [US2] Implement deterministic option ordering in `public/js/calculations.js` (consistent resolution)
+- [ ] T049 [US2] Add calculation regression tests in `tests/frontend/calculations.test.js` for option stacking
+
+### UI Implementation
+
+- [ ] T050 [US2] Implement option toggle chips in `public/index.html` (per-attack, swift-buff, conditional categories)
+- [ ] T051 [US2] Implement spell selector panel in `public/index.html` (spell list with search/filter)
+- [ ] T052 [US2] Implement spell selection state in `public/js/state.js` (selectedSpell tracking)
+- [ ] T053 [US2] Wire option toggle handlers in `public/js/app.js` (enable/disable, recalculate, re-render)
+- [ ] T054 [US2] Wire spell selector handlers in `public/js/app.js` (open selector, select spell, close)
+- [ ] T055 [US2] Implement spell selector auto-hide when Spellstrike unchecked in `public/js/app.js`
+- [ ] T056 [US2] Implement spell change capability in `public/js/app.js` (click spell banner to re-open selector)
+- [ ] T057 [US2] Implement spell banner display in `public/js/app.js` (show selected spell below Spellstrike attack)
+- [ ] T058 [US2] Implement prompt to select spell in `public/js/app.js` when Spellstrike enabled but no spell selected
+- [ ] T059 [US2] Add default-enabled option marking in `public/js/app.js` (buff-derived vs user-toggle)
+- [ ] T060 [US2] Implement full-attack card re-render in `public/js/app.js` on option change
+- [ ] T061 [US2] Add buff-aligned option reset on portfolio reload in `public/js/app.js` (only changed buffs)
+
+**Checkpoint**: User Stories 1 AND 2 should work independently - options toggle and attacks recalculate correctly
 
 ---
 
-## Phase 5: User Story 3 - Track Round Cost and Decision Support (Priority: P3)
+## Phase 5: User Story 3 - Track Round Cost (Priority: P3)
 
-**Goal**: Show current-round arcane point total from enabled options with relevant costs only.
+**Goal**: Display total arcane point cost of currently enabled options (cost only, NOT pool status tracking)
 
-**Independent Test**: Enable mixed-cost options and confirm only per-round/single-use relevant options contribute to total.
-
-### Tests for User Story 3
-
-- [ ] T043 [P] [US3] Add unit tests for arcane point inclusion/exclusion rules in `frontend/tests/unit/arcane-point-summary.unit.test.js`
-- [ ] T044 [P] [US3] Add integration test for arcane point summary updates on option toggles in `frontend/tests/integration/arcane-point-summary.integration.test.js`
+**Independent Test**: Enable Arcane Accuracy (1 point), verify cost display shows "1 point committed this round". Enable multiple costly options, verify sum. Disable all, verify cost display hides.
 
 ### Implementation for User Story 3
 
-- [ ] T045 [P] [US3] Implement arcane point aggregation logic from enabled options in `frontend/src/calculations/arcanePointCalculator.js`
-- [ ] T046 [US3] Implement arcane point summary widget rendering and empty-state text in `frontend/src/views/arcanePointSummaryView.js`
-- [ ] T047 [US3] Integrate arcane point summary into main app update cycle in `frontend/src/app/renderCycle.js`
+- [ ] T062 [US3] Implement arcane cost calculation in `public/js/calculations.js` (sum enabled option costs)
+- [ ] T063 [US3] Remove arcane pool status tracking from `public/js/state.js` (delete arcanePoolSpent, arcanePoolLeft)
+- [ ] T064 [US3] Simplify arcane display in `public/index.html` (show cost total only, remove pip UI)
+- [ ] T065 [US3] Update arcane cost display rendering in `public/js/app.js` (show/hide based on cost > 0)
+- [ ] T066 [US3] Add arcane cost badge to option chips in `public/js/app.js` (show cost on toggle chips)
+- [ ] T067 [US3] Remove pool management handlers from `public/js/app.js` (delete pip click handlers)
+- [ ] T068 [US3] Update state persistence in `public/js/state.js` (remove pool tracking from localStorage)
 
-**Checkpoint**: US3 independently delivers round-cost decision support.
+**Checkpoint**: All user stories should now be independently functional - cost display shows option costs only
 
 ---
 
 ## Phase 6: Polish & Cross-Cutting Concerns
 
-**Purpose**: Finish quality, documentation, and end-to-end confidence across stories.
+**Purpose**: Refinements that affect multiple user stories and final validation
 
-- [ ] T048 [P] Add Playwright scenario for full MVP flow (load, toggle, reload, verify) in `tests/e2e/mvp-flow.spec.ts`
-- [ ] T049 [P] Add quickstart verification script for local run/test steps in `tests/scripts/verify-quickstart.ps1`
-- [ ] T050 Update quickstart with final commands and validation notes in `specs/001-eldritch-archer-webapp/quickstart.md`
-- [ ] T051 Add shared troubleshooting notes for hard errors and unsupported data in `docs/Requirements.md`
-- [ ] T052 Run full automated validation and capture outputs in `tests/reports/tasks-validation.md`
+- [ ] T069 [P] Update quickstart.md validation steps for spell selection and arcane cost
+- [ ] T070 [P] Add end-to-end tests in `tests/e2e/` using Playwright for critical flows
+- [ ] T071 [P] Add missing unit tests for edge cases in `tests/frontend/` and `tests/backend/`
+- [ ] T072 Refactor shared utility functions in `public/js/utils.js` (formatBonus, parseDamageBonus, etc.)
+- [ ] T073 Add JSDoc comments to public API functions in all `public/js/` modules
+- [ ] T074 Optimize UI re-render performance in `public/js/app.js` (batch updates, minimize DOM access)
+- [ ] T075 Add error boundary and fallback UI for invalid character data
+- [ ] T076 Validate against sample portfolios per quickstart.md workflow
+- [ ] T077 Final code review and cleanup
 
 ---
 
@@ -142,69 +179,103 @@
 
 ### Phase Dependencies
 
-- Setup (Phase 1) has no dependencies.
-- Foundational (Phase 2) depends on Setup and blocks all user stories.
-- US1 (Phase 3) depends on Foundational completion.
-- US2 (Phase 4) depends on Foundational and integrates US1 payload contracts.
-- US3 (Phase 5) depends on US2 option state and calculation pipeline.
-- Polish (Phase 6) depends on all implemented stories.
+- **Setup (Phase 1)**: No dependencies - can start immediately
+- **Foundational (Phase 2)**: Depends on Setup completion - BLOCKS all user stories
+- **User Stories (Phase 3-5)**: All depend on Foundational phase completion
+  - Can then proceed in parallel (if staffed) or sequentially in priority order
+- **Polish (Phase 6)**: Depends on all user stories being complete
 
 ### User Story Dependencies
 
-- **US1 (P1)**: Starts after Foundational; provides MVP.
-- **US2 (P2)**: Starts after Foundational; requires US1 session payload shape.
-- **US3 (P3)**: Starts after US2 calculation/option infrastructure.
+- **User Story 1 (P1)**: Depends on Phase 2 (Foundational) - No dependencies on other stories
+- **User Story 2 (P2)**: Depends on Phase 2 (Foundational) - Independent of US1 but integrates naturally
+- **User Story 3 (P3)**: Depends on Phase 2 (Foundational) - Independent of US1/US2 but integrates naturally
 
-### Dependency Graph
+### Within Each User Story
 
-- `US1 -> US2 -> US3`
+- Option/spell definitions can run in parallel (different entries in same file)
+- Calculation engine before UI rendering
+- UI structure before event handlers
+- Core implementation before integration tests
+
+### Parallel Opportunities Per Phase
+
+**Phase 1 (Setup)**: T003 and T004 can run in parallel
+
+**Phase 2 (Foundational)**:
+- Parser group: T006, T007, T008 can run in parallel (different parser files)
+- Frontend architecture: T017, T018, T019, T020, T021 can run in parallel (different modules)
+
+**Phase 3 (US1)**: T023, T024, T025 can run in parallel (different HTML sections)
+
+**Phase 4 (US2)**:
+- Option definitions: T033-T039 can run in parallel (different options in same file)
+- Spell definitions: T040-T043 can run in parallel (entries in same file)
+
+**Phase 5 (US3)**: T062, T063 can run in parallel (different modules)
+
+**Phase 6 (Polish)**: T069, T070, T071 can run in parallel (different test files)
 
 ---
 
-## Parallel Opportunities
-
-- Phase 1: `T002`, `T003`, `T004`, `T005` can run in parallel after `T001` starts.
-- Phase 2: `T008`, `T009`, `T010`, `T011`, `T012` can run in parallel after `T007`.
-- US1 tests: `T015` to `T019` can run in parallel.
-- US1 parser modules: `T020`, `T021`, `T022` can run in parallel before orchestration `T023`.
-- US2 tests: `T028` to `T033` can run in parallel.
-- US2 frontend logic: `T034`, `T035`, `T036`, `T037` can run in parallel before state/view integration tasks.
-- US3 tests: `T043`, `T044` can run in parallel.
-- Polish: `T048`, `T049` can run in parallel.
-
-## Parallel Example: User Story 2
+## Parallel Example: User Story 2 Options
 
 ```bash
-# Parallel test implementation
-Task: T028 frontend/tests/unit/option-definitions.unit.test.js
-Task: T029 frontend/tests/unit/full-attack-calculator.unit.test.js
-Task: T030 frontend/tests/integration/spellstrike-selection.integration.test.js
+# Launch all option definitions together:
+Task T033: "Define Spell Combat option in public/js/options.js"
+Task T034: "Define Spellstrike option in public/js/options.js"
+Task T035: "Define Arcane Accuracy option in public/js/options.js"
+Task T036: "Define Haste option in public/js/options.js"
+Task T037: "Define Deadly Aim option in public/js/options.js"
+Task T038: "Define Rapid Shot option in public/js/options.js"
+Task T039: "Define Manyshot option in public/js/options.js"
 
-# Parallel core implementation
-Task: T034 frontend/src/options/attackOptionDefinitions.js
-Task: T035 frontend/src/options/spellDefinitions.js
-Task: T036 frontend/src/calculations/fullAttackCalculator.js
-Task: T037 frontend/src/calculations/optionEffectPipeline.js
+# Launch all spell definitions together:
+Task T040: "Create spell whitelist structure in public/js/spells.js"
+Task T041: "Add Shocking Grasp to public/js/spells.js"
+Task T042: "Add Frostbite to public/js/spells.js"
+Task T043: "Add Arcane Mark placeholder to public/js/spells.js"
 ```
 
 ---
 
 ## Implementation Strategy
 
-### MVP First (US1)
+### MVP First (User Story 1 Only)
 
-1. Complete Phase 1 (Setup).
-2. Complete Phase 2 (Foundational).
-3. Complete Phase 3 (US1) and validate independent test.
-4. Demo/deploy MVP before moving to US2.
+1. Complete Phase 1: Setup (fixtures and test infrastructure)
+2. Complete Phase 2: Foundational (parsers, session, frontend architecture) - **CRITICAL BLOCKER**
+3. Complete Phase 3: User Story 1 (load and display character baseline)
+4. **STOP and VALIDATE**: Test portfolio loading independently
+5. Deploy/demo if ready
 
 ### Incremental Delivery
 
-1. Deliver US1 baseline load and trustable combat snapshot.
-2. Deliver US2 toggleable option calculations and reload synchronization.
-3. Deliver US3 arcane point decision support.
-4. Finish with cross-cutting quality and docs in Phase 6.
+1. Setup + Foundational → Foundation ready ✅
+2. Add User Story 1 → Test independently → **Deploy MVP** 🎯
+3. Add User Story 2 → Test independently → Deploy enhanced version
+4. Add User Story 3 → Test independently → Deploy complete version
+5. Polish → Final validation and optimization
 
-### Validation Requirement
+### Parallel Team Strategy
 
-- Behavior-changing logic is complete only when related parser, calculation, contract, and integration tests pass.
+With multiple developers:
+
+1. **Together**: Complete Setup + Foundational
+2. **Once Foundational done**:
+   - Developer A: User Story 1 (T023-T032)
+   - Developer B: User Story 2 Option Definitions (T033-T043)
+   - Developer C: User Story 2 Calculation Engine (T044-T049)
+3. **Stories integrate independently through declared extension points**
+
+---
+
+## Notes
+
+- **[P] tasks** = Can run in parallel (different files or independent sections)
+- **[Story] label** = Maps task to specific user story for traceability
+- **Revised requirements incorporated**: Spell selector auto-hide, spells.js whitelist, arcane cost-only (no status tracking), spell change capability
+- Each user story should be independently completable and testable
+- Commit after each task or logical group
+- Stop at any checkpoint to validate story independently
+- Current structure uses `src/` (backend) and `public/` (frontend), not the `backend/` and `frontend/` split mentioned in plan.md

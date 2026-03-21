@@ -38,7 +38,7 @@ const ATTACK_OPTIONS = [
     id: 'spell-combat',
     name: 'Spell Combat',
     category: 'per-attack',
-    buffId: null,
+    buffId: 'xAttPenSit',
     defaultEnabled: false,
     arcanePointCost: 0,
     description: 'Cast a spell and make ranged attacks; −2 to all attacks',
@@ -50,7 +50,7 @@ const ATTACK_OPTIONS = [
     id: 'rapid-shot',
     name: 'Rapid Shot',
     category: 'per-attack',
-    buffId: null,
+    buffId: 'fRapidShot',
     defaultEnabled: false,
     arcanePointCost: 0,
     description: 'Fire an extra arrow; −2 to all attacks',
@@ -65,7 +65,7 @@ const ATTACK_OPTIONS = [
     id: 'deadly-aim',
     name: 'Deadly Aim',
     category: 'per-attack',
-    buffId: null,
+    buffId: 'fDeadAim',
     defaultEnabled: false,
     arcanePointCost: 0,
     description: '−3 to hit for +6 damage',
@@ -92,7 +92,7 @@ const ATTACK_OPTIONS = [
     id: 'arcane-accuracy',
     name: 'Arcane Accuracy',
     category: 'swift-buff',
-    buffId: null,
+    buffId: 'cMagArcAcc',
     defaultEnabled: false,
     arcanePointCost: 1,
     description: 'Expend 1 arcane pool point: +INT insight bonus to all attacks for 1 round',
@@ -113,28 +113,13 @@ const ATTACK_OPTIONS = [
       damageBonus: 1,
     },
   },
-  {
-    id: 'haste',
-    name: 'Haste',
-    category: 'swift-buff',
-    buffId: 'pHaste',
-    defaultEnabled: false,
-    arcanePointCost: 0,
-    description: '+1 to hit, extra attack at highest BAB (from Haste spell)',
-    effect: {
-      hitBonus: 1,
-      extraAttacks: [
-        { atIndexOffset: 0, hitBonusOffset: 0, label: 'Haste' },
-      ],
-    },
-  },
 
   // ─── Conditional Buffs ───────────────────────────────────────────────────
   {
     id: 'point-blank-shot',
     name: 'Point-Blank Shot',
     category: 'conditional',
-    buffId: null,
+    buffId: 'fPointBlnk',
     defaultEnabled: false,
     arcanePointCost: 0,
     description: '+1 to hit and damage when target is within 30 ft',
@@ -168,16 +153,40 @@ const ATTACK_OPTIONS = [
       hitBonus: 2,
     },
   },
+
+  // Others to consider adding:
+  // These are longer duration buffs that Hero Lab already applies the bonuses from, but if we wanted to support them as toggleable options:
+  /* 
   {
-    id: 'target-metal-armour',
-    name: 'Target: Metal Armour',
+    id: 'haste',
+    name: 'Haste',
     category: 'conditional',
-    buffId: null,
+    buffId: 'pHaste',
     defaultEnabled: false,
     arcanePointCost: 0,
-    description: '+3 to Spellstrike Shocking Grasp hit when target wears metal armour',
+    description: '+1 to hit, extra attack at highest BAB (from Haste spell)',
     effect: {
-      spellstrikeHitBonus: 3,
+      hitBonus: 1,
+      extraAttacks: [
+        { atIndexOffset: 0, hitBonusOffset: 0, label: 'Haste' },
+      ],
     },
   },
+  */
+ /* 
+  {
+    id: 'inspire-courage',
+    name: 'Inspire Courage',
+    category: 'conditional',
+    buffId: 'pCourage',
+    defaultEnabled: false,
+    arcanePointCost: 0,
+    description: '+2 to hit and damage from Bardic Inspire Courage',
+    effect: {
+      hitBonus: 2,
+      damageBonus: 2,
+    },
+    },
+  },
+  */
 ];

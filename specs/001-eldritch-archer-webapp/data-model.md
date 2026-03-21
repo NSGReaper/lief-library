@@ -69,9 +69,26 @@
   - `enabledSource` (enum, required): `default-buff | user-toggle | default-off`.
   - `isAvailable` (boolean, required)
   - `unavailableReason` (string, optional)
+  - `selectedSpellId` (string, optional): For spellstrike option, the currently selected spell.
 - Relationships:
   - References one `AttackOptionDefinition`.
+  - When `optionId` is `spellstrike`, optionally references one `SpellDefinition` via `selectedSpellId`.
   - Participates in `FullAttackProjection` generation.
+
+## Entity: SpellDefinition
+
+- Purpose: Declarative definition for a spell eligible for Spellstrike, including combat-relevant description generation.
+- Fields:
+  - `spellId` (string, required): Unique identifier matching spell name in portfolio.
+  - `displayName` (string, required)
+  - `level` (integer, required)
+  - `school` (string, required)
+  - `castTime` (string, required)
+  - `isWhitelisted` (boolean, required): If false, spell is filtered from Spellstrike selection.
+  - `descriptionGenerator` (function, required): Function that takes caster level and returns combat-focused description string.
+- Relationships:
+  - Whitelisted spells defined in `spells.js` data file, similar to `options.js` structure.
+  - Referenced by `AttackOptionState.selectedSpellId` when Spellstrike is enabled.
 
 ## Entity: FullAttackProjection
 
@@ -81,10 +98,12 @@
   - `sessionId` (string, required)
   - `attackLines` (array<AttackLine>, required)
   - `appliedOptionIds` (array<string>, required)
-  - `arcanePointTotal` (number, required)
+  - `arcanePointCostTotal` (number, required): Sum of arcane point costs for enabled options this round.
   - `generatedAt` (datetime, required)
 - Relationships:
-  - Derived from `CharacterAttackProfile` + `AttackOptionState` + `AttackOptionDefinition`.
+  - Derived from `CharacterAttackProfile` + `AttackOptionState` + `AttackOptionDefinition` + optional `SpellDefinition`.
+- Notes:
+  - Does NOT track arcane pool status (spent/remaining). Only cost of currently selected options is calculated.
 
 ## Value Object: AttackLine
 

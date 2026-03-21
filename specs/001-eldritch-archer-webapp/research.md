@@ -71,3 +71,28 @@
 - Alternatives considered:
   - E2E-only testing: rejected because root-cause localization is poor and coverage expensive.
   - Unit-only testing: rejected because interface contracts and event flow also need validation.
+
+## Decision 8: Spells.js whitelist for Spellstrike-eligible spells (Revision 2026-03-21)
+
+- Decision: Create `spells.js` data file similar to `options.js` that whitelists which spells
+  from the portfolio are eligible for Spellstrike and maps each to a function that generates
+  a combat-focused description based on caster level.
+- Rationale: Not all spells known to the character are relevant for Spellstrike combat scenarios.
+  A whitelist allows tight control over which spells appear in selection UI, and description
+  generator functions provide compact, combat-relevant text without trying to parse verbose
+  portfolio spell descriptions.  
+- Alternatives considered:
+  - Show all memorized spells in Spellstrike selector: rejected because it clutters UI with
+    non-combat or situational spells that are rarely used with Spellstrike.
+  - Parse and display full spell descriptions from portfolio: rejected because portfolio spell
+    text is verbose and not optimized for quick combat reference.
+
+## Decision 9: Arcane pool displays cost only, not status (Revision 2026-03-21)
+
+- Decision: Display only the total arcane point cost of currently selected options. Do not
+  track or display spent/remaining arcane pool status in the application.
+- Rationale: The user manages actual arcane pool usage in Hero Lab. The application's role is
+  to show what the current attack plan will cost, not to duplicate Hero Lab's resource tracking.
+- Alternatives considered:
+  - Full arcane pool pip tracking system: rejected because it duplicates Hero Lab functionality
+    and creates confusion about which system is the source of truth for pool status.

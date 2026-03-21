@@ -18,6 +18,13 @@
 - Q: What should happen if `characterindex="1"` and a supported PC role are not found? -> A: Fail with a hard error.
 - Q: Which modifiers should be displayed in option/modifier UI areas? -> A: Display only modifiers that correspond to attack options the player can toggle.
 
+### Session 2026-03-21 (Revision after initial implementation)
+
+- Q: How should spell selection UI behave relative to Spellstrike toggle? -> A: Spell selection should automatically hide when Spellstrike is unchecked.
+- Q: Should the system track arcane pool status (spent/remaining)? -> A: No. Only track and display the total arcane point cost of currently selected options. The user tracks actual pool usage in Hero Lab.
+- Q: How should spells be filtered and described for Spellstrike? -> A: Use a `spells.js` whitelist similar to `options.js`. This file whitelists which spells are Spellstrike-eligible and maps them to functions that generate combat-relevant descriptions based on caster level.
+- Q: Should players be able to change the selected spell after initial selection? -> A: Yes. Provide UI to change the selected spell (bug fix).
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - Load Character Combat Data (Priority: P1)
@@ -151,6 +158,14 @@ single-use arcane point costs contribute to the displayed total.
 - **FR-010a**: The system MUST support Spellstrike spell selection in the UI.
 - **FR-010b**: Spells available to Spellstrike MUST be defined through a dedicated spell
   definition model separate from regular attack option definitions.
+- **FR-010c**: The spell selector UI MUST automatically hide when the Spellstrike option is
+  unchecked.
+- **FR-010d**: Players MUST be able to change the selected Spellstrike spell after initial
+  selection.
+- **FR-010e**: Spellstrike-eligible spells MUST be whitelisted and described using a
+  `spells.js` data-driven model similar to `options.js`, where each whitelisted spell maps
+  to a function that generates a combat-relevant description based on the character's caster
+  level.
 - **FR-011**: The system MUST group attack options in a way that helps players understand what
   kind of decision they are making.
 - **FR-011a**: Option and modifier UI areas MUST display only attack options that are
@@ -159,6 +174,8 @@ single-use arcane point costs contribute to the displayed total.
   selectable attack options.
 - **FR-012**: The system MUST display the total arcane point cost of enabled options that cost
   arcane points for the current round or for a single use.
+- **FR-012a**: The system MUST NOT track or display arcane pool status (spent/remaining).
+  Arcane pool management is the user's responsibility in Hero Lab.
 - **FR-013**: The system MUST exclude options with no relevant current-round arcane point cost
   from the displayed arcane point total.
 - **FR-014**: The system MUST explain when required portfolio data is missing, malformed, or

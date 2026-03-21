@@ -49,6 +49,27 @@ Expected local URLs:
 3. Confirm backend network calls are limited to session load/fetch/event operations and do not
    expose combat-calculation endpoints.
 
+## 5a. Validate spell selection for Spellstrike
+
+1. Enable the Spellstrike option.
+2. Confirm the spell selector appears automatically.
+3. Select a spell from the whitelist (defined in `spells.js`).
+4. Confirm the spell displays with combat-focused description below the Spellstrike attack.
+5. Disable Spellstrike and confirm the spell selector automatically hides.
+6. Re-enable Spellstrike and confirm you can change the selected spell.
+
+Note: Only whitelisted spells appear in the Spellstrike selector. To add spells, update the
+`spells.js` data file with spell metadata and a description generator function based on caster
+level.
+
+## 5b. Validate arcane pool cost display
+
+1. Enable options that cost arcane points (e.g., Arcane Accuracy).
+2. Confirm the UI displays only the total cost of currently enabled options.
+3. Confirm no arcane pool status tracking (spent/remaining pips) is shown.
+4. Remember: actual pool tracking happens in Hero Lab; this app only shows what the current
+   attack plan costs.
+
 ## 6. Validate local storage behavior
 
 1. Set UI preferences and temporary option overrides.
