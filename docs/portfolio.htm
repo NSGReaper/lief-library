@@ -1,256 +1,720 @@
-<html>
-
+<!DOCTYPE html>
+<html lang="en">
 <head>
-<meta http-equiv="Content-Language" content="en-us">
-<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
-<link href="../common/styles.css" rel="STYLESHEET">
-<title>HL: Reading Hero Lab Saved Portfolios</title>
-</head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Eldritch Archer — Full Attack</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cinzel:wght@400;600;700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,400&display=swap" rel="stylesheet" />
 
+  <style>
+    :root {
+      --bg-deep:       #090c14;
+      --bg-card:       #0d1220;
+      --border-dim:    #1e2d4a;
+      --gold:          #d4a93a;
+      --gold-light:    #f0cc6a;
+      --gold-dim:      #7a5c1a;
+      --arc-blue:      #4fc3f7;
+      --arc-glow:      #0ea5e9;
+      --spell-purple:  #a78bfa;
+      --spell-glow:    #7c3aed;
+      --text-primary:  #e8dfc8;
+      --text-dim:      #8a8070;
+      --crit-red:      #f87171;
+      --hit-green:     #86efac;
+      --dmg-amber:     #fbbf24;
+      --buff-teal:     #2dd4bf;
+      --buff-glow:     #0d9488;
+    }
+
+    body {
+      background: var(--bg-deep);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1rem;
+      font-family: 'Crimson Pro', Georgia, serif;
+    }
+
+    /* ── CARD SHELL ── */
+    .attack-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-dim);
+      border-radius: 6px;
+      max-width: 580px;
+      width: 100%;
+      box-shadow: 0 0 0 1px #c8922a22, 0 0 30px #c8922a18, 0 8px 32px #00000088;
+      overflow: hidden;
+    }
+    .attack-card::before {
+      content: '';
+      display: block;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, var(--gold), var(--gold-light), var(--gold), transparent);
+    }
+
+    /* ── HEADER ── */
+    .card-header-custom {
+      padding: 1.1rem 1.4rem 0.9rem;
+      border-bottom: 1px solid var(--border-dim);
+    }
+    .char-name {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--gold-light);
+      letter-spacing: 0.06em;
+      text-shadow: 0 0 18px #d4a93a55;
+    }
+    .char-meta {
+      font-family: 'Cinzel', serif;
+      font-size: 0.7rem;
+      color: var(--text-dim);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-top: 0.15rem;
+    }
+    .action-badge {
+      font-family: 'Cinzel', serif;
+      font-size: 0.6rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--bg-deep);
+      background: linear-gradient(135deg, var(--gold), var(--gold-dim));
+      border-radius: 2px;
+      padding: 0.25em 0.65em;
+      white-space: nowrap;
+    }
+
+    /* ── ARCANE POOL ── */
+    .arcane-pool-row {
+      padding: 0.65rem 1.4rem;
+      border-bottom: 1px solid var(--border-dim);
+      background: #0b1019;
+    }
+    .pool-label {
+      font-family: 'Cinzel', serif;
+      font-size: 0.62rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+    }
+    .pool-pip {
+      width: 13px; height: 13px;
+      border-radius: 50%;
+      border: 1px solid var(--arc-blue);
+      display: inline-block;
+      margin: 0 2px;
+    }
+    .pool-pip.filled { background: var(--arc-blue); box-shadow: 0 0 6px var(--arc-glow), 0 0 12px var(--arc-glow); }
+    .pool-pip.spent  { background: #1a2030; border-color: #2a3550; }
+
+    /* ── WEAPON ── */
+    .weapon-row {
+      padding: 0.75rem 1.4rem;
+      border-bottom: 1px solid var(--border-dim);
+      background: #0e1520;
+    }
+    .weapon-name {
+      font-family: 'Cinzel', serif;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+    .weapon-name .enchant { color: var(--arc-blue); text-shadow: 0 0 8px var(--arc-glow); }
+    .crit-tag {
+      font-family: 'Cinzel', serif;
+      font-size: 0.55rem;
+      color: var(--crit-red);
+      background: #2a0f0f;
+      border: 1px solid #7f1d1d;
+      border-radius: 2px;
+      padding: 0.1em 0.4em;
+      margin-left: 4px;
+      vertical-align: middle;
+    }
+    .stat-pill {
+      font-family: 'Cinzel', serif;
+      font-size: 0.62rem;
+      color: var(--text-dim);
+      background: #0a111d;
+      border: 1px solid var(--border-dim);
+      border-radius: 3px;
+      padding: 0.18em 0.5em;
+    }
+    .stat-pill span { color: var(--text-primary); }
+
+    /* ══════════════════════════════════════════════
+       SHARED SECTION CHROME
+    ══════════════════════════════════════════════ */
+    .toggle-section { border-bottom: 1px solid var(--border-dim); }
+
+    .toggle-section-header {
+      padding: 0.45rem 1.4rem;
+      background: #0a0f1a;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .section-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .dot-gold   { background: var(--gold);       box-shadow: 0 0 5px var(--gold); }
+    .dot-teal   { background: var(--buff-teal);  box-shadow: 0 0 5px var(--buff-glow); }
+    .dot-purple { background: var(--spell-purple); box-shadow: 0 0 5px var(--spell-glow); }
+
+    .section-eyebrow {
+      font-family: 'Cinzel', serif;
+      font-size: 0.58rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+    .ey-gold   { color: var(--gold-dim); }
+    .ey-teal   { color: var(--buff-teal); opacity: 0.75; }
+    .ey-purple { color: var(--spell-purple); opacity: 0.8; }
+
+    .toggle-grid {
+      padding: 0.5rem 1.4rem 0.65rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      background: #0b1019;
+    }
+
+    /* ══ TOGGLE CHIP ══ */
+    .toggle-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-family: 'Cinzel', serif;
+      font-size: 0.63rem;
+      letter-spacing: 0.06em;
+      border-radius: 3px;
+      padding: 0.3em 0.6em;
+      cursor: pointer;
+      user-select: none;
+      border: 1px solid;
+      transition: all 0.15s;
+      position: relative;
+    }
+    .toggle-chip input[type="checkbox"] { position: absolute; opacity: 0; width: 0; height: 0; }
+    .chip-box {
+      width: 9px; height: 9px;
+      border-radius: 1px;
+      border: 1px solid currentColor;
+      flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.5rem;
+      transition: all 0.15s;
+    }
+    .chip-effect {
+      font-family: 'Crimson Pro', serif;
+      font-style: italic;
+      font-size: 0.68rem;
+      letter-spacing: 0;
+    }
+
+    /* OFF */
+    .chip-off { background: #080d18; color: #3a4560; border-color: #141f32; }
+    .chip-off .chip-box   { opacity: 0.3; }
+    .chip-off .chip-effect { opacity: 0.25; }
+
+    /* ON gold */
+    .chip-on-gold { background: #1a1408; color: var(--gold-light); border-color: var(--gold-dim); box-shadow: 0 0 8px #d4a93a1a; }
+    .chip-on-gold .chip-box { background: var(--gold); border-color: var(--gold); }
+
+    /* ON teal */
+    .chip-on-teal { background: #071514; color: var(--buff-teal); border-color: var(--buff-glow); box-shadow: 0 0 8px #2dd4bf1a; }
+    .chip-on-teal .chip-box { background: var(--buff-teal); border-color: var(--buff-teal); }
+
+    /* ══════════════════════════════════════════════
+       SPELL SELECTOR
+    ══════════════════════════════════════════════ */
+    .spell-selector-section {
+      border-bottom: 1px solid var(--border-dim);
+    }
+
+    /* disabled overlay when spellstrike is off */
+    .spell-selector-section.disabled {
+      opacity: 0.35;
+      pointer-events: none;
+    }
+
+    .spell-cards-grid {
+      padding: 0.55rem 1.4rem 0.7rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      background: #0b1019;
+    }
+
+    /* individual spell option card */
+    .spell-option {
+      flex: 1 1 140px;
+      border: 1px solid #2e2060;
+      border-radius: 4px;
+      padding: 0.5rem 0.7rem;
+      background: #0d0d20;
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.15s;
+      position: relative;
+      overflow: hidden;
+    }
+    .spell-option input[type="radio"] { position: absolute; opacity: 0; width: 0; height: 0; }
+
+    .spell-option::before {
+      content: '';
+      position: absolute; inset: 0;
+      opacity: 0;
+      transition: opacity 0.15s;
+      pointer-events: none;
+    }
+
+    /* colour-coded glow per spell */
+    .spell-option.spell-acid::before      { background: radial-gradient(ellipse at 20% 50%, #4ade8020 0%, transparent 70%); }
+    .spell-option.spell-snowball::before  { background: radial-gradient(ellipse at 20% 50%, #7dd3fc20 0%, transparent 70%); }
+
+    .spell-option.selected { border-color: var(--spell-purple); box-shadow: 0 0 10px #7c3aed28; }
+    .spell-option.selected::before { opacity: 1; }
+
+    /* Per-spell accent colours when selected */
+    .spell-option.selected.spell-acid    { border-color: #4ade80; box-shadow: 0 0 10px #16a34a28; }
+    .spell-option.selected.spell-snowball{ border-color: #7dd3fc; box-shadow: 0 0 10px #0284c728; }
+
+    .spell-radio-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      border: 1px solid #4a4070;
+      flex-shrink: 0;
+      margin-top: 3px;
+      transition: all 0.15s;
+    }
+    .spell-option.selected .spell-radio-dot { background: var(--spell-purple); border-color: var(--spell-purple); box-shadow: 0 0 5px var(--spell-glow); }
+    .spell-option.selected.spell-acid     .spell-radio-dot { background: #4ade80; border-color: #4ade80; box-shadow: 0 0 5px #16a34a; }
+    .spell-option.selected.spell-snowball .spell-radio-dot { background: #7dd3fc; border-color: #7dd3fc; box-shadow: 0 0 5px #0284c7; }
+
+    .spell-opt-name {
+      font-family: 'Cinzel', serif;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      line-height: 1.2;
+    }
+    /* per-spell name colour */
+    .spell-option.spell-acid      .spell-opt-name { color: #4ade80; }
+    .spell-option.spell-snowball  .spell-opt-name { color: #7dd3fc; }
+
+    .spell-opt-detail {
+      font-family: 'Crimson Pro', serif;
+      font-size: 0.72rem;
+      color: #8a80a8;
+      margin-top: 3px;
+      line-height: 1.35;
+    }
+    .spell-opt-meta {
+      font-family: 'Cinzel', serif;
+      font-size: 0.55rem;
+      letter-spacing: 0.1em;
+      color: #4a4070;
+      margin-top: 4px;
+    }
+    .spell-option.selected .spell-opt-detail { color: #c4b5fd; }
+    .spell-option.selected.spell-acid     .spell-opt-detail { color: #bbf7d0; }
+    .spell-option.selected.spell-snowball .spell-opt-detail { color: #bae6fd; }
+    .spell-option.selected .spell-opt-meta { color: #7060a0; }
+
+    /* ── ATTACKS ── */
+    .attacks-section { padding: 0.4rem 0 0; }
+    .section-label {
+      font-family: 'Cinzel', serif;
+      font-size: 0.58rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      padding: 0.4rem 1.4rem 0.2rem;
+    }
+    .attack-row {
+      padding: 0.55rem 1.4rem;
+      border-bottom: 1px solid #0e1520;
+      transition: background 0.15s;
+    }
+    .attack-row:hover { background: #111827; }
+    .attack-row.spellstrike { background: #0e0f1f; border-left: 3px solid var(--spell-purple); }
+    .attack-row.spellstrike:hover { background: #12132a; }
+
+    .atk-index {
+      font-family: 'Cinzel', serif;
+      font-size: 0.6rem;
+      font-weight: 700;
+      color: var(--text-dim);
+      width: 24px;
+      flex-shrink: 0;
+    }
+    .atk-label { font-family: 'Crimson Pro', serif; font-style: italic; font-size: 0.78rem; color: var(--text-dim); flex: 1; }
+    .atk-label strong { font-style: normal; font-weight: 600; color: var(--text-primary); }
+
+    .to-hit {
+      font-family: 'Cinzel', serif;
+      font-weight: 700;
+      font-size: 1.15rem;
+      color: var(--hit-green);
+      text-shadow: 0 0 10px #86efac55;
+      min-width: 52px;
+      text-align: center;
+      line-height: 1;
+    }
+    .to-hit .breakdown {
+      font-family: 'Crimson Pro', serif;
+      font-size: 0.62rem;
+      font-weight: 400;
+      color: var(--text-dim);
+      display: block;
+      margin-top: 2px;
+      text-shadow: none;
+    }
+    .to-hit.spell-color { color: var(--spell-purple); text-shadow: 0 0 10px #a78bfa55; }
+
+    .dmg-block { text-align: right; min-width: 90px; }
+    .dmg-dice { font-family: 'Cinzel', serif; font-size: 0.8rem; font-weight: 600; color: var(--dmg-amber); line-height: 1.1; }
+    .dmg-type  { font-family: 'Crimson Pro', serif; font-size: 0.65rem; color: var(--text-dim); margin-top: 1px; }
+
+    /* Active spell banner */
+    .spell-banner {
+      border-radius: 4px;
+      padding: 0.45rem 0.75rem;
+      margin: 0.4rem 1.4rem 0.5rem;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid;
+    }
+    .spell-banner::before {
+      content: ''; position: absolute; inset: 0;
+      pointer-events: none;
+    }
+    /* acid splash */
+    .spell-banner.acid { background: #0a1410; border-color: #1a4028; }
+    .spell-banner.acid::before { background: radial-gradient(ellipse at 20% 50%, #16a34a18 0%, transparent 65%); }
+    /* snowball */
+    .spell-banner.snowball { background: #0a1018; border-color: #1a3050; }
+    .spell-banner.snowball::before { background: radial-gradient(ellipse at 20% 50%, #0284c718 0%, transparent 65%); }
+
+    .spell-icon { font-size: 1.2rem; line-height: 1; flex-shrink: 0; }
+    .spell-name { font-family: 'Cinzel', serif; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.04em; }
+    .spell-name.acid     { color: #4ade80; text-shadow: 0 0 8px #16a34a; }
+    .spell-name.snowball { color: #7dd3fc; text-shadow: 0 0 8px #0284c7; }
+
+    .spell-detail { font-family: 'Crimson Pro', serif; font-size: 0.75rem; margin-top: 2px; }
+    .spell-detail.acid     { color: #bbf7d0; }
+    .spell-detail.snowball { color: #bae6fd; }
+
+    .spell-meta { font-family: 'Cinzel', serif; font-size: 0.58rem; color: #6d5fa8; letter-spacing: 0.1em; }
+    .spell-meta.acid     { color: #3d7a56; }
+    .spell-meta.snowball { color: #2a6080; }
+
+    .divider-rune { text-align: center; font-size: 0.7rem; color: #1a2540; letter-spacing: 0.5em; padding: 0.2rem 0; }
+  </style>
+</head>
 <body>
 
-<div align="center">
-  <table class="banner" border="0" cellpadding="0" cellspacing="0">
-    <tr>
-      <td>
-        <p align="center" class="banner">Reading Hero Lab Saved Portfolios
-      </td>
-    </tr>
-  </table>
-</div>
-
-<div align="center">
-  <table border="0" cellpadding="0" cellspacing="0">
-    <tr>
-      <td><img border="0" src="../common/empty.gif" width="1" height="25"></td>
-    </tr>
-  </table>
-</div>
-
-<p class="body">Portfolios saved by Hero Lab version 4.1 (or later) are saved in the format described in this document. This allows third-party tools to open a Hero Lab saved portfolio, read content out of it, and then do whatever they want with that content - display it on a web site, convert it to some other format, or anything else they might want to do.
-
-<p class="body">This document is intended for authors of third party tools who want to add support for reading Hero Lab saved portfolios. <font class="strong">You don't need to know anything about this if you're just a normal user of Hero Lab</font> - in normal use, the product automatically saves and load files just like any other Windows or Mac application. This is only important for people who are making their own applications which will interact with Hero Lab's saved files.
-
-<p class="section">Contents
-
-<ul class="bullet">
-<li class="bullet"><a href="#before"/>Getting Started</a>
-<li class="bullet"><a href="#format"/>Saved Portfolio Format</a>
-<li class="bullet"><a href="#publicindex"/>The Public Index</a>
-<li class="bullet"><a href="#statblocks"/>Text & HTML Statblocks</a>
-<li class="bullet"><a href="#customoutput"/>XML Statblocks</a>
-<li class="bullet"><a href="#images"/>Images</a>
-<li class="bullet"><a href="#notes"/>Important Notes</a>
-<li class="bullet"><a href="#feedback"/>Contact Us</a>
-
-</ul>
-
-
-<p class="section" id="before">Getting Started
-
-<p class="body">If you're planning to use the contents of this document, it's critical that you read the <a href="#notes"/>Important Notes</a> section, below. This section outlines some very important things for you to be aware of when working with the format.
-
-<p class="body">Readers of this document are assumed to have a basic knowledge of software development, including zip files and XML. If you don't have that, we recommend you read up those subjects before continuing.
-
-<p class="body">Please note that when the document below says that you "must" or "must not" do something, that is a <font class="strong">strict requirement</font> for interacting with the saved portfolio. Failing to meet these requirements in your tool may result in your tool breaking as a result of future changes to Hero Lab.
-
-
-
-<p class="section" id="format">Saved Portfolio Format
-
-<p class="body">Portfolios saved by Hero Lab version 4.1 or later are <a href="http://en.wikipedia.org/wiki/Zip_file">zip files</a>. Your tool can use any standard compression library to decompress them and look inside. When you do, here's what you'll find:
-
-<ul class="bullet">
-<li class="bullet">One file named <font class="strong">index.xml</font>. This is the <a href="#publicindex"/>Public Index</a> of the saved portfolio, in XML format.
-<li class="bullet">One or more folders containing <b>statblocks</b> and <b>images</b>. The names of these folders are not fixed, and must be read from the <a href="#publicindex"/>Public Index file</a>.
-</ul>
-
-<p class="body">The only file you can assume to be present is the <a href="#publicindex"/>Public Index file</a>. You must read the locations of all other files and folders from the public index file, instead of assuming they're in a specific location. This will make your app more resilient against potential future changes to the saved portfolio file format.
-
-
-<p class="section" id="publicindex">The Public Index
-
-<p class="body">The public index is always contained in a file named <font class="strong">index.xml</font> in the root of the saved portfolio. It's a standard XML file <a href="../kit/kit_dtd.htm#publicindex">whose format can be found in our DTD list</a>. This is the directory that points you to all the interesting parts of the file.
-
-<p class="body">To explain how the public index file works, here's an example public index for a saved portfolio for the Pathfinder game system. (<a href="../kit/kit_dtd.htm#publicindex">Refer to the DTD</a> if you want a canonical list of which XML nodes must or may be included in the file.)
-
-
-<pre class="standout">
-&lt;?xml version="1.0" encoding="ISO-8859-1"?&gt;
-&lt;document signature="Portfolio Index"&gt;
-</pre>
-
-<p class="body">The XML declaration and fixed signature are present at the start of every public index file. Note that the encoding here is just an example and may change in the future. Your tool should be prepared for Hero Lab to output files in any reasonable encoding.
-
-<pre class="standout">
-  &lt;game name="Pathfinder Roleplaying Game"
-    folder="pathfinder" publisher="Paizo Publishing, LLC" url="http://www.paizo.com/"&gt;
-    &lt;gameinfo&gt;These data files are published under license from Paizo Publishing, LLC. &#169; Paizo Publishing, LLC. All rights reserved. Paizo Publishing, LLC, and Pathfinder are registered trademarks of Paizo Publishing, LLC; Pathfinder Roleplaying Game, Pathfinder Society, Pathfinder Chronicles, Pathfinder Modules, and Pathfinder Companion are trademarks of Paizo Publishing, LLC. The Pathfinder Roleplaying Game is &#169; 2010-2017 Paizo Publishing, LLC.&lt;/gameinfo&gt;
-    &lt;version version="7.1" primary="7" secondary="1" tertiary="" build=""&gt;&lt;/version&gt;
-    &lt;/game&gt;
-</pre>
-
-<p class="body">The game node describes the game system the portfolio was saved for. If you're doing something that requires special handling of one or more game systems, you must discriminate on the folder rather than the name. The folder is guaranteed to remain unchanged for the life of the game, whereas it's possible the name may change.
-
-<p class="body">If a version is displayed here, it's the product-specific version of the data files for the game system.
-
-<pre class="standout">
-  &lt;program name="Hero Lab" url="http://www.wolflair.com"&gt;
-    &lt;programinfo&gt;Hero Lab&#174; and the Hero Lab logo are Registered Trademarks of LWD Technology, Inc. Free download at http://www.wolflair.com&lt;![CDATA[
-]]&gt;Pathfinder&#174; and associated marks and logos are trademarks of Paizo Publishing, LLC&#174;, and are used under license.&lt;/programinfo&gt;
-    &lt;version version="4.1" primary="4" secondary="1" tertiary="" build="328"&gt;&lt;/version&gt;
-    &lt;/program&gt;
-</pre>
-
-<p class="body">The program node describes the program used to output the file (in this case, Hero Lab). It's possible that other tools may generate this file format in future, in which case they should set up this section appropriately for themselves.
-
-<pre class="standout">
-  &lt;handlers&gt;
-    &lt;handler name="Hero Lab" folder="herolab"&gt;&lt;/handler&gt;
-    &lt;/handlers&gt;
-</pre>
-
-<p class="body">Any tools which can "handle" opening the portfolio are listed here, with a pointer to their proprietary data folder. In this case, this portfolio has proprietary data for Hero Lab, contained in the "herolab" folder. You must never touch the contents of folders specified here, unless you're the tool itself.
-
-<pre class="standout">
-  &lt;characters&gt;
-    &lt;character name="Hakkon Truesilver" summary="Human Bbn 4 Clr 3 &#150; CR 6" allegianceid="algAlly" allegiancename="Ally to Party" playername="" characterindex="1"&gt;
-</pre>
-
-<p class="body">Summary details about each character are listed in their character node. These are ideal for extraction and quick display if you want to show information about the portfolio.
-
-<pre class="standout">
-      &lt;statblocks&gt;
-        &lt;statblock format="text" folder="statblocks_text" filename="1_Hakkon_Truesilver.txt"/&gt;
-        &lt;statblock format="html" folder="statblocks_html" filename="1_Hakkon_Truesilver.htm"/&gt;
-        &lt;statblock format="xml" folder="statblocks_xml" filename="1_Hakkon_Truesilver.xml"/&gt;
-        &lt;/statblocks&gt;
-</pre>
-
-<p class="body">Various different formats of statblocks may be present for each hero. Hero Lab generates <a href="#statblocks"/>text & HTML Statblocks for all heroes</a>, and <a href="#customoutput"/>XML Statblocks</a> for top-level heroes. See the appropriate sections for more information on these statblocks.
-
-<p class="body">Note that each statblock specifies both the folder in which you can find it and the filename of the statblock. You must use these to find the file for the statblock, rather than making guesses based on the name of the hero or other data.
-
-<pre class="standout">
-      &lt;images&gt;
-        &lt;image filename="1_2_Hakkon_Truesilver.jpg" folder="images"/&gt;
-        &lt;/images&gt;
-</pre>
-
-<p class="body"><a href="#images"/>Images</a> can also be present for each hero, if specified by the user. See the Images section for more information.
-
-<pre class="standout">
-      &lt;minions&gt;
-        &lt;character name="Falcon" summary="Hawk &#150; CR 1/3" allegianceid="algAlly" allegiancename="Ally to Party" playername="" characterindex="2"&gt;
-          &lt;statblocks&gt;
-            &lt;statblock format="text" folder="statblocks_text" filename="1.1_Falcon.txt"/&gt;
-            &lt;statblock format="html" folder="statblocks_html" filename="1.1_Falcon.htm"/&gt;
-            &lt;/statblocks&gt;
-          &lt;images&gt;&lt;/images&gt;
-          &lt;/character&gt;
-        &lt;character name="Horse, heavy (combat trained)" summary="Horse, Heavy &#150; CR 2" allegianceid="algAlly" allegiancename="Ally to Party" playername="" characterindex="3"&gt;
-          &lt;statblocks&gt;
-            &lt;statblock format="text" folder="statblocks_text" filename="1.2_Horse_heavy_combat_trained.txt"/&gt;
-            &lt;statblock format="html" folder="statblocks_html" filename="1.2_Horse_heavy_combat_trained.htm"/&gt;
-            &lt;/statblocks&gt;
-          &lt;images&gt;
-            &lt;image filename="1_3_Hakkon_Truesilver.jpg" folder="images"/&gt;
-            &lt;/images&gt;
-          &lt;/character&gt;
-        &lt;/minions&gt;
-</pre>
-
-<p class="body">Many characters can also have minions - sub-characters under the primary character with their own statblocks and images. As you can see, these look a lot like regular characters, although no XML statblocks are present (see the <a href="#customoutput"/>XML Statblocks</a> section for details on why).
-
-<pre class="standout">
-      &lt;/character&gt;
-    &lt;character name="Mountain Guide" summary="Human Com 2 War 1 &#150; CR 1" allegianceid="algAlly" allegiancename="Ally to Party" playername="" characterindex="4"&gt;
-      &lt;statblocks&gt;
-        &lt;statblock format="text" folder="statblocks_text" filename="2_Mountain_Guide.txt"/&gt;
-        &lt;statblock format="html" folder="statblocks_html" filename="2_Mountain_Guide.htm"/&gt;
-        &lt;statblock format="xml" folder="statblocks_xml" filename="2_Mountain_Guide.xml"/&gt;
-        &lt;/statblocks&gt;
-      &lt;images&gt;&lt;/images&gt;
-      &lt;/character&gt;
-    &lt;/characters&gt;
-  &lt;/document&gt;
-</pre>
-
-<p class="body">Any number of top-level heroes may be present in the file, along with their statblocks, images, and minions.
-
-<p class="body">The "characterindex" attribute listed here can be used to identify the character within the <a href="#customoutput"/>XML Statblock</a> for the top-level hero. For example, if the characterindex attribute here is set to "3", look in the XML Statblock for a character element with characterindex="3", and you'll have found the character element for that character. This can help distinguish between different minions in the same file, and link them to the appropriate images listed in this file.
-
-<p class="section" id="statblocks">Text & HTML Statblocks
-
-<p class="body">Text & HTML statblocks are located in various folders in the compressed file. These folders do not have fixed names, so you must retrieve the location of any statblock from the <a href="#publicindex"/>Public Index</a> of the saved portfolio before trying to access it.
-
-<p class="body">A statblock is simply a text or HTML summary of the hero, intended to be read by humans. The specific format of the statblock is generally defined by the publisher of the game system, and Hero Lab tries to adhere as closely to that format as possible. Generally, each hero listed in the public index file will have a text statblock and an html statblock defined for it, with a folder and file name specified for each one. This should let you easily find the full path to the statblock you want, so you can read it into your tool and display it to the user (or save it for later display).
-
-<p class="body"><font class="strong">No guarantees are made about the format of a text or HTML statblock</font>. The content or format may well change between different versions of Hero Lab or the game system data files. All you should be doing with a text or HTML statblock is reading it in and displaying it to the user (or saving it for later display). You must not read data out of a text or HTML statblock to use elsewhere in your program. For example, if you want to calculate the total XP value of an encounter, you must read the XP values out of the <a href="#customoutput"/>XML statblock</a>, rather than the text or HTML statblock. Failure to do so may result in your tool breaking as a result of future changes to Hero Lab.
-
-<p class="body">It's possible that a hero may have no text or HTML statblock defined for it. If so, there will be no statblock listed for that hero in the public index file. You must not assume that a hero will have any statblocks defined for it, although they generally will.
-
-<p class="body">It's also possible that future versions of Hero Lab or other tools might generate a statblock in a different format (for example, JSON or markdown). If so, those statblocks will be noted in the public index file with the appropriate format.
-
-<p class="body">Each text or HTML statblock is guaranteed to have a unique name, but that name may not be exactly the same as the name of the hero it refers to. You must make no assumptions about the file names, and must only access them via the public index file, which includes specific file names for the statblocks. These file names may change between saves of the portfolio within Hero Lab.
-
-
-
-<p class="section" id="customoutput">XML Statblocks
-
-<p class="body">XML statblocks are located in various folders in the compressed file. These folders do not have fixed names, so you must retrieve the location of any statblock from the <a href="#publicindex"/>Public Index</a> of the saved portfolio before trying to access it.
-
-<p class="body">An XML statblock is different from a text or HTML statblock because it's intended to be read by software, not by humans. Parsing an XML statblock with an XML parser will return a structured document describing the character in a way that's very easy to navigate with a program. This allows you to write a tool that pulls out information from the statblock, without having to parse the text or HTML from a file whose format may change without warning.
-
-<p class="body">The XML statblock format for a game system is the same as the custom output XML format, which is defined in the manual for that game. All games that support custom output provide a DTD file that describes the structure of that output. These formats may change in the future, but our intent is to make only additive changes (adding new information, rather than removing information). That means that even if we change the XML output format, your code to read the data should still work, as long as you make sure to ignore  elements and attributes that you find in the file.
-
-<p class="body"><font class="strong">There's another important difference between XML statblocks and text statblocks</font>. XML statblocks are only defined for <font class="strong">top-level heroes, not minions</font>, as described in the documentation for the public index, above. That means that if you want to find the XML statblock for a minion, you must open the XML statblock of its ultimate parent, and search for the minion node inside it.
-
-<p class="body">Generally, each top-level hero listed in the public index file will have an XML statblock defined for it, with a folder and file name specified for each one, just like a text statblock.
-
-<p class="body">It's possible that a hero may have no XML statblock defined for it. If so, there will be no statblock listed for that hero in the public index file. This can happen if the game system in Hero Lab doesn't support custom output, or if the portfolio was saved by a tool that doesn't support custom output (for example, Hero Lab Starter Edition).
-
-<p class="body">Each XML statblock is guaranteed to have a unique name, but that name may not be exactly the same as the name of the hero it refers to. You must make no assumptions about the file names, and must only access them via the public index, which includes specific file names for the statblocks.
-
-
-
-<p class="section" id="images">Images
-
-<p class="body">Images statblocks are located in various folders in the compressed file. These folders do not have fixed names, so you must retrieve the location of any images from the <a href="#publicindex"/>Public Index</a> of the saved portfolio before trying to access it.
-
-<p class="body">Images are provided in whatever format they were in when the user added them to the saved portfolio. This will typically be PNG or JPG format, but could also be other formats supported by Hero Lab (GIF, TGA, BMP, etc).
-
-<p class="body">Each image is guaranteed to have a unique name, but that name may not necessarily reference the name of the hero which uses that image. You must make no assumptions about the file names of images, and must only access them via the public index or XML statblocks, which include specific file names for the images for heroes.
-
-
-
-<p class="section" id="notes">Important Notes
-
-<ul class="bullet">
-<li class="bullet">The Hero Lab saved portfolio format is the same on both PC and Mac, so it doesn't matter which operating system users save their files on. Your tool should be able to read saved files from either platform without any special handling.
-
-<li class="bullet" id="proprietary">In addition to the files and folders described above, there will also be proprietary files and folders present in the saved portfolio. <font class="strong">You must not edit or change this data in any way. Doing so will likely result in Hero Lab not being able to open the saved portfolio at all.</font> The format of this proprietary information may change without warning, so you should not assume anything about it, or even try to read information out of it.
-
-<li class="bullet">As noted above, the format of certain files may change, and the names of folders may change. You must not hard-code folder or file names that you should be reading out of the public index file, or future changes to Hero Lab may result in your tool no longer working.
-
-<li class="bullet">You must treat the saved portfolio format as read-only. Any changes you make to the statblocks will be ignored by Hero Lab the next time it reads the saved portfolio in.
-
-<li class="bullet">Further, you must not add any files to the saved portfolio format. Hero Lab will ignore those files, and they will be lost the next time you save the portfolio in Hero Lab. (We may relax these two restrictions in the future, but for now this is how it is.)
-
-<li class="bullet">Hero Lab began using this file format in version 4.1. Saved portfolios from versions of Hero Lab before then were a proprietary XML format, not a zip file. If you try to open a Hero Lab saved portfolio as a zip file and it fails, you probably have a portfolio from a previous version of Hero Lab, and should prompt the user to update it by simply opening it, making any change, then saving it in a new version of Hero Lab.
-
-<li class="bullet">It's our intent that other products can use this format to generate their own saved portfolio files, which should then be able to be imported by any tool that reads the portfolios generated by Hero Lab itself. However, Hero Lab will not be able to load saved portfolios generated by other tools, and other tools must not put anything in the "herolab" proprietary folder when generating the saved portfolio.
-
-</ul>
-
-<p class="section" id="feedback">Contact Us
-
-<p class="body">If you have questions or comments about the saved portfolio file format, or if you want to let us know of a particularly cool use you found for it, <a href="mailto:support@wolflair.com">drop us an email</a> and we'll get back to you! If you do something awesome or interesting, we might feature you on our web site or newsletter, so don't hesitate to get in touch.
-
-
-
-<p class="section"><a href="./hpmanual.htm"><font class="strong">Go Back to the Index</font></a>
-
+<div class="attack-card">
+
+  <!-- HEADER -->
+  <div class="card-header-custom">
+    <div class="d-flex align-items-start justify-content-between gap-2">
+      <div>
+        <div class="char-name">Vaelthas Mirewyn</div>
+        <div class="char-meta">Magus 10 · Eldritch Archer</div>
+      </div>
+      <span class="action-badge mt-1">Full Attack</span>
+    </div>
+  </div>
+
+  <!-- ARCANE POOL -->
+  <div class="arcane-pool-row d-flex align-items-center justify-content-between">
+    <span class="pool-label">Arcane Pool</span>
+    <div>
+      <span class="pool-pip filled"></span><span class="pool-pip filled"></span>
+      <span class="pool-pip filled"></span><span class="pool-pip spent"></span>
+      <span class="pool-pip spent"></span><span class="pool-pip spent"></span>
+      <span class="pool-pip spent"></span>
+    </div>
+  </div>
+
+  <!-- WEAPON -->
+  <div class="weapon-row">
+    <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+      <div class="weapon-name">
+        <span class="enchant">+1</span> Composite Longbow
+        <span class="crit-tag">×3 / 20</span>
+      </div>
+      <div class="d-flex flex-wrap gap-1">
+        <span class="stat-pill">RNG <span>110 ft</span></span>
+        <span class="stat-pill">STR <span>+2</span></span>
+        <span class="stat-pill">DEX <span>+5</span></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ PER-ATTACK DECISIONS ══ -->
+  <div class="toggle-section">
+    <div class="toggle-section-header">
+      <span class="section-dot dot-gold"></span>
+      <span class="section-eyebrow ey-gold">Per-Attack Decisions</span>
+    </div>
+    <div class="toggle-grid">
+      <label class="toggle-chip chip-on-gold" data-color="gold" id="chip-spellstrike">
+        <input type="checkbox" checked onchange="toggleChip(this); updateSpellstrike()">
+        <span class="chip-box">✓</span>
+        <span class="chip-label">Spellstrike</span>
+        <span class="chip-effect">— deliver spell on hit</span>
+      </label>
+      <label class="toggle-chip chip-on-gold" data-color="gold">
+        <input type="checkbox" checked onchange="toggleChip(this)">
+        <span class="chip-box">✓</span>
+        <span class="chip-label">Spell Combat</span>
+        <span class="chip-effect">— cast + attack / −2 all</span>
+      </label>
+      <label class="toggle-chip chip-on-gold" data-color="gold">
+        <input type="checkbox" checked onchange="toggleChip(this)">
+        <span class="chip-box">✓</span>
+        <span class="chip-label">Rapid Shot</span>
+        <span class="chip-effect">— extra arrow / −2 all</span>
+      </label>
+      <label class="toggle-chip chip-off" data-color="gold">
+        <input type="checkbox" onchange="toggleChip(this)">
+        <span class="chip-box"></span>
+        <span class="chip-label">Deadly Aim</span>
+        <span class="chip-effect">— −3 hit / +6 dmg</span>
+      </label>
+      <label class="toggle-chip chip-off" data-color="gold">
+        <input type="checkbox" onchange="toggleChip(this)">
+        <span class="chip-box"></span>
+        <span class="chip-label">Manyshot</span>
+        <span class="chip-effect">— 2 arrows on 1st attack</span>
+      </label>
+    </div>
+  </div>
+
+  <!-- ══ SPELLSTRIKE: SPELL SELECTION ══ -->
+  <div class="spell-selector-section toggle-section" id="spellSelectorSection">
+    <div class="toggle-section-header">
+      <span class="section-dot dot-purple"></span>
+      <span class="section-eyebrow ey-purple">Spellstrike — Spell Selection</span>
+    </div>
+    <div class="spell-cards-grid">
+
+      <!-- Acid Splash -->
+      <label class="spell-option spell-acid" onclick="selectSpell(this, 'acid')">
+        <input type="radio" name="spellChoice" value="acid">
+        <div class="d-flex gap-2">
+          <div class="spell-radio-dot mt-1"></div>
+          <div>
+            <div class="spell-opt-name">Acid Splash</div>
+            <div class="spell-opt-detail">1d3 acid · ranged touch</div>
+            <div class="spell-opt-meta">CANTRIP · 25 ft · CL 10</div>
+          </div>
+        </div>
+      </label>
+
+      <!-- Snowball -->
+      <label class="spell-option spell-snowball" onclick="selectSpell(this, 'snowball')">
+        <input type="radio" name="spellChoice" value="snowball">
+        <div class="d-flex gap-2">
+          <div class="spell-radio-dot mt-1"></div>
+          <div>
+            <div class="spell-opt-name">Snowball</div>
+            <div class="spell-opt-detail">5d6 cold · Fort: staggered</div>
+            <div class="spell-opt-meta">LVL 1 · Touch · CL 10</div>
+          </div>
+        </div>
+      </label>
+
+    </div>
+  </div>
+
+  <!-- ══ BUFFS (SWIFT + CONDITIONAL) ══ -->
+  <div class="toggle-section">
+    <div class="toggle-section-header">
+      <span class="section-dot dot-teal"></span>
+      <span class="section-eyebrow ey-teal">Active Buffs &amp; Conditions</span>
+    </div>
+    <div class="toggle-grid">
+      <label class="toggle-chip chip-on-teal" data-color="teal">
+        <input type="checkbox" checked onchange="toggleChip(this)">
+        <span class="chip-box">✓</span>
+        <span class="chip-label">Arcane Accuracy</span>
+        <span class="chip-effect">— +3 insight hit · swift (1 pool)</span>
+      </label>
+      <label class="toggle-chip chip-off" data-color="teal">
+        <input type="checkbox" onchange="toggleChip(this)">
+        <span class="chip-box"></span>
+        <span class="chip-label">Arcane Pool: Enhance</span>
+        <span class="chip-effect">— +1 enhancement · swift (1 pool)</span>
+      </label>
+      <label class="toggle-chip chip-off" data-color="teal">
+        <input type="checkbox" onchange="toggleChip(this)">
+        <span class="chip-box"></span>
+        <span class="chip-label">Haste</span>
+        <span class="chip-effect">— +1 hit / extra attack · 1 round</span>
+      </label>
+      <label class="toggle-chip chip-on-teal" data-color="teal">
+        <input type="checkbox" checked onchange="toggleChip(this)">
+        <span class="chip-box">✓</span>
+        <span class="chip-label">Point-Blank Shot</span>
+        <span class="chip-effect">— +1 hit +1 dmg · ≤30 ft</span>
+      </label>
+      <label class="toggle-chip chip-off" data-color="teal">
+        <input type="checkbox" onchange="toggleChip(this)">
+        <span class="chip-box"></span>
+        <span class="chip-label">Favored Enemy</span>
+        <span class="chip-effect">— +2 hit / +2 dmg</span>
+      </label>
+      <label class="toggle-chip chip-off" data-color="teal">
+        <input type="checkbox" onchange="toggleChip(this)">
+        <span class="chip-box"></span>
+        <span class="chip-label">Flanking</span>
+        <span class="chip-effect">— +2 hit</span>
+      </label>
+    </div>
+  </div>
+
+  <!-- ── ITERATIVE ATTACKS ── -->
+  <div class="attacks-section">
+    <div class="section-label">Iterative Attacks</div>
+
+    <!-- 1st — Spellstrike -->
+    <div class="attack-row spellstrike d-flex align-items-center gap-3">
+      <div class="atk-index">1st</div>
+      <div class="atk-label flex-grow-1">
+        <strong>Spellstrike Arrow</strong>
+        <br>Ranged touch · spell on hit
+      </div>
+      <div class="to-hit spell-color">+15<span class="breakdown">(7+5+1+1+1)</span></div>
+      <div class="dmg-block">
+        <div class="dmg-dice">1d8+4</div>
+        <div class="dmg-type">piercing</div>
+      </div>
+    </div>
+
+    <div class="divider-rune">· · · · ·</div>
+
+    <!-- Rapid Shot -->
+    <div class="attack-row d-flex align-items-center gap-3">
+      <div class="atk-index">RS</div>
+      <div class="atk-label flex-grow-1">
+        <strong>Rapid Arrow</strong><br>Rapid Shot bonus attack
+      </div>
+      <div class="to-hit">+13<span class="breakdown">(7+5+1+1+1−2)</span></div>
+      <div class="dmg-block">
+        <div class="dmg-dice">1d8+4</div>
+        <div class="dmg-type">piercing</div>
+      </div>
+    </div>
+
+    <div class="divider-rune">· · · · ·</div>
+
+    <!-- 2nd -->
+    <div class="attack-row d-flex align-items-center gap-3">
+      <div class="atk-index">2nd</div>
+      <div class="atk-label flex-grow-1">
+        <strong>Arrow</strong><br>Normal ranged attack
+      </div>
+      <div class="to-hit">+13<span class="breakdown">(7+5+1+1+1−2)</span></div>
+      <div class="dmg-block">
+        <div class="dmg-dice">1d8+4</div>
+        <div class="dmg-type">piercing</div>
+      </div>
+    </div>
+
+    <!-- 3rd -->
+    <div class="attack-row d-flex align-items-center gap-3">
+      <div class="atk-index">3rd</div>
+      <div class="atk-label flex-grow-1">
+        <strong>Arrow</strong><br>Iterative (BAB −5)
+      </div>
+      <div class="to-hit">+8<span class="breakdown">(2+5+1+1+1−2)</span></div>
+      <div class="dmg-block">
+        <div class="dmg-dice">1d8+4</div>
+        <div class="dmg-type">piercing</div>
+      </div>
+    </div>
+
+  </div>
+
+</div><!-- /.attack-card -->
+
+<script>
+  /* ── toggle chip ── */
+  function toggleChip(checkbox) {
+    const chip  = checkbox.closest('.toggle-chip');
+    const box   = chip.querySelector('.chip-box');
+    const color = chip.dataset.color;
+    if (checkbox.checked) {
+      chip.classList.remove('chip-off');
+      chip.classList.add('chip-on-' + color);
+      box.textContent = '✓';
+    } else {
+      chip.classList.remove('chip-on-' + color);
+      chip.classList.add('chip-off');
+      box.textContent = '';
+    }
+  }
+
+  /* ── show/hide spell selector when spellstrike toggled ── */
+  function updateSpellstrike() {
+    const on = document.querySelector('#chip-spellstrike input').checked;
+    document.getElementById('spellSelectorSection').classList.toggle('disabled', !on);
+  }
+
+  /* ── spell data ── */
+  const spells = {
+    acid: {
+      icon: '🧪',
+      name: 'Acid Splash',
+      meta: 'CL 10 · Ranged Touch',
+      detail: '<span style="color:#4ade80">1d3</span> acid damage',
+    },
+    snowball: {
+      icon: '❄️',
+      name: 'Snowball',
+      meta: 'CL 10 · Touch',
+      detail: '<span style="color:#7dd3fc">5d6</span> cold &nbsp;·&nbsp; Fort DC 16 or <strong>staggered</strong> 1 rd',
+    },
+  };
+
+  /* ── select a spell ── */
+  function selectSpell(label, key) {
+    // update option cards
+    document.querySelectorAll('.spell-option').forEach(el => el.classList.remove('selected'));
+    label.classList.add('selected');
+    label.querySelector('input').checked = true;
+
+    // update attack banner
+    const s = spells[key];
+    const banner = document.getElementById('activeBanner');
+    banner.className = 'spell-banner ' + key + ' d-flex align-items-start gap-2';
+    document.getElementById('bannerIcon').textContent   = s.icon;
+
+    const nameEl = document.getElementById('bannerName');
+    nameEl.className   = 'spell-name ' + key;
+    nameEl.textContent = s.name;
+
+    const metaEl = document.getElementById('bannerMeta');
+    metaEl.className   = 'spell-meta ' + key;
+    metaEl.textContent = s.meta;
+
+    const detailEl = document.getElementById('bannerDetail');
+    detailEl.className   = 'spell-detail ' + key;
+    detailEl.innerHTML   = s.detail;
+  }
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-
 </html>
