@@ -527,7 +527,7 @@ async function uploadPortfolio(file) {
 
     const character = await response.json();
 
-    // Initialise option states from active buffs
+    // Initialize option states from active buffs
     const defaultEnabledOptions = [];
     const activeBuffIds = new Set(character.activeBuffIds || []);
 
