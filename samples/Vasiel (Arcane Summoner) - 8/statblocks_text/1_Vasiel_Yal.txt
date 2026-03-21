@@ -1,0 +1,69 @@
+Vasiel Yal
+Male elf conjurer 8 (Pathfinder RPG Adventurer's Guide 63, Ultimate Wilderness 210)
+NG Medium humanoid (elf)
+Init +10; Senses low-light vision; Perception +12
+--------------------
+Defense
+--------------------
+AC 21, touch 16, flat-footed 17 (+4 armor, +1 deflection, +4 Dex, +1 enhancement, +1 natural)
+hp 58 (8d6+24)
+Fort +6, Ref +8, Will +10; +2 vs. enchantments
+Defensive Abilities share will; Immune sleep
+--------------------
+Offense
+--------------------
+Speed 30 ft.
+Melee dagger +5 (1d4+1/19-20)
+Ranged +1 shortbow +9 (1d6+1/×3)
+Arcane School Spell-Like Abilities (CL 8th; concentration +15)
+   At will—dimensional steps (240 feet/day)
+   9/day—acid dart (1d6+4 acid)
+Conjurer Spells Prepared (CL 8th; concentration +15)
+   4th—dimension door, enervation, phantom chariot[UC], summon monster IV (2)
+   3rd—fly, haste, communal resist energy[UC], summon monster III (2), vampiric touch
+   2nd—acid arrow, create pit[APG] (DC 19), glitterdust (DC 19), see invisibility, summon monster II (2), tears to wine (DC 18)
+   1st—heightened awareness[ACG], identify, infernal healing[ISWG] (2), mage armor (2), secluded grimoire, shield
+   0 (at will)—detect fiendish presence, detect magic, prestidigitation, read magic
+--------------------
+Statistics
+--------------------
+Str 12, Dex 19, Con 14, Int 23, Wis 14, Cha 10
+Base Atk +4; CMB +5; CMD 20
+Feats Acadamae Graduate, Augment Summoning, Evolved Summoned Monster[ACG], Inscribe Magical Tattoo, Scribe Scroll, Spell Focus (conjuration), Tattoo Attunement
+Traits arcane temper, elemental ties (osirion), scholar of the ancients
+Skills Acrobatics +2, Appraise +14, Bluff -2, Climb -1, Craft (calligraphy) +19, Diplomacy +1 (+2 against elementals.), Disguise -2, Escape Artist +2, Fly +9, Heal +2, Intimidate -2, Knowledge (arcana) +21, Knowledge (dungeoneering) +15, Knowledge (engineering) +14, Knowledge (geography) +14, Knowledge (history) +17, Knowledge (local) +14, Knowledge (nature) +17, Knowledge (nobility) +14, Knowledge (planes) +20, Knowledge (religion) +16, Linguistics +19, Perception +12, Ride +2, Sense Motive +2, Spellcraft +19, Stealth +2, Survival +2, Swim -1; Racial Modifiers +2 Perception
+Languages Abyssal, Aquan, Auran, Celestial, Common, Daemonic, Draconic, Elven, Gnoll, Gnome, Goblin, Ignan, Infernal, Necril, Sylvan, Terran, Thassilonian, Varisian
+SQ arcane bond (Pansy, arctic hare), meticulous, summoner's charm (4 rounds)
+Combat Gear lesser extend metamagic rod, potion of cure moderate wounds, potion of cure serious wounds, scroll of acid arrow, scroll of darkvision, scroll of darkvision, scroll of flaming sphere (CL 5th), scroll of keen edge, scroll of see invisibility, scroll of see invisibility, wand of infernal healing (50 charges), wand of silent image (4 charges); Other Gear shortbow, arrows (40), dagger, cracked dusty rose prism ioun stone, bedroll, belt pouch, book lariat[ACG], candle (5), chalk (5), familiar satchel[UE], flint and steel, ink, inkpen, journal[UE], masterwork backpack[APG], mess kit[UE], sack, scroll box[UE], soap, spell component pouch, trail rations (5), waterproof bag[UE], waterskin, wizard starting spellbook, light horse, book on varisian history, miniature shovel (worth 10 gp), 3,754 gp, 2 sp, 3 cp
+--------------------
+Special Abilities
+--------------------
+Acid Dart (1d6+4 acid, 9/day) (Sp) As a standard action, ranged touch deals acid dam vs. foe in 30 ft.
+Augment Summoning Summoned creatures have +4 to Strength and Constitution.
+Dimensional Steps (48 5-ft inc/day) (Sp) As a standard action, teleport in 5 foot increments. If carry another, double cost.
+Elven Immunities - Sleep You are immune to magic sleep effects.
+Empathic Link with Familiar (Su) You have an empathic link with your Arcane Familiar.
+Evolved Summoned Monster Apply a 1-point evolution to a creature you summon.
+Familiar Bonus: +4 to initiative checks You gain the Alertness feat while your familiar is within arm's reach.
+Inscribe Magical Tattoo You can craft magical tattoos.
+Low-Light Vision See twice as far as a human in dim light, distinguishing color and detail.
+Meticulous -2 on all untrained skill checks
+Share Will (Su) When your or familiar fails a save vs. mind-affecting effect, the other can roll in their place, but failure affects both.
+Sloth (Conjuration) The conjurer focuses on the study of summoning monsters and magic alike to bend to his will.
+Speak with Animals (Ex) Your familiar can communicate with animals similar to itself.
+Speak with Familiar (Ex) You can communicate verbally with your familiar.
+Spell Focus (Conjuration) Spells from one school of magic have +1 to their save DC.
+Summoner's Charm (+4 rds) (Su) Increase duration of summoning spells by 1/2 level (permanent at 20).
+Tattoo Attunement Standard action, summoned creature touched turns into tattoo.
+--------------------
+Vasiel has been blessed by Milani because of actions he took to aid a group of half elves. They had banded together for protection and were being persecuted by local townsfolk. He left to live in Varisia because of the aftermath of this event.
+
+Spent decades studying varisian history and ancient Thassilon. Now he is the Guest Lecturer of Thassilonian Grammar at the Acadamae in Korvosa.
+Has grown disenfranchised with the pure theory work when he began to doubt the validity of many of the sources as they were third hand or worse. 
+Took a refresher Conjuration course but designed a self corriculum based on the Thassilonian School of Sloth allowed him to combine his interests.
+Joined an expedition to investigate some recently unearthed Thasillonian ruins. 
+Took ill on the journey there and was left in Sandpoint to recover.
+Has now recovered but has no way to catch up with the caravan.
+
+Hero Lab and the Hero Lab logo are Registered Trademarks of LWD Technology, Inc. Free download at https://www.wolflair.com
+Pathfinder® and associated marks and logos are trademarks of Paizo Inc.®, and are used under license.

@@ -1,0 +1,55 @@
+This hulking, roughly humanoid creature of dirt and stone explodes up from the earth, faceless save for two glowing gemstone eyes.
+--------------------
+Elemental (Small), Earth      CR 1
+XP 400
+Male small earth elemental (Pathfinder RPG Bestiary 122)
+N Small outsider (earth, elemental, extraplanar)
+Init -1; Senses darkvision 60 ft., tremorsense 60 ft.; Perception +4
+--------------------
+Defense
+--------------------
+AC 17, touch 10, flat-footed 17 (-1 Dex, +7 natural, +1 size)
+hp 17 (2d10+6)
+Fort +6, Ref -1, Will +3; +2 morale bonus vs. charm and fear
+Immune elemental traits
+--------------------
+Offense
+--------------------
+Speed 20 ft., burrow 20 ft.; earth glide
+Melee slam +10 (1d8+13)
+Special Attacks earth mastery
+--------------------
+Statistics
+--------------------
+Str 20, Dex 8, Con 17, Int 4, Wis 11, Cha 11
+Base Atk +2; CMB +8 (+11 bull rush, +9 overrun); CMD 15 (18 vs. bull rush, 16 vs. overrun)
+Feats Improved Bull Rush, Power Attack
+Skills Acrobatics -1 (-5 to jump), Appraise +1, Climb +9, Knowledge (dungeoneering) +1, Knowledge (planes) +1, Perception +4, Stealth +7
+--------------------
+Ecology
+--------------------
+Environment any (plane of earth)
+Organization solitary, pair, or gang (3-8)
+Treasure none
+--------------------
+Special Abilities
+--------------------
+Burrow (20 feet) You have a Burrow speed.
+Darkvision (60 feet) You can see in the dark (black and white only).
+Earth Glide Burrow through any earth or stone (except metal) as a fish through water.
+Earth Mastery (Ex) +1 to hit, dam, bull rush, and overrun if both self and foe are on ground, -4 if either waterborne or airborne.
+Elemental Traits Elementals have many immunities.
+Immunity to Bleed You are immune to bleed.
+Immunity to Critical Hits You are immune to Critical Hits
+Immunity to Flanking You are immune to flanking.
+Immunity to Paralysis You are immune to paralysis.
+Immunity to Poison You are immune to poison.
+Immunity to Precision Damage You are immune to Precision Damage
+Immunity to Sleep You are immune to sleep effects.
+Immunity to Stunning You are immune to being stunned.
+Improved Bull Rush You don't provoke attacks of opportunity when bull rushing.
+Power Attack -1/+2 You can subtract from your attack roll to add to your damage.
+Tremorsense (60 feet) Sense creatures and objects in contact with ground or water.
+
+Hero Lab and the Hero Lab logo are Registered Trademarks of LWD Technology, Inc. Free download at https://www.wolflair.com
+Pathfinder® and associated marks and logos are trademarks of Paizo Inc.®, and are used under license.

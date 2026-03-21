@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Eldritch Archer — Full Attack</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cinzel:wght@400;600;700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,400&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg-deep:       #090c14;
+      --bg-card:       #0d1220;
+      --bg-section:    #111827;
+      --border-dim:    #1e2d4a;
+      --border-glow:   #c8922a;
+      --gold:          #d4a93a;
+      --gold-light:    #f0cc6a;
+      --gold-dim:      #7a5c1a;
+      --arc-blue:      #4fc3f7;
+      --arc-glow:      #0ea5e9;
+      --spell-purple:  #a78bfa;
+      --spell-glow:    #7c3aed;
+      --text-primary:  #e8dfc8;
+      --text-dim:      #8a8070;
+      --crit-red:      #f87171;
+      --hit-green:     #86efac;
+      --dmg-amber:     #fbbf24;
+    }
+
+    body {
+      background: var(--bg-deep);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1rem;
+      font-family: 'Crimson Pro', Georgia, serif;
+    }
+
+    /* ── CARD SHELL ────────────────────────────────── */
+    .attack-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-dim);
+      border-radius: 6px;
+      max-width: 560px;
+      width: 100%;
+      position: relative;
+      box-shadow:
+        0 0 0 1px #c8922a22,
+        0 0 30px #c8922a18,
+        0 8px 32px #00000088;
+      overflow: hidden;
+    }
+
+    /* top gold rule */
+    .attack-card::before {
+      content: '';
+      display: block;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, var(--gold), var(--gold-light), var(--gold), transparent);
+    }
+
+    /* ── HEADER ────────────────────────────────────── */
+    .card-header-custom {
+      padding: 1.1rem 1.4rem 0.9rem;
+      border-bottom: 1px solid var(--border-dim);
+      position: relative;
+    }
+
+    .char-name {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--gold-light);
+      letter-spacing: 0.06em;
+      line-height: 1.2;
+      text-shadow: 0 0 18px #d4a93a55;
+    }
+
+    .char-meta {
+      font-family: 'Cinzel', serif;
+      font-size: 0.7rem;
+      color: var(--text-dim);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-top: 0.15rem;
+    }
+
+    .action-badge {
+      font-family: 'Cinzel', serif;
+      font-size: 0.6rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--bg-deep);
+      background: linear-gradient(135deg, var(--gold), var(--gold-dim));
+      border-radius: 2px;
+      padding: 0.25em 0.65em;
+    }
+
+    /* ── ARCANE POOL PIPS ──────────────────────────── */
+    .arcane-pool-row {
+      padding: 0.65rem 1.4rem;
+      border-bottom: 1px solid var(--border-dim);
+      background: #0b1019;
+    }
+
+    .pool-label {
+      font-family: 'Cinzel', serif;
+      font-size: 0.62rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+    }
+
+    .pool-pip {
+      width: 13px;
+      height: 13px;
+      border-radius: 50%;
+      border: 1px solid var(--arc-blue);
+      display: inline-block;
+      margin: 0 2px;
+      transition: box-shadow 0.2s;
+    }
+
+    .pool-pip.filled {
+      background: var(--arc-blue);
+      box-shadow: 0 0 6px var(--arc-glow), 0 0 12px var(--arc-glow);
+    }
+
+    .pool-pip.spent {
+      background: #1a2030;
+      border-color: #2a3550;
+    }
+
+    /* ── WEAPON ROW ────────────────────────────────── */
+    .weapon-row {
+      padding: 0.75rem 1.4rem;
+      border-bottom: 1px solid var(--border-dim);
+      background: #0e1520;
+    }
+
+    .weapon-name {
+      font-family: 'Cinzel', serif;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      letter-spacing: 0.04em;
+    }
+
+    .weapon-name .enchant {
+      color: var(--arc-blue);
+      text-shadow: 0 0 8px var(--arc-glow);
+    }
+
+    .stat-pill {
+      font-family: 'Cinzel', serif;
+      font-size: 0.62rem;
+      letter-spacing: 0.08em;
+      color: var(--text-dim);
+      background: #0a111d;
+      border: 1px solid var(--border-dim);
+      border-radius: 3px;
+      padding: 0.18em 0.5em;
+    }
+
+    .stat-pill span {
+      color: var(--text-primary);
+    }
+
+    /* ── ATTACK ROWS ───────────────────────────────── */
+    .attacks-section {
+      padding: 0.5rem 0;
+    }
+
+    .section-label {
+      font-family: 'Cinzel', serif;
+      font-size: 0.58rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      padding: 0.4rem 1.4rem 0.2rem;
+    }
+
+    .attack-row {
+      padding: 0.55rem 1.4rem;
+      border-bottom: 1px solid #0e1520;
+      position: relative;
+      transition: background 0.15s;
+    }
+
+    .attack-row:hover {
+      background: #111827;
+    }
+
+    .attack-row.spellstrike {
+      background: #0e0f1f;
+      border-left: 3px solid var(--spell-purple);
+    }
+
+    .attack-row.spellstrike:hover {
+      background: #12132a;
+    }
+
+    /* index badge */
+    .atk-index {
+      font-family: 'Cinzel', serif;
+      font-size: 0.6rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      color: var(--text-dim);
+      width: 22px;
+      flex-shrink: 0;
+    }
+
+    .atk-label {
+      font-family: 'Crimson Pro', serif;
+      font-style: italic;
+      font-size: 0.78rem;
+      color: var(--text-dim);
+      flex: 1;
+    }
+
+    .atk-label strong {
+      font-style: normal;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    /* to-hit bubble */
+    .to-hit {
+      font-family: 'Cinzel', serif;
+      font-weight: 700;
+      font-size: 1.15rem;
+      color: var(--hit-green);
+      text-shadow: 0 0 10px #86efac55;
+      min-width: 52px;
+      text-align: center;
+      line-height: 1;
+    }
+
+    .to-hit .breakdown {
+      font-family: 'Crimson Pro', serif;
+      font-size: 0.62rem;
+      font-weight: 400;
+      color: var(--text-dim);
+      letter-spacing: 0;
+      display: block;
+      margin-top: 1px;
+      text-shadow: none;
+    }
+
+    .to-hit.spellstrike-hit {
+      color: var(--spell-purple);
+      text-shadow: 0 0 10px #a78bfa55;
+    }
+
+    /* damage bubble */
+    .dmg-block {
+      text-align: right;
+      min-width: 90px;
+    }
+
+    .dmg-dice {
+      font-family: 'Cinzel', serif;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--dmg-amber);
+      line-height: 1.1;
+    }
+
+    .dmg-dice.spell-dmg {
+      color: var(--spell-purple);
+      text-shadow: 0 0 8px var(--spell-glow);
+    }
+
+    .dmg-type {
+      font-family: 'Crimson Pro', serif;
+      font-size: 0.65rem;
+      color: var(--text-dim);
+      margin-top: 1px;
+    }
+
+    .crit-tag {
+      font-family: 'Cinzel', serif;
+      font-size: 0.55rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--crit-red);
+      background: #2a0f0f;
+      border: 1px solid #7f1d1d;
+      border-radius: 2px;
+      padding: 0.1em 0.4em;
+      margin-left: 4px;
+      vertical-align: middle;
+    }
+
+    /* spell attached banner */
+    .spell-banner {
+      background: #0d0d20;
+      border: 1px solid #2e2060;
+      border-radius: 4px;
+      padding: 0.45rem 0.75rem;
+      margin: 0.5rem 1.4rem 0.6rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .spell-banner::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 20% 50%, #7c3aed18 0%, transparent 65%);
+      pointer-events: none;
+    }
+
+    .spell-icon {
+      font-size: 1.2rem;
+      line-height: 1;
+      flex-shrink: 0;
+    }
+
+    .spell-name {
+      font-family: 'Cinzel', serif;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--spell-purple);
+      text-shadow: 0 0 10px var(--spell-glow);
+      letter-spacing: 0.04em;
+    }
+
+    .spell-detail {
+      font-family: 'Crimson Pro', serif;
+      font-size: 0.75rem;
+      color: #c4b5fd;
+      margin-top: 2px;
+    }
+
+    .spell-meta {
+      font-family: 'Cinzel', serif;
+      font-size: 0.58rem;
+      color: #6d5fa8;
+      letter-spacing: 0.1em;
+    }
+
+    /* ── MODIFIERS FOOTER ──────────────────────────── */
+    .modifiers-footer {
+      padding: 0.6rem 1.4rem 0.9rem;
+      border-top: 1px solid var(--border-dim);
+      background: #0a0f1a;
+    }
+
+    .mod-chip {
+      font-family: 'Cinzel', serif;
+      font-size: 0.58rem;
+      letter-spacing: 0.08em;
+      color: var(--text-dim);
+      background: #111827;
+      border: 1px solid var(--border-dim);
+      border-radius: 2px;
+      padding: 0.2em 0.55em;
+      margin: 2px 3px 2px 0;
+      display: inline-block;
+    }
+
+    .mod-chip .val {
+      color: var(--text-primary);
+    }
+
+    .mod-chip.active {
+      border-color: var(--gold-dim);
+      color: var(--gold-dim);
+    }
+
+    .mod-chip.active .val {
+      color: var(--gold);
+    }
+
+    .divider-rune {
+      text-align: center;
+      font-size: 0.7rem;
+      color: var(--border-dim);
+      letter-spacing: 0.5em;
+      padding: 0.25rem 0;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════
+     ATTACK CARD
+══════════════════════════════════════════ -->
+<div class="attack-card">
+
+  <!-- HEADER -->
+  <div class="card-header-custom">
+    <div class="d-flex align-items-start justify-content-between gap-2">
+      <div>
+        <div class="char-name">Vaelthas Mirewyn</div>
+        <div class="char-meta">Magus 10 · Eldritch Archer</div>
+      </div>
+      <span class="action-badge mt-1">Full Attack</span>
+    </div>
+  </div>
+
+  <!-- ARCANE POOL -->
+  <div class="arcane-pool-row d-flex align-items-center justify-content-between">
+    <span class="pool-label">Arcane Pool</span>
+    <div>
+      <span class="pool-pip filled"></span>
+      <span class="pool-pip filled"></span>
+      <span class="pool-pip filled"></span>
+      <span class="pool-pip spent"></span>
+      <span class="pool-pip spent"></span>
+      <span class="pool-pip spent"></span>
+      <span class="pool-pip spent"></span>
+    </div>
+  </div>
+
+  <!-- WEAPON -->
+  <div class="weapon-row">
+    <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+      <div class="weapon-name">
+        <span class="enchant">+1</span> Composite Longbow
+        <span class="crit-tag">×3 / 20</span>
+      </div>
+      <div class="d-flex flex-wrap gap-1">
+        <span class="stat-pill">RNG <span>110 ft</span></span>
+        <span class="stat-pill">STR <span>+2</span></span>
+        <span class="stat-pill">DEX <span>+5</span></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ATTACKS -->
+  <div class="attacks-section">
+    <div class="section-label">Iterative Attacks</div>
+
+    <!-- Attack 1 — Primary, with Spellstrike -->
+    <div class="attack-row spellstrike d-flex align-items-center gap-3">
+      <div class="atk-index">1st</div>
+      <div class="atk-label flex-grow-1">
+        <strong>Spellstrike Arrow</strong>
+        <br>Ranged touch · spell delivered on hit
+      </div>
+      <div class="to-hit spellstrike-hit">
+        +15
+        <span class="breakdown">(7+5+1+1+1)</span>
+      </div>
+      <div class="dmg-block">
+        <div class="dmg-dice">1d8+4</div>
+        <div class="dmg-type">piercing</div>
+      </div>
+    </div>
+
+    <!-- Spell banner -->
+    <div class="spell-banner d-flex align-items-start gap-2">
+      <div class="spell-icon">⚡</div>
+      <div class="flex-grow-1">
+        <div class="d-flex align-items-baseline justify-content-between">
+          <span class="spell-name">Shocking Grasp</span>
+          <span class="spell-meta">CL 10 · Touch</span>
+        </div>
+        <div class="spell-detail">
+          <strong>+3</strong> to hit vs metal armour &nbsp;·&nbsp;
+          <span style="color:var(--spell-purple)">5d6</span> electricity damage
+        </div>
+      </div>
+    </div>
+
+    <div class="divider-rune">· · · · ·</div>
+
+    <!-- Attack 2 — Standard arrow -->
+    <div class="attack-row d-flex align-items-center gap-3">
+      <div class="atk-index">2nd</div>
+      <div class="atk-label flex-grow-1">
+        <strong>Arrow</strong>
+        <br>Normal ranged attack
+      </div>
+      <div class="to-hit">
+        +15
+        <span class="breakdown">(7+5+1+1+1)</span>
+      </div>
+      <div class="dmg-block">
+        <div class="dmg-dice">1d8+4</div>
+        <div class="dmg-type">piercing</div>
+      </div>
+    </div>
+
+    <!-- Attack 3 — Iterative -->
+    <div class="attack-row d-flex align-items-center gap-3">
+      <div class="atk-index">3rd</div>
+      <div class="atk-label flex-grow-1">
+        <strong>Arrow</strong>
+        <br>Iterative (−5 penalty)
+      </div>
+      <div class="to-hit">
+        +10
+        <span class="breakdown">(2+5+1+1+1)</span>
+      </div>
+      <div class="dmg-block">
+        <div class="dmg-dice">1d8+4</div>
+        <div class="dmg-type">piercing</div>
+      </div>
+    </div>
+
+  </div><!-- /attacks-section -->
+
+  <!-- MODIFIERS FOOTER -->
+  <div class="modifiers-footer">
+    <div class="section-label" style="padding:0 0 0.4rem;">Active Modifiers</div>
+    <div>
+      <span class="mod-chip active">Arcane Pool <span class="val">+1 hit/dmg</span></span>
+      <span class="mod-chip active">Weapon Focus <span class="val">+1 hit</span></span>
+      <span class="mod-chip">Point-Blank <span class="val">+1/+1 ≤30 ft</span></span>
+      <span class="mod-chip">Precise Shot <span class="val">no −4 penalty</span></span>
+      <span class="mod-chip">Spell Combat <span class="val">−2 attacks</span></span>
+    </div>
+  </div>
+
+</div>
+<!-- end .attack-card -->
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

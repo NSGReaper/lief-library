@@ -1,0 +1,52 @@
+This great cat's muscles flex visibly under its skin as it bares its fangs and shakes its thick mane of hair.
+--------------------
+Lion      CR 4
+XP 1,200
+Male celestial lion (Pathfinder RPG Bestiary, 193)
+N Large animal
+Init +7; Senses darkvision 60 ft., low-light vision, scent; Perception +9
+--------------------
+Defense
+--------------------
+AC 15, touch 12, flat-footed 12 (+3 Dex, +3 natural, -1 size)
+hp 42 (5d8+20)
+Fort +8, Ref +7, Will +2; +2 morale bonus vs. charm and fear
+DR 5/evil; Resist acid 10, cold 10, electricity 10; SR 9
+--------------------
+Offense
+--------------------
+Speed 40 ft.
+Melee bite +11 (1d8+9 plus grab), 2 claws +11 (1d4+9)
+Space 10 ft.; Reach 5 ft. (10 ft. with bite)
+Special Attacks pounce, rake (2 claws +11, 1d4+9), smite evil
+--------------------
+Statistics
+--------------------
+Str 25, Dex 17, Con 19, Int 2, Wis 12, Cha 6
+Base Atk +3; CMB +13 (+17 grapple); CMD 24 (28 vs. trip)
+Feats Improved Initiative, Run, Skill Focus (Perception)
+Skills Acrobatics +11 (+15 to jump with a running start, +15 to jump), Perception +9, Stealth +8 (+12 in undergrowth); Racial Modifiers +4 Acrobatics, +4 Stealth, +4 Stealth in undergrowth
+--------------------
+Ecology
+--------------------
+Environment warm plains
+Organization solitary, pair, or pride (3-10)
+Treasure none
+--------------------
+Special Abilities
+--------------------
+Damage Reduction (5/evil) You have Damage Reduction against all except Evil attacks.
+Darkvision (60 feet) You can see in the dark (black and white only).
+Energy Resistance, Acid (10) You have the specified Energy Resistance against Acid attacks.
+Energy Resistance, Cold (10) You have the specified Energy Resistance against Cold attacks.
+Energy Resistance, Electricity (10) You have the specified Energy Resistance against Electricity attacks.
+Grab: Bite (Large) (Ex) You can start a grapple as a free action if you hit with the designated weapon.
+Low-Light Vision See twice as far as a human in dim light, distinguishing color and detail.
+Pounce (Ex) You can make a full attack as part of a charge.
+Run Run 5x your speed in light/medium armor or 4x speed in heavy armor and keep Dex when running.
+Scent (Ex) Detect opponents within 15+ ft. by sense of smell.
+Smite Evil (1/day) (Su) +0 to hit, +5 to damage when used.
+Spell Resistance (9) You have Spell Resistance.
+
+Hero Lab and the Hero Lab logo are Registered Trademarks of LWD Technology, Inc. Free download at https://www.wolflair.com
+Pathfinder® and associated marks and logos are trademarks of Paizo Inc.®, and are used under license.

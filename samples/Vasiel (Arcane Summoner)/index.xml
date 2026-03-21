@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document signature="Portfolio Index">
+  <game name="Pathfinder Roleplaying Game" folder="pathfinder" publisher="Paizo Inc." url="http://www.paizo.com/">
+    <gameinfo>These data files are published under license from Paizo Inc. © Paizo Inc. All rights reserved. Paizo Inc. and Pathfinder are registered trademarks of Paizo Inc. Pathfinder Roleplaying Game, Pathfinder Society, Pathfinder Chronicles, Pathfinder Modules, and Pathfinder Companion are trademarks of Paizo Inc. The Pathfinder Roleplaying Game is © 2010-2020 Paizo Inc.</gameinfo>
+    <version version="14.19" primary="14" secondary="19" tertiary="" build=""></version>
+    </game>
+  <program name="Hero Lab" url="https://www.wolflair.com">
+    <programinfo>Hero Lab and the Hero Lab logo are Registered Trademarks of LWD Technology, Inc. Free download at https://www.wolflair.com<![CDATA[
+]]>Pathfinder® and associated marks and logos are trademarks of Paizo Inc.®, and are used under license.</programinfo>
+    <version version="8.9h" primary="8" secondary="9" tertiary="h" build="958"></version>
+    </program>
+  <handlers>
+    <handler name="Hero Lab" folder="herolab"></handler>
+    </handlers>
+  <characters>
+    <character name="Vasiel Yal" summary="Elf Wiz 8 - NG Medium humanoid" isally="yes" allegianceid="algAlly" allegiancename="Ally of Party" playername="" herolableadindex="1" characterindex="1">
+      <statblocks>
+        <statblock format="text" folder="statblocks_text" filename="1_Vasiel_Yal.txt"/>
+        <statblock format="html" folder="statblocks_html" filename="1_Vasiel_Yal.htm"/>
+        <statblock format="xml" folder="statblocks_xml" filename="1_Vasiel_Yal.xml"/>
+        </statblocks>
+      <images>
+        <image filename="1_1_Vasiel_Yal.jpg" folder="images"/>
+        </images>
+      <minions>
+        <character name="Pansy" summary="Arctic hare - N Tiny magical beast" isally="yes" allegianceid="algAlly" allegiancename="Ally of Party" playername="" herolableadindex="0" characterindex="2">
+          <statblocks>
+            <statblock format="text" folder="statblocks_text" filename="1.1_Pansy.txt"/>
+            <statblock format="html" folder="statblocks_html" filename="1.1_Pansy.htm"/>
+            </statblocks>
+          <images></images>
+          </character>
+        </minions>
+      </character>
+    <character name="Elemental (Small), Earth" summary="Small earth elemental - N Small outsider" isally="yes" allegianceid="algAlly" allegiancename="Ally of Party" playername="" herolableadindex="2" characterindex="1">
+      <statblocks>
+        <statblock format="text" folder="statblocks_text" filename="2_Elemental_Small_Earth.txt"/>
+        <statblock format="html" folder="statblocks_html" filename="2_Elemental_Small_Earth.htm"/>
+        <statblock format="xml" folder="statblocks_xml" filename="2_Elemental_Small_Earth.xml"/>
+        </statblocks>
+      <images>
+        <image filename="2_1_Elemental_Small_Earth.jpg" folder="images"/>
+        </images>
+      </character>
+    <character name="Leopard (cat)" summary="Celestial leopard - N Medium animal" isally="yes" allegianceid="algAlly" allegiancename="Ally of Party" playername="" herolableadindex="3" characterindex="1">
+      <statblocks>
+        <statblock format="text" folder="statblocks_text" filename="3_Leopard_cat.txt"/>
+        <statblock format="html" folder="statblocks_html" filename="3_Leopard_cat.htm"/>
+        <statblock format="xml" folder="statblocks_xml" filename="3_Leopard_cat.xml"/>
+        </statblocks>
+      <images>
+        <image filename="3_1_Leopard_cat.jpg" folder="images"/>
+        </images>
+      </character>
+    <character name="Dire bat" summary="Celestial dire bat - N Large animal" isally="yes" allegianceid="algAlly" allegiancename="Ally of Party" playername="" herolableadindex="5" characterindex="1">
+      <statblocks>
+        <statblock format="text" folder="statblocks_text" filename="4_Dire_bat.txt"/>
+        <statblock format="html" folder="statblocks_html" filename="4_Dire_bat.htm"/>
+        <statblock format="xml" folder="statblocks_xml" filename="4_Dire_bat.xml"/>
+        </statblocks>
+      <images>
+        <image filename="5_1_Dire_bat.jpg" folder="images"/>
+        </images>
+      </character>
+    <character name="Pseudodragon" summary="NG Tiny dragon" isally="yes" allegianceid="algAlly" allegiancename="Ally of Party" playername="" herolableadindex="6" characterindex="1">
+      <creatureids>
+        <creatureid creatureid="pseudodragon"/>
+        </creatureids>
+      <statblocks>
+        <statblock format="text" folder="statblocks_text" filename="5_Pseudodragon.txt"/>
+        <statblock format="html" folder="statblocks_html" filename="5_Pseudodragon.htm"/>
+        <statblock format="xml" folder="statblocks_xml" filename="5_Pseudodragon.xml"/>
+        </statblocks>
+      <images>
+        <image filename="6_1_Pseudodragon.jpg" folder="images"/>
+        </images>
+      </character>
+    <character name="Crocodile" summary="Celestial crocodile - N Large animal" isally="yes" allegianceid="algAlly" allegiancename="Ally of Party" playername="" herolableadindex="7" characterindex="1">
+      <statblocks>
+        <statblock format="text" folder="statblocks_text" filename="6_Crocodile.txt"/>
+        <statblock format="html" folder="statblocks_html" filename="6_Crocodile.htm"/>
+        <statblock format="xml" folder="statblocks_xml" filename="6_Crocodile.xml"/>
+        </statblocks>
+      <images>
+        <image filename="7_1_Crocodile.jpg" folder="images"/>
+        </images>
+      </character>
+    <character name="Lion" summary="Celestial lion - N Large animal" isally="yes" allegianceid="algAlly" allegiancename="Ally of Party" playername="" herolableadindex="8" characterindex="1">
+      <statblocks>
+        <statblock format="text" folder="statblocks_text" filename="7_Lion.txt"/>
+        <statblock format="html" folder="statblocks_html" filename="7_Lion.htm"/>
+        <statblock format="xml" folder="statblocks_xml" filename="7_Lion.xml"/>
+        </statblocks>
+      <images>
+        <image filename="8_1_Lion.jpg" folder="images"/>
+        </images>
+      </character>
+    <character name="Ape" summary="Celestial gorilla - N Large animal" isally="yes" allegianceid="algAlly" allegiancename="Ally of Party" playername="" herolableadindex="9" characterindex="1">
+      <statblocks>
+        <statblock format="text" folder="statblocks_text" filename="8_Ape.txt"/>
+        <statblock format="html" folder="statblocks_html" filename="8_Ape.htm"/>
+        <statblock format="xml" folder="statblocks_xml" filename="8_Ape.xml"/>
+        </statblocks>
+      <images>
+        <image filename="9_1_Ape.jpg" folder="images"/>
+        </images>
+      </character>
+    <character name="Archon, Hound" summary="Hound archon - LG Medium outsider" isally="yes" allegianceid="algAlly" allegiancename="Ally of Party" playername="" herolableadindex="10" characterindex="1">
+      <statblocks>
+        <statblock format="text" folder="statblocks_text" filename="9_Archon_Hound.txt"/>
+        <statblock format="html" folder="statblocks_html" filename="9_Archon_Hound.htm"/>
+        <statblock format="xml" folder="statblocks_xml" filename="9_Archon_Hound.xml"/>
+        </statblocks>
+      <images>
+        <image filename="10_1_Archon_Hound.jpg" folder="images"/>
+        </images>
+      </character>
+    <character name="Elemental (Small), Water" summary="Small water elemental - N Small outsider" isally="yes" allegianceid="algAlly" allegiancename="Ally of Party" playername="" herolableadindex="11" characterindex="1">
+      <statblocks>
+        <statblock format="text" folder="statblocks_text" filename="10_Elemental_Small_Water.txt"/>
+        <statblock format="html" folder="statblocks_html" filename="10_Elemental_Small_Water.htm"/>
+        <statblock format="xml" folder="statblocks_xml" filename="10_Elemental_Small_Water.xml"/>
+        </statblocks>
+      <images>
+        <image filename="11_1_Elemental_Small_Water.jpg" folder="images"/>
+        </images>
+      </character>
+    </characters>
+  </document>

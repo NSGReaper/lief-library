@@ -1,0 +1,54 @@
+This reptile lunges out of the placid water with shocking speed. Its jaw gapes open in a roar, its powerful tail lashing behind.
+--------------------
+Crocodile      CR 2
+XP 600
+Male celestial crocodile (Pathfinder RPG Bestiary, 51)
+N Large animal
+Init +1; Senses darkvision 60 ft., low-light vision; Perception +8
+--------------------
+Defense
+--------------------
+AC 14, touch 10, flat-footed 13 (+1 Dex, +4 natural, -1 size)
+hp 28 (3d8+15) (currently 18)
+Fort +8, Ref +4, Will +2
+Resist acid 5, cold 5, electricity 5; SR 7
+--------------------
+Offense
+--------------------
+Speed 20 ft., swim 30 ft.; sprint
+Melee bite +7 (1d8+9 plus grab), tail slap +2 (1d12+6)
+Space 10 ft.; Reach 5 ft. (10 ft. with bite)
+Special Attacks death roll (1d8+9 plus trip), smite evil
+--------------------
+Statistics
+--------------------
+Str 23, Dex 12, Con 21, Int 1, Wis 12, Cha 2
+Base Atk +2; CMB +9 (+13 grapple); CMD 20 (24 vs. trip)
+Feats Skill Focus (Perception), Skill Focus (Stealth)
+Skills Acrobatics +1 (-3 to jump), Perception +8, Stealth +5 (+13 in water), Swim +14; Racial Modifiers +8 Stealth in water
+SQ hold breath
+--------------------
+Ecology
+--------------------
+Environment warm rivers and marshes
+Organization solitary, pair, or colony (3-12)
+Treasure none
+--------------------
+Special Abilities
+--------------------
+Darkvision (60 feet) You can see in the dark (black and white only).
+Death Roll (Ex) If you grapple a target, you can roll to inflict bite damage and knock the creature prone.
+Energy Resistance, Acid (5) You have the specified Energy Resistance against Acid attacks.
+Energy Resistance, Cold (5) You have the specified Energy Resistance against Cold attacks.
+Energy Resistance, Electricity (5) You have the specified Energy Resistance against Electricity attacks.
+Grab: Bite (Large) (Ex) You can start a grapple as a free action if you hit with the designated weapon.
+Hold Breath (x4) (Ex) You can stay under water longer than normal.
+Low-Light Vision See twice as far as a human in dim light, distinguishing color and detail.
+Smite Evil (1/day) (Su) +0 to hit, +3 to damage when used.
+Spell Resistance (7) You have Spell Resistance.
+Sprint (×2, 1/minute) (Ex) Double land speed once a minute.
+Swim (30 feet) You have a Swim speed.
+Trip: Death Roll (Ex) You can make a trip attempt on a successful attack.
+
+Hero Lab and the Hero Lab logo are Registered Trademarks of LWD Technology, Inc. Free download at https://www.wolflair.com
+Pathfinder® and associated marks and logos are trademarks of Paizo Inc.®, and are used under license.

@@ -1,0 +1,58 @@
+This canine-headed humanoid's well-groomed appearance and polished greatsword show it to be more than a common beast.
+--------------------
+Archon, Hound      CR 4
+XP 1,200
+Male hound archon (Pathfinder RPG Bestiary 19)
+LG Medium outsider (archon, extraplanar, good, lawful)
+Init +4; Senses darkvision 60 ft., detect evil, low-light vision, scent; Perception +10
+Aura aura of menace (20 ft., DC 16), magic circle against evil (DC 14)
+--------------------
+Defense
+--------------------
+AC 21, touch 12, flat-footed 21 (+2 deflection, +9 natural)
+hp 51 (6d10+18)
+Fort +10, Ref +7, Will +7; +4 vs. poison
+DR 10/evil; Immune electricity, petrification; SR 15
+--------------------
+Offense
+--------------------
+Speed 40 ft.
+Melee mwk greatsword +9/+4 (2d6+12/19-20) or
+   bite +3 (2d6+12), slam +3 (1d4+4)
+Spell-Like Abilities (CL 6th; concentration +7)
+   Constant—detect evil, magic circle against evil
+   At will—aid, continual flame, greater teleport (self plus 50 lbs. of objects only), message
+--------------------
+Statistics
+--------------------
+Str 19, Dex 10, Con 17, Int 10, Wis 13, Cha 12
+Base Atk +6; CMB +8; CMD 22
+Feats Improved Initiative, Iron Will, Power Attack
+Skills Acrobatics +9 (+13 to jump), Intimidate +10, Perception +10, Sense Motive +10, Stealth +13, Survival +14; Racial Modifiers +4 Stealth, +4 Survival
+Languages Celestial, Draconic, Infernal; truespeech
+SQ change shape (any small to large canine, beast shape II)
+Other Gear mwk greatsword
+--------------------
+Ecology
+--------------------
+Environment any (heaven)
+Organization solitary, pair, or squad (3-5)
+Treasure standard (masterwork greatsword, other treasure)
+--------------------
+Special Abilities
+--------------------
+Aura of Menace (20 ft., DC 16) (Su) Hostile creatures must save or take a -2 to attacks, AC, and saves for 24 hours.
+Change Shape (any Small to Large canine, beast shape II) (Dire Wolf) (Su) You can change your form.
+Damage Reduction (10/evil) You have Damage Reduction against all except Evil attacks.
+Darkvision (60 feet) You can see in the dark (black and white only).
+Immunity to Electricity You are immune to electricity damage.
+Immunity to Petrification You are immune to Petrification.
+Low-Light Vision See twice as far as a human in dim light, distinguishing color and detail.
+Poison Resistance +4 (Ex) You have the listed resistance to poison.
+Power Attack -2/+4 You can subtract from your attack roll to add to your damage.
+Scent (Ex) Detect opponents within 15+ ft. by sense of smell.
+Spell Resistance (15) You have Spell Resistance.
+Truespeech (Su) Speak with any creature that has a language.
+
+Hero Lab and the Hero Lab logo are Registered Trademarks of LWD Technology, Inc. Free download at https://www.wolflair.com
+Pathfinder® and associated marks and logos are trademarks of Paizo Inc.®, and are used under license.

@@ -1,0 +1,54 @@
+This translucent creature's shape shifts between a spinning column of water and a crashing wave.
+--------------------
+Elemental (Small), Water      CR 1
+XP 400
+Male small water elemental (Pathfinder RPG Bestiary 126)
+N Small outsider (elemental, extraplanar, water)
+Init +0; Senses darkvision 60 ft.; Perception +4
+--------------------
+Defense
+--------------------
+AC 17, touch 11, flat-footed 17 (+6 natural, +1 size)
+hp 17 (2d10+6)
+Fort +6, Ref +3, Will +0
+Immune elemental traits
+--------------------
+Offense
+--------------------
+Speed 20 ft., swim 90 ft.
+Melee slam +7 (1d6+6)
+Special Attacks drench, vortex (DC 15), water mastery
+--------------------
+Statistics
+--------------------
+Str 18, Dex 10, Con 17, Int 4, Wis 11, Cha 11
+Base Atk +2; CMB +5; CMD 15
+Feats Power Attack
+Skills Acrobatics +4 (+0 to jump), Escape Artist +4, Knowledge (planes) +1, Perception +4, Stealth +8, Swim +16
+--------------------
+Ecology
+--------------------
+Environment any (plane of water)
+Organization solitary, pair, or gang (3-8)
+Treasure none
+--------------------
+Special Abilities
+--------------------
+Darkvision (60 feet) You can see in the dark (black and white only).
+Drench (Ex) The elemental's touch puts out nonmagical flames of Large size or smaller. The creature can dispel magical fire it touches as dispel magic (caster level equals elemental's HD).
+Elemental Traits Elementals have many immunities.
+Immunity to Bleed You are immune to bleed.
+Immunity to Critical Hits You are immune to Critical Hits
+Immunity to Flanking You are immune to flanking.
+Immunity to Paralysis You are immune to paralysis.
+Immunity to Poison You are immune to poison.
+Immunity to Precision Damage You are immune to Precision Damage
+Immunity to Sleep You are immune to sleep effects.
+Immunity to Stunning You are immune to being stunned.
+Power Attack -1/+2 You can subtract from your attack roll to add to your damage.
+Swim (90 feet) You have a Swim speed.
+Vortex (10-20 ft. deep, 10 ft. wide, 1d6+4 damage, DC 15) (Su) Become a vortex which damages foe in same square and may trap them within (Ref part).
+Water Mastery (Ex) +1 to hit, dam, bull rush, and overrun if both self and foe are in water, -4 otherwise.
+
+Hero Lab and the Hero Lab logo are Registered Trademarks of LWD Technology, Inc. Free download at https://www.wolflair.com
+Pathfinder® and associated marks and logos are trademarks of Paizo Inc.®, and are used under license.

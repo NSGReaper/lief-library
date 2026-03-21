@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Eldritch Archer — Full Attack</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cinzel:wght@400;600;700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,400&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg-deep:       #090c14;
+      --bg-card:       #0d1220;
+      --bg-section:    #111827;
+      --border-dim:    #1e2d4a;
+      --gold:          #d4a93a;
+      --gold-light:    #f0cc6a;
+      --gold-dim:      #7a5c1a;
+      --arc-blue:      #4fc3f7;
+      --arc-glow:      #0ea5e9;
+      --spell-purple:  #a78bfa;
+      --spell-glow:    #7c3aed;
+      --text-primary:  #e8dfc8;
+      --text-dim:      #8a8070;
+      --crit-red:      #f87171;
+      --hit-green:     #86efac;
+      --dmg-amber:     #fbbf24;
+      --swift-teal:    #2dd4bf;
+      --swift-glow:    #0d9488;
+      --cond-orange:   #fb923c;
+    }
+
+    body {
+      background: var(--bg-deep);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1rem;
+      font-family: 'Crimson Pro', Georgia, serif;
+    }
+
+    /* ── CARD SHELL ── */
+    .attack-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-dim);
+      border-radius: 6px;
+      max-width: 580px;
+      width: 100%;
+      box-shadow: 0 0 0 1px #c8922a22, 0 0 30px #c8922a18, 0 8px 32px #00000088;
+      overflow: hidden;
+    }
+    .attack-card::before {
+      content: '';
+      display: block;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, var(--gold), var(--gold-light), var(--gold), transparent);
+    }
+
+    /* ── HEADER ── */
+    .card-header-custom {
+      padding: 1.1rem 1.4rem 0.9rem;
+      border-bottom: 1px solid var(--border-dim);
+    }
+    .char-name {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--gold-light);
+      letter-spacing: 0.06em;
+      text-shadow: 0 0 18px #d4a93a55;
+    }
+    .char-meta {
+      font-family: 'Cinzel', serif;
+      font-size: 0.7rem;
+      color: var(--text-dim);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-top: 0.15rem;
+    }
+    .action-badge {
+      font-family: 'Cinzel', serif;
+      font-size: 0.6rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--bg-deep);
+      background: linear-gradient(135deg, var(--gold), var(--gold-dim));
+      border-radius: 2px;
+      padding: 0.25em 0.65em;
+    }
+
+    /* ── ARCANE POOL ── */
+    .arcane-pool-row {
+      padding: 0.65rem 1.4rem;
+      border-bottom: 1px solid var(--border-dim);
+      background: #0b1019;
+    }
+    .pool-label {
+      font-family: 'Cinzel', serif;
+      font-size: 0.62rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+    }
+    .pool-pip {
+      width: 13px; height: 13px;
+      border-radius: 50%;
+      border: 1px solid var(--arc-blue);
+      display: inline-block;
+      margin: 0 2px;
+    }
+    .pool-pip.filled { background: var(--arc-blue); box-shadow: 0 0 6px var(--arc-glow), 0 0 12px var(--arc-glow); }
+    .pool-pip.spent  { background: #1a2030; border-color: #2a3550; }
+
+    /* ── WEAPON ── */
+    .weapon-row {
+      padding: 0.75rem 1.4rem;
+      border-bottom: 1px solid var(--border-dim);
+      background: #0e1520;
+    }
+    .weapon-name {
+      font-family: 'Cinzel', serif;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+    .weapon-name .enchant { color: var(--arc-blue); text-shadow: 0 0 8px var(--arc-glow); }
+    .crit-tag {
+      font-family: 'Cinzel', serif;
+      font-size: 0.55rem;
+      color: var(--crit-red);
+      background: #2a0f0f;
+      border: 1px solid #7f1d1d;
+      border-radius: 2px;
+      padding: 0.1em 0.4em;
+      margin-left: 4px;
+      vertical-align: middle;
+    }
+    .stat-pill {
+      font-family: 'Cinzel', serif;
+      font-size: 0.62rem;
+      color: var(--text-dim);
+      background: #0a111d;
+      border: 1px solid var(--border-dim);
+      border-radius: 3px;
+      padding: 0.18em 0.5em;
+    }
+    .stat-pill span { color: var(--text-primary); }
+
+    /* ══════════════════════════════════════════════
+       TOGGLE SECTIONS
+    ══════════════════════════════════════════════ */
+    .toggle-section { border-bottom: 1px solid var(--border-dim); }
+
+    .toggle-section-header {
+      padding: 0.45rem 1.4rem;
+      background: #0a0f1a;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .section-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .dot-per-attack  { background: var(--gold);        box-shadow: 0 0 5px var(--gold); }
+    .dot-swift       { background: var(--swift-teal);  box-shadow: 0 0 5px var(--swift-glow); }
+    .dot-conditional { background: var(--cond-orange); box-shadow: 0 0 5px #ea580c; }
+
+    .section-eyebrow {
+      font-family: 'Cinzel', serif;
+      font-size: 0.58rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+    .section-eyebrow.per-attack  { color: var(--gold-dim); }
+    .section-eyebrow.swift       { color: var(--swift-teal); opacity: 0.7; }
+    .section-eyebrow.conditional { color: var(--cond-orange); opacity: 0.7; }
+
+    .toggle-grid {
+      padding: 0.5rem 1.4rem 0.65rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      background: #0b1019;
+    }
+
+    /* ── TOGGLE CHIP ── */
+    .toggle-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-family: 'Cinzel', serif;
+      font-size: 0.63rem;
+      letter-spacing: 0.06em;
+      border-radius: 3px;
+      padding: 0.3em 0.6em;
+      cursor: pointer;
+      user-select: none;
+      border: 1px solid;
+      transition: all 0.15s;
+      position: relative;
+    }
+    .toggle-chip input[type="checkbox"] {
+      position: absolute; opacity: 0; width: 0; height: 0;
+    }
+    .chip-box {
+      width: 9px; height: 9px;
+      border-radius: 1px;
+      border: 1px solid currentColor;
+      flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.5rem;
+      transition: all 0.15s;
+    }
+    .chip-label { line-height: 1; }
+    .chip-effect {
+      font-family: 'Crimson Pro', serif;
+      font-style: italic;
+      font-size: 0.68rem;
+      letter-spacing: 0;
+      transition: opacity 0.15s;
+    }
+
+    /* OFF */
+    .toggle-chip.chip-off {
+      background: #080d18;
+      color: #3a4560;
+      border-color: #141f32;
+    }
+    .toggle-chip.chip-off .chip-box  { opacity: 0.3; }
+    .toggle-chip.chip-off .chip-effect { opacity: 0.25; }
+
+    /* ON — gold */
+    .toggle-chip.chip-on-gold {
+      background: #1a1408;
+      color: var(--gold-light);
+      border-color: var(--gold-dim);
+      box-shadow: 0 0 8px #d4a93a1a;
+    }
+    .toggle-chip.chip-on-gold .chip-box { background: var(--gold); border-color: var(--gold); }
+
+    /* ON — teal */
+    .toggle-chip.chip-on-teal {
+      background: #071514;
+      color: var(--swift-teal);
+      border-color: var(--swift-glow);
+      box-shadow: 0 0 8px #2dd4bf1a;
+    }
+    .toggle-chip.chip-on-teal .chip-box { background: var(--swift-teal); border-color: var(--swift-teal); }
+
+    /* ON — orange */
+    .toggle-chip.chip-on-orange {
+      background: #160c04;
+      color: var(--cond-orange);
+      border-color: #9a3412;
+      box-shadow: 0 0 8px #fb923c1a;
+    }
+    .toggle-chip.chip-on-orange .chip-box { background: var(--cond-orange); border-color: var(--cond-orange); }
+
+    /* ── ATTACKS ── */
+    .attacks-section { padding: 0.4rem 0 0; }
+
+    .section-label {
+      font-family: 'Cinzel', serif;
+      font-size: 0.58rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      padding: 0.4rem 1.4rem 0.2rem;
+    }
+
+    .attack-row {
+      padding: 0.55rem 1.4rem;
+      border-bottom: 1px solid #0e1520;
+      transition: background 0.15s;
+    }
+    .attack-row:hover { background: #111827; }
+
+    .attack-row.spellstrike {
+      background: #0e0f1f;
+      border-left: 3px solid var(--spell-purple);
+    }
+    .attack-row.spellstrike:hover { background: #12132a; }
+
+    .atk-index {
+      font-family: 'Cinzel', serif;
+      font-size: 0.6rem;
+      font-weight: 700;
+      color: var(--text-dim);
+      width: 24px;
+      flex-shrink: 0;
+    }
+    .atk-label {
+      font-family: 'Crimson Pro', serif;
+      font-style: italic;
+      font-size: 0.78rem;
+      color: var(--text-dim);
+      flex: 1;
+    }
+    .atk-label strong { font-style: normal; font-weight: 600; color: var(--text-primary); }
+
+    .to-hit {
+      font-family: 'Cinzel', serif;
+      font-weight: 700;
+      font-size: 1.15rem;
+      color: var(--hit-green);
+      text-shadow: 0 0 10px #86efac55;
+      min-width: 52px;
+      text-align: center;
+      line-height: 1;
+    }
+    .to-hit .breakdown {
+      font-family: 'Crimson Pro', serif;
+      font-size: 0.62rem;
+      font-weight: 400;
+      color: var(--text-dim);
+      display: block;
+      margin-top: 2px;
+      text-shadow: none;
+    }
+    .to-hit.spell-color { color: var(--spell-purple); text-shadow: 0 0 10px #a78bfa55; }
+
+    .dmg-block { text-align: right; min-width: 90px; }
+    .dmg-dice {
+      font-family: 'Cinzel', serif;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--dmg-amber);
+      line-height: 1.1;
+    }
+    .dmg-type {
+      font-family: 'Crimson Pro', serif;
+      font-size: 0.65rem;
+      color: var(--text-dim);
+      margin-top: 1px;
+    }
+
+    /* Spell banner */
+    .spell-banner {
+      background: #0d0d20;
+      border: 1px solid #2e2060;
+      border-radius: 4px;
+      padding: 0.45rem 0.75rem;
+      margin: 0.4rem 1.4rem 0.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .spell-banner::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 20% 50%, #7c3aed18 0%, transparent 65%);
+      pointer-events: none;
+    }
+    .spell-icon { font-size: 1.2rem; line-height: 1; flex-shrink: 0; }
+    .spell-name {
+      font-family: 'Cinzel', serif;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--spell-purple);
+      text-shadow: 0 0 10px var(--spell-glow);
+    }
+    .spell-detail { font-family: 'Crimson Pro', serif; font-size: 0.75rem; color: #c4b5fd; margin-top: 2px; }
+    .spell-meta   { font-family: 'Cinzel', serif; font-size: 0.58rem; color: #6d5fa8; letter-spacing: 0.1em; }
+
+    .divider-rune {
+      text-align: center;
+      font-size: 0.7rem;
+      color: #1a2540;
+      letter-spacing: 0.5em;
+      padding: 0.2rem 0;
+    }
+  </style>
+</head>
+<body>
+
+<div class="attack-card">
+
+  <!-- HEADER -->
+  <div class="card-header-custom">
+    <div class="d-flex align-items-start justify-content-between gap-2">
+      <div>
+        <div class="char-name">Vaelthas Mirewyn</div>
+        <div class="char-meta">Magus 10 · Eldritch Archer</div>
+      </div>
+      <span class="action-badge mt-1">Full Attack</span>
+    </div>
+  </div>
+
+  <!-- ARCANE POOL -->
+  <div class="arcane-pool-row d-flex align-items-center justify-content-between">
+    <span class="pool-label">Arcane Pool</span>
+    <div>
+      <span class="pool-pip filled"></span>
+      <span class="pool-pip filled"></span>
+      <span class="pool-pip filled"></span>
+      <span class="pool-pip spent"></span>
+      <span class="pool-pip spent"></span>
+      <span class="pool-pip spent"></span>
+      <span class="pool-pip spent"></span>
+    </div>
+  </div>
+
+  <!-- WEAPON -->
+  <div class="weapon-row">
+    <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+      <div class="weapon-name">
+        <span class="enchant">+1</span> Composite Longbow
+        <span class="crit-tag">×3 / 20</span>
+      </div>
+      <div class="d-flex flex-wrap gap-1">
+        <span class="stat-pill">RNG <span>110 ft</span></span>
+        <span class="stat-pill">STR <span>+2</span></span>
+        <span class="stat-pill">DEX <span>+5</span></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ PER-ATTACK DECISIONS ══ -->
+  <div class="toggle-section">
+    <div class="toggle-section-header">
+      <span class="section-dot dot-per-attack"></span>
+      <span class="section-eyebrow per-attack">Per-Attack Decisions</span>
+    </div>
+    <div class="toggle-grid">
+      <label class="toggle-chip chip-on-gold" data-color="gold">
+        <input type="checkbox" checked onchange="toggleChip(this)">
+        <span class="chip-box">✓</span>
+        <span class="chip-label">Spellstrike</span>
+        <span class="chip-effect">— deliver spell on hit</span>
+      </label>
+      <label class="toggle-chip chip-on-gold" data-color="gold">
+        <input type="checkbox" checked onchange="toggleChip(this)">
+        <span class="chip-box">✓</span>
+        <span class="chip-label">Spell Combat</span>
+        <span class="chip-effect">— cast + attack / −2 all</span>
+      </label>
+      <label class="toggle-chip chip-on-gold" data-color="gold">
+        <input type="checkbox" checked onchange="toggleChip(this)">
+        <span class="chip-box">✓</span>
+        <span class="chip-label">Rapid Shot</span>
+        <span class="chip-effect">— extra arrow / −2 all</span>
+      </label>
+      <label class="toggle-chip chip-off" data-color="gold">
+        <input type="checkbox" onchange="toggleChip(this)">
+        <span class="chip-box"></span>
+        <span class="chip-label">Deadly Aim</span>
+        <span class="chip-effect">— −3 hit / +6 dmg</span>
+      </label>
+      <label class="toggle-chip chip-off" data-color="gold">
+        <input type="checkbox" onchange="toggleChip(this)">
+        <span class="chip-box"></span>
+        <span class="chip-label">Manyshot</span>
+        <span class="chip-effect">— 2 arrows on 1st attack</span>
+      </label>
+    </div>
+  </div>
+
+  <!-- ══ SWIFT BUFFS ══ -->
+  <div class="toggle-section">
+    <div class="toggle-section-header">
+      <span class="section-dot dot-swift"></span>
+      <span class="section-eyebrow swift">Swift-Action Buffs · 1 Round</span>
+    </div>
+    <div class="toggle-grid">
+      <label class="toggle-chip chip-on-teal" data-color="teal">
+        <input type="checkbox" checked onchange="toggleChip(this)">
+        <span class="chip-box">✓</span>
+        <span class="chip-label">Arcane Accuracy</span>
+        <span class="chip-effect">— +3 insight to hit (1 pool)</span>
+      </label>
+      <label class="toggle-chip chip-off" data-color="teal">
+        <input type="checkbox" onchange="toggleChip(this)">
+        <span class="chip-box"></span>
+        <span class="chip-label">Arcane Pool: Enhance</span>
+        <span class="chip-effect">— +1 enhancement (1 pool)</span>
+      </label>
+      <label class="toggle-chip chip-off" data-color="teal">
+        <input type="checkbox" onchange="toggleChip(this)">
+        <span class="chip-box"></span>
+        <span class="chip-label">Haste</span>
+        <span class="chip-effect">— +1 hit / extra attack</span>
+      </label>
+    </div>
+  </div>
+
+  <!-- ══ CONDITIONAL BUFFS ══ -->
+  <div class="toggle-section">
+    <div class="toggle-section-header">
+      <span class="section-dot dot-conditional"></span>
+      <span class="section-eyebrow conditional">Conditional Buffs</span>
+    </div>
+    <div class="toggle-grid">
+      <label class="toggle-chip chip-on-orange" data-color="orange">
+        <input type="checkbox" checked onchange="toggleChip(this)">
+        <span class="chip-box">✓</span>
+        <span class="chip-label">Point-Blank Shot</span>
+        <span class="chip-effect">— +1 hit +1 dmg (≤30 ft)</span>
+      </label>
+      <label class="toggle-chip chip-off" data-color="orange">
+        <input type="checkbox" onchange="toggleChip(this)">
+        <span class="chip-box"></span>
+        <span class="chip-label">Favored Enemy</span>
+        <span class="chip-effect">— +2 hit / +2 dmg</span>
+      </label>
+      <label class="toggle-chip chip-off" data-color="orange">
+        <input type="checkbox" onchange="toggleChip(this)">
+        <span class="chip-box"></span>
+        <span class="chip-label">Flanking</span>
+        <span class="chip-effect">— +2 hit</span>
+      </label>
+      <label class="toggle-chip chip-off" data-color="orange">
+        <input type="checkbox" onchange="toggleChip(this)">
+        <span class="chip-box"></span>
+        <span class="chip-label">Target: Metal Armour</span>
+        <span class="chip-effect">— +3 Shocking Grasp hit</span>
+      </label>
+    </div>
+  </div>
+
+  <!-- ── ITERATIVE ATTACKS ── -->
+  <div class="attacks-section">
+    <div class="section-label">Iterative Attacks</div>
+
+    <!-- 1st — Spellstrike -->
+    <div class="attack-row spellstrike d-flex align-items-center gap-3">
+      <div class="atk-index">1st</div>
+      <div class="atk-label flex-grow-1">
+        <strong>Spellstrike Arrow</strong>
+        <br>Ranged touch · spell on hit
+      </div>
+      <div class="to-hit spell-color">
+        +15
+        <span class="breakdown">(7+5+1+1+1)</span>
+      </div>
+      <div class="dmg-block">
+        <div class="dmg-dice">1d8+4</div>
+        <div class="dmg-type">piercing</div>
+      </div>
+    </div>
+
+    <!-- Spell banner -->
+    <div class="spell-banner d-flex align-items-start gap-2">
+      <div class="spell-icon">⚡</div>
+      <div class="flex-grow-1">
+        <div class="d-flex align-items-baseline justify-content-between">
+          <span class="spell-name">Shocking Grasp</span>
+          <span class="spell-meta">CL 10 · Touch</span>
+        </div>
+        <div class="spell-detail">
+          <strong>+3</strong> to hit vs metal armour &nbsp;·&nbsp;
+          <span style="color:var(--spell-purple)">5d6</span> electricity
+        </div>
+      </div>
+    </div>
+
+    <div class="divider-rune">· · · · ·</div>
+
+    <!-- Rapid Shot -->
+    <div class="attack-row d-flex align-items-center gap-3">
+      <div class="atk-index">RS</div>
+      <div class="atk-label flex-grow-1">
+        <strong>Rapid Arrow</strong>
+        <br>Rapid Shot bonus attack
+      </div>
+      <div class="to-hit">
+        +13
+        <span class="breakdown">(7+5+1+1+1−2)</span>
+      </div>
+      <div class="dmg-block">
+        <div class="dmg-dice">1d8+4</div>
+        <div class="dmg-type">piercing</div>
+      </div>
+    </div>
+
+    <div class="divider-rune">· · · · ·</div>
+
+    <!-- 2nd -->
+    <div class="attack-row d-flex align-items-center gap-3">
+      <div class="atk-index">2nd</div>
+      <div class="atk-label flex-grow-1">
+        <strong>Arrow</strong>
+        <br>Normal ranged attack
+      </div>
+      <div class="to-hit">
+        +13
+        <span class="breakdown">(7+5+1+1+1−2)</span>
+      </div>
+      <div class="dmg-block">
+        <div class="dmg-dice">1d8+4</div>
+        <div class="dmg-type">piercing</div>
+      </div>
+    </div>
+
+    <!-- 3rd -->
+    <div class="attack-row d-flex align-items-center gap-3">
+      <div class="atk-index">3rd</div>
+      <div class="atk-label flex-grow-1">
+        <strong>Arrow</strong>
+        <br>Iterative (BAB −5)
+      </div>
+      <div class="to-hit">
+        +8
+        <span class="breakdown">(2+5+1+1+1−2)</span>
+      </div>
+      <div class="dmg-block">
+        <div class="dmg-dice">1d8+4</div>
+        <div class="dmg-type">piercing</div>
+      </div>
+    </div>
+
+  </div><!-- /attacks-section -->
+
+</div><!-- /.attack-card -->
+
+<script>
+  function toggleChip(checkbox) {
+    const chip  = checkbox.closest('.toggle-chip');
+    const box   = chip.querySelector('.chip-box');
+    const color = chip.dataset.color;
+
+    if (checkbox.checked) {
+      chip.classList.remove('chip-off');
+      chip.classList.add('chip-on-' + color);
+      box.textContent = '✓';
+    } else {
+      chip.classList.remove('chip-on-' + color);
+      chip.classList.add('chip-off');
+      box.textContent = '';
+    }
+  }
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

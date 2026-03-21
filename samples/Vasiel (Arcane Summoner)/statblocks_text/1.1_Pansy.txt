@@ -1,0 +1,45 @@
+Pansy      CR –
+Male arctic hare (Ultimate Wilderness 191)
+N Tiny magical beast (animal)
+Init +3; Senses low-light vision; Perception +9
+--------------------
+Defense
+--------------------
+AC 19, touch 15, flat-footed 16 (+3 Dex, +4 natural, +2 size)
+hp 29 (1d8-1)
+Fort +1, Ref +5, Will +7
+Defensive Abilities improved evasion
+--------------------
+Offense
+--------------------
+Speed 50 ft.
+Melee bite +2 (1d3-4)
+Space 2½ ft.; Reach 0 ft.
+Spell-Like Abilities (CL 8th; concentration +5)
+   At will—guidance
+--------------------
+Statistics
+--------------------
+Str 3, Dex 16, Con 9, Int 9, Wis 12, Cha 5
+Base Atk +4; CMB +5; CMD 11 (15 vs. trip)
+Feats Run
+Skills Acrobatics +3 (+7 to jump with a running start, +11 to jump), Appraise +2, Diplomacy -2, Fly +12, Linguistics +7, Perception +9, Spellcraft +7, Stealth +15 (+19 in snow); Racial Modifiers +4 Stealth in snow
+Languages speak with animal (same kind only), speak with master
+SQ domain influence (Restoration), empathic link, restorative touch, share will
+--------------------
+Special Abilities
+--------------------
+Divine Guidance (Sp) An emissary can cast guidance at will.
+Domain Influence (Sp, Su) Gain domain power.
+Domain Influence Domain (Restoration) 
+Empathic Link (Su) You have an empathic link with your master.
+Improved Evasion (Ex) No damage on successful reflex save; half on failed save.
+Low-Light Vision See twice as far as a human in dim light, distinguishing color and detail.
+Restorative Touch (1/day) (Su) Remove the dazed, fatigued, shaken, sickened, or staggered conditions by touch.
+Run Run 5x your speed in light/medium armor or 4x speed in heavy armor and keep Dex when running.
+Share Will (1/day) (Su) When your or familiar fails a save, the other can roll in their place, but failure affects both.
+Speak with Animals of its Kind (Ex) You can communicate verbally with animals similar to yourself.
+Speak with Master (Ex) You can communicate verbally with your master.
+
+Hero Lab and the Hero Lab logo are Registered Trademarks of LWD Technology, Inc. Free download at https://www.wolflair.com
+Pathfinder® and associated marks and logos are trademarks of Paizo Inc.®, and are used under license.

@@ -1,0 +1,49 @@
+This giant, furry bat is nearly the size of an ox, with dark leathery wings that open wider than two men with arms outstretched.
+--------------------
+Dire bat      CR 2
+XP 600
+Male celestial dire bat (Pathfinder RPG Bestiary, 30)
+N Large animal
+Init +2; Senses blindsense 40 ft., darkvision 60 ft., low-light vision; Perception +8 (+12 when using blindsense)
+--------------------
+Defense
+--------------------
+AC 14, touch 11, flat-footed 12 (+2 Dex, +3 natural, -1 size)
+hp 30 (4d8+12)
+Fort +7, Ref +6, Will +3
+Resist acid 5, cold 5, electricity 5; SR 7
+--------------------
+Offense
+--------------------
+Speed 20 ft., fly 40 ft. (good)
+Melee bite +7 (1d8+7)
+Space 10 ft.; Reach 5 ft. (10 ft. with bite)
+Special Attacks smite evil
+--------------------
+Statistics
+--------------------
+Str 21, Dex 15, Con 17, Int 2, Wis 14, Cha 6
+Base Atk +3; CMB +9; CMD 21
+Feats Alertness, Stealthy
+Skills Acrobatics +2 (-2 to jump), Escape Artist +4, Fly +9, Perception +8 (+12 when using blindsense), Sense Motive +4, Stealth +4; Racial Modifiers +4 Perception when using blindsense
+--------------------
+Ecology
+--------------------
+Environment any temperate or tropical
+Organization solitary, pair, or colony (3-8)
+Treasure incidental
+--------------------
+Special Abilities
+--------------------
+Blindsense (40 feet) (Ex) Sense things and creatures without seeing them.
+Darkvision (60 feet) You can see in the dark (black and white only).
+Energy Resistance, Acid (5) You have the specified Energy Resistance against Acid attacks.
+Energy Resistance, Cold (5) You have the specified Energy Resistance against Cold attacks.
+Energy Resistance, Electricity (5) You have the specified Energy Resistance against Electricity attacks.
+Fly (40 feet, Good) You can fly!
+Low-Light Vision See twice as far as a human in dim light, distinguishing color and detail.
+Smite Evil (1/day) (Su) +0 to hit, +4 to damage when used.
+Spell Resistance (7) You have Spell Resistance.
+
+Hero Lab and the Hero Lab logo are Registered Trademarks of LWD Technology, Inc. Free download at https://www.wolflair.com
+Pathfinder® and associated marks and logos are trademarks of Paizo Inc.®, and are used under license.

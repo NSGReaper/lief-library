@@ -1,0 +1,50 @@
+This large, horned bull has a dirty black hide and an aggressive temper. Its horns are wide and sharp.
+--------------------
+Aurochs (herd animal)      CR 2
+XP 600
+Male celestial aurochs (Pathfinder RPG Bestiary, 174)
+N Large animal
+Init +0; Senses darkvision 60 ft., low-light vision, scent; Perception +9
+--------------------
+Defense
+--------------------
+AC 13, touch 9, flat-footed 13 (+4 natural, -1 size)
+hp 28 (3d8+15)
+Fort +8, Ref +3, Will +1
+Resist acid 5, cold 5, electricity 5; SR 7
+--------------------
+Offense
+--------------------
+Speed 40 ft.
+Melee gore +9 (1d8+12)
+Space 10 ft.; Reach 5 ft.
+Special Attacks smite evil, stampede, trample (2d6+12, DC 19)
+--------------------
+Statistics
+--------------------
+Str 27, Dex 10, Con 21, Int 2, Wis 11, Cha 4
+Base Atk +2; CMB +11; CMD 21 (25 vs. trip)
+Feats Endurance, Skill Focus (Perception)
+Skills Acrobatics +0 (+4 to jump), Perception +9
+--------------------
+Ecology
+--------------------
+Environment temperate plains
+Organization solitary, pair, or herd (3-30)
+Treasure none
+--------------------
+Special Abilities
+--------------------
+Darkvision (60 feet) You can see in the dark (black and white only).
+Endurance +4 to a variety of fort saves, skill and ability checks. Sleep in L/M armor with no fatigue.
+Energy Resistance, Acid (5) You have the specified Energy Resistance against Acid attacks.
+Energy Resistance, Cold (5) You have the specified Energy Resistance against Cold attacks.
+Energy Resistance, Electricity (5) You have the specified Energy Resistance against Electricity attacks.
+Low-Light Vision See twice as far as a human in dim light, distinguishing color and detail.
+Scent (Ex) Detect opponents within 15+ ft. by sense of smell.
+Smite Evil (1/day) (Su) +0 to hit, +3 to damage when used.
+Spell Resistance (7) You have Spell Resistance.
+Stampede (Ex) Trample improves with multiple tramplers.
+
+Hero Lab and the Hero Lab logo are Registered Trademarks of LWD Technology, Inc. Free download at https://www.wolflair.com
+Pathfinder® and associated marks and logos are trademarks of Paizo Inc.®, and are used under license.

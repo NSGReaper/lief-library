@@ -1,0 +1,55 @@
+This small humanoid creature has thin, leathery wings, small horns, and a mischievous smile.
+--------------------
+Pseudodragon      CR 1
+XP 400
+Male pseudodragon (Pathfinder RPG Bestiary 229)
+NG Tiny dragon
+Init +1; Senses blindsense 60 ft., darkvision 60 ft., low-light vision; Perception +6
+--------------------
+Defense
+--------------------
+AC 19, touch 13, flat-footed 18 (+1 Dex, +6 natural, +2 size)
+hp 17 (2d12+4)
+Fort +5, Ref +4, Will +4
+Immune paralysis, sleep; Resist sonic 20; SR 12
+--------------------
+Offense
+--------------------
+Speed 60 ft., burrow 20 ft., climb 20 ft., fly 60 ft. (good), fly 60 ft. (poor)
+Melee bite +6 (1d2+3), 2 claws +6 (3), sting +6 (1d3+3 plus poison)
+Space 2½ ft.; Reach 0 ft. (5 ft. with tail)
+Special Attacks breath weapon (30-ft cone, 6d6 sonic, Reflex DC 19 half)
+--------------------
+Statistics
+--------------------
+Str 15, Dex 13, Con 15, Int 10, Wis 12, Cha 10
+Base Atk +2; CMB +1; CMD 13 (17 vs. trip)
+Feats Weapon Finesse
+Skills Acrobatics +1 (+13 to jump), Climb +9, Diplomacy +5, Fly +10, Perception +6, Sense Motive +6, Stealth +18 (+22 in forests), Survival +6; Racial Modifiers +4 Stealth, +4 Stealth in forests
+Languages Draconic; telepathy 60 ft.
+--------------------
+Ecology
+--------------------
+Environment any land
+Organization solitary, pair, or gang (3-5)
+Treasure npc gear (studded leather armor, short sword, light crossbow with 20 bolts)
+--------------------
+Special Abilities
+--------------------
+Blindsense (60 feet) (Ex) Sense things and creatures without seeing them.
+Breath Weapon (30-ft cone, 6d6 sonic, Reflex DC 19 half, 1/spell) As a standard action, affect an area with elemental damage (Ref half).
+Burrow (20 feet) You have a Burrow speed.
+Climb (20 feet) You have a Climb speed.
+Darkvision (60 feet) You can see in the dark (black and white only).
+Energy Resistance, Sonic (20) You have the specified Energy Resistance against Sonic attacks.
+Fly (60 feet, Good) You can fly!
+Fly (60 feet, Poor) You can fly!
+Immunity to Paralysis You are immune to paralysis.
+Immunity to Sleep You are immune to sleep effects.
+Low-Light Vision See twice as far as a human in dim light, distinguishing color and detail.
+Poison (DC 15) (Ex) Sting—injury; save Fort DC 15; frequency 1/minute for 10 minutes; effect sleep for 1 minute; cure 1 save. The save DC is Constitution-based.
+Spell Resistance (12) You have Spell Resistance.
+Telepathy (60 feet) (Su) Communicate telepathically if the target has a language.
+
+Hero Lab and the Hero Lab logo are Registered Trademarks of LWD Technology, Inc. Free download at https://www.wolflair.com
+Pathfinder® and associated marks and logos are trademarks of Paizo Inc.®, and are used under license.

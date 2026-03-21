@@ -1,0 +1,1099 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document signature="Hero Lab Lead">
+<hero playername="" nextimage="2" heroindex="6" herosummary="NG Tiny dragon" heroname="Pseudodragon" activemode="1" allegianceid="algAlly" hasacted="no" batchindex="828" userbatch="819" enmassebatch="184" nexttrade="15" nexttransact="15" poolcount="158" focustab="spellcast">
+<container index="0" pickcount="662">
+<pick thing="Totals" index="1" batchindex="1" uniqueness="unique" fieldcount="22" bootstrap="yes">
+<reference/>
+<field id="tCharSpHld" user="1."></field>
+<field id="tGenChoice" menuthing="creaPick" ispick="yes" menuusage="hero" cacheindex="1453"></field>
+<field id="acBookId" text="PZO1112"></field>
+<field id="acBookName" text="Bestiary"></field>
+<field id="tGoodVEvil" user="2."></field>
+<field id="tMaskCopy" piece="1"></field>
+<field id="tStartBP" user="0."></field>
+<field id="tPurseEarn"></field>
+<field id="tPursePull"></field>
+<field id="tPursePush"></field>
+<field id="tTranLog"></field>
+<field id="tStartCDef" value="0."></field>
+<field id="tGearSize" user="-2."></field>
+<field id="tFavCl"></field>
+<field id="tSecFavCl"></field>
+<field id="tThiFavCl"></field>
+<field id="tRestHeal" user="0."></field>
+<field id="tSCRAutSet" user="0."></field>
+<field id="tSCRStCaAc" user="1."></field>
+<field id="acType" menuthing="typPlacehl" ispick="yes" menuusage="hero" cacheindex="3278"></field>
+<field id="dashUser" value="3."></field>
+<field id="allegUser" menuthing="algAlly"></field>
+</pick>
+<pick thing="UserImage" index="4033" batchindex="819" refcount="0" fieldcount="2" source="bImages">
+<field id="uImage" user="1."></field>
+<field id="imgIndex" value="1."></field>
+</pick>
+<pick thing="aaFavEnemy" index="2813" batchindex="509" uniqueness="useronce" root="no" fieldcount="5" bootstrap="yes">
+<reference pickindex="2812" batchindex="509" bootindex="1"/>
+<field id="usrChosen1"></field>
+<field id="usrChosen2"></field>
+<field id="usrChosen3"></field>
+<field id="usrChosen4"></field>
+<field id="usrShwMenu" value="1."></field>
+</pick>
+<pick thing="background" index="13" batchindex="3" fieldcount="1" bootstrap="yes">
+<reference bootindex="2"/>
+<field id="bGender" user="0."></field>
+</pick>
+<pick thing="creaPick" index="1453" batchindex="279" refcount="0" default="yes"></pick>
+<pick thing="fcHP" index="1668" batchindex="296" uniqueness="unique" fieldcount="4" default="yes">
+<reference/>
+<field id="usrChosen1"></field>
+<field id="usrChosen2"></field>
+<field id="usrChosen3"></field>
+<field id="usrChosen4"></field>
+</pick>
+<pick thing="fcSkillPts" index="1669" batchindex="297" uniqueness="unique" fieldcount="4" default="yes">
+<reference/>
+<field id="usrChosen1"></field>
+<field id="usrChosen2"></field>
+<field id="usrChosen3"></field>
+<field id="usrChosen4"></field>
+</pick>
+<pick thing="gClothes" index="91" batchindex="31" count="0" fieldcount="6" bootstrap="yes" live="no">
+<reference bootindex="107"/>
+<field id="gSize" value="-2."></field>
+<field id="usrChosen1"></field>
+<field id="usrChosen2"></field>
+<field id="usrChosen3"></field>
+<field id="usrChosen4"></field>
+<field id="usrSelect" text="Artisan&apos;s Outfit (Free)"></field>
+</pick>
+<pick thing="gGround" index="1670" batchindex="298" uniqueness="unique" fieldcount="5">
+<reference/>
+<field id="gSize" value="-2."></field>
+<field id="usrChosen1"></field>
+<field id="usrChosen2"></field>
+<field id="usrChosen3"></field>
+<field id="usrChosen4"></field>
+</pick>
+<pick thing="gMoney" index="90" batchindex="30" fieldcount="7" bootstrap="yes">
+<reference bootindex="106"/>
+<field id="purStrtMon"></field>
+<field id="purOrder" value="1."></field>
+<field id="usrChosen1"></field>
+<field id="usrChosen2"></field>
+<field id="usrChosen3"></field>
+<field id="usrChosen4"></field>
+<field id="gSize" value="-2."></field>
+</pick>
+<pick thing="heroname" index="108" batchindex="37" fieldcount="1" bootstrap="yes">
+<reference bootindex="999999001"/>
+<field id="useredit" text="Pseudodragon"></field>
+</pick>
+<pick thing="journal" index="4034" batchindex="820" refcount="0" fieldcount="2" source="journal">
+<field id="jFaction"></field>
+<field id="jrnReal" user="20100423."></field>
+</pick>
+<pick thing="mNatural" index="89" batchindex="29" fieldcount="2" bootstrap="yes">
+<reference bootindex="103"/>
+<field id="gSize" value="-2."></field>
+<field id="gUserSel" user="0."></field>
+</pick>
+<pick thing="npcDesc" index="4057" batchindex="822" uniqueness="unique" fieldcount="1" source="npcInfo">
+<reference/>
+<field id="npcInfo" text="This small humanoid creature has thin, leathery wings, small horns, and a mischievous smile."></field>
+</pick>
+<pick thing="npcEnviron" index="4058" batchindex="823" uniqueness="unique" fieldcount="1" source="npcInfo">
+<reference/>
+<field id="npcInfo" text="Any land"></field>
+</pick>
+<pick thing="npcOrganiz" index="4059" batchindex="824" uniqueness="unique" fieldcount="1" source="npcInfo">
+<reference/>
+<field id="npcInfo" text="Solitary, pair, or gang (3-5)"></field>
+</pick>
+<pick thing="npcTreas" index="4060" batchindex="825" uniqueness="unique" fieldcount="1" source="npcInfo">
+<reference/>
+<field id="npcInfo" text="NPC gear (studded leather armor, short sword, light crossbow with 20 bolts)"></field>
+</pick>
+<pick thing="pFormExDr1" index="4061" batchindex="826" refcount="0" fieldcount="3" source="adjSplTbl">
+<gizmo id="PolyForm">
+<container index="3" pickcount="51">
+<pick thing="PolymoHelp" index="4062" batchindex="826" fieldcount="1" bootstrap="yes">
+<chain index="4063"/>
+<chain index="4065"/>
+<reference bootindex="1"/>
+<field id="foDCOver" user="19."></field>
+</pick>
+<pick thing="rYoCrysDra" index="4067" batchindex="827" refcount="0" fieldcount="3" source="foRace">
+<chain index="4068"/>
+<chain index="4070"/>
+<chain index="4071"/>
+<chain index="4076"/>
+<chain index="4077"/>
+<chain index="4078"/>
+<chain index="4079"/>
+<chain index="4080"/>
+<chain index="4081"/>
+<chain index="4082"/>
+<chain index="4083"/>
+<chain index="4085"/>
+<chain index="4086"/>
+<chain index="4087"/>
+<chain index="4088"/>
+<chain index="4089"/>
+<chain index="4090"/>
+<chain index="4091"/>
+<chain index="4092"/>
+<chain index="4093"/>
+<chain index="4094"/>
+<chain index="4095"/>
+<chain index="4096"/>
+<chain index="4098"/>
+<chain index="4099"/>
+<chain index="4101"/>
+<field id="cHP" user="45."></field>
+<field id="cFavorChc" menuthing="fcSkillPts" ispick="yes" menuusage="hero" cacheindex="1669"></field>
+<field id="cFavorChc2" menuthing="fcHP" ispick="yes" menuusage="hero" cacheindex="1668"></field>
+</pick>
+<pick thing="wCrush" index="4070" batchindex="827" root="no" fieldcount="1" bootstrap="yes">
+<reference pickindex="4067" batchindex="827" bootindex="1"/>
+<field id="gSize" value="-2."></field>
+</pick>
+<pick thing="wTailSweep" index="4092" batchindex="827" root="no" fieldcount="1" bootstrap="yes">
+<reference pickindex="4067" batchindex="827" bootindex="1"/>
+<field id="gSize" value="-2."></field>
+</pick>
+</container>
+</gizmo>
+<field id="pIsOn" user="1."></field>
+<field id="pDuration" text="1 min./level"></field>
+<field id="pIndex" value="1."></field>
+</pick>
+<pick thing="pSize" index="4113" batchindex="828" refcount="0" fieldcount="3" source="pTable">
+<field id="pIndex" value="2."></field>
+<field id="pIsOn" user="1."></field>
+<field id="pAdjust" user="-2."></field>
+</pick>
+<pick thing="rBlindsen" index="4039" batchindex="821" uniqueness="unique" root="no" fieldcount="1" bootstrap="yes">
+<chain index="4040"/>
+<reference pickindex="4035" batchindex="821" bootindex="1"/>
+<field id="polyDefLst" user="1."></field>
+</pick>
+<pick thing="raLowLight" index="4049" batchindex="821" uniqueness="unique" root="no" fieldcount="1" bootstrap="yes">
+<chain index="4050"/>
+<reference pickindex="4048" batchindex="821" bootindex="1"/>
+<field id="polyDefLst" user="1."></field>
+</pick>
+<pick thing="raStealth" index="4043" batchindex="821" root="no" fieldcount="1" bootstrap="yes">
+<reference pickindex="4035" batchindex="821" bootindex="1"/>
+<field id="polyDefLst" user="1."></field>
+</pick>
+<pick thing="resEnemSel" index="2812" batchindex="509" uniqueness="unique" default="yes">
+<chain index="2813"/>
+<reference/>
+</pick>
+<pick thing="rmPseudo" index="4035" batchindex="821" refcount="0" fieldcount="3" source="bgRace">
+<chain index="4036"/>
+<chain index="3757"/>
+<chain index="4037"/>
+<chain index="4039"/>
+<chain index="3787"/>
+<chain index="4041"/>
+<chain index="4042"/>
+<chain index="4043"/>
+<chain index="4044"/>
+<chain index="4045"/>
+<field id="cHP" user="13."></field>
+<field id="cFavorChc" menuthing="fcSkillPts" ispick="yes" menuusage="hero" cacheindex="1669"></field>
+<field id="cFavorChc2" menuthing="fcHP" ispick="yes" menuusage="hero" cacheindex="1668"></field>
+</pick>
+<pick thing="roCouncilo" index="2870" batchindex="545" uniqueness="unique" fieldcount="5">
+<reference/>
+<field id="roLeader" text="(specify leader&apos;s name)"></field>
+<field id="roName" text="Councilor"></field>
+<field id="roSelRole"></field>
+<field id="roSelAttr"></field>
+<field id="roSelAttr2"></field>
+</pick>
+<pick thing="roGeneral" index="2871" batchindex="546" uniqueness="unique" fieldcount="5">
+<reference/>
+<field id="roLeader" text="(specify leader&apos;s name)"></field>
+<field id="roName" text="General"></field>
+<field id="roSelRole"></field>
+<field id="roSelAttr"></field>
+<field id="roSelAttr2"></field>
+</pick>
+<pick thing="roGrDiplo" index="2872" batchindex="547" uniqueness="unique" fieldcount="5">
+<reference/>
+<field id="roLeader" text="(specify leader&apos;s name)"></field>
+<field id="roName" text="Grand Diplomat"></field>
+<field id="roSelRole"></field>
+<field id="roSelAttr"></field>
+<field id="roSelAttr2"></field>
+</pick>
+<pick thing="roHighPrie" index="2873" batchindex="548" uniqueness="unique" fieldcount="5">
+<reference/>
+<field id="roLeader" text="(specify leader&apos;s name)"></field>
+<field id="roName" text="High Priest"></field>
+<field id="roSelRole"></field>
+<field id="roSelAttr"></field>
+<field id="roSelAttr2"></field>
+</pick>
+<pick thing="roMagister" index="2874" batchindex="549" uniqueness="unique" fieldcount="5">
+<reference/>
+<field id="roLeader" text="(specify leader&apos;s name)"></field>
+<field id="roName" text="Magister"></field>
+<field id="roSelRole"></field>
+<field id="roSelAttr"></field>
+<field id="roSelAttr2"></field>
+</pick>
+<pick thing="roMarshal" index="2875" batchindex="550" uniqueness="unique" fieldcount="5">
+<reference/>
+<field id="roLeader" text="(specify leader&apos;s name)"></field>
+<field id="roName" text="Marshal"></field>
+<field id="roSelRole"></field>
+<field id="roSelAttr"></field>
+<field id="roSelAttr2"></field>
+</pick>
+<pick thing="roRuler" index="2876" batchindex="551" refcount="0" fieldcount="5">
+<field id="roLeader" text="(specify leader&apos;s name)"></field>
+<field id="roName" text="Ruler"></field>
+<field id="roSelRole"></field>
+<field id="roSelAttr"></field>
+<field id="roSelAttr2"></field>
+</pick>
+<pick thing="roSpymaste" index="2877" batchindex="552" uniqueness="unique" fieldcount="5">
+<reference/>
+<field id="roLeader" text="(specify leader&apos;s name)"></field>
+<field id="roName" text="Spymaster"></field>
+<field id="roSelRole"></field>
+<field id="roSelAttr"></field>
+<field id="roSelAttr2"></field>
+</pick>
+<pick thing="roTreasure" index="2878" batchindex="553" uniqueness="unique" fieldcount="5">
+<reference/>
+<field id="roLeader" text="(specify leader&apos;s name)"></field>
+<field id="roName" text="Treasurer"></field>
+<field id="roSelRole"></field>
+<field id="roSelAttr"></field>
+<field id="roSelAttr2"></field>
+</pick>
+<pick thing="roWarden" index="2879" batchindex="554" uniqueness="unique" fieldcount="5">
+<reference/>
+<field id="roLeader" text="(specify leader&apos;s name)"></field>
+<field id="roName" text="Warden"></field>
+<field id="roSelRole"></field>
+<field id="roSelAttr"></field>
+<field id="roSelAttr2"></field>
+</pick>
+<pick thing="tpDragon" index="4048" batchindex="821" root="no" bootstrap="yes" default="yes">
+<chain index="4049"/>
+<chain index="4051"/>
+<chain index="4053"/>
+<chain index="4054"/>
+<chain index="4055"/>
+<reference pickindex="4035" batchindex="821" bootindex="1"/>
+</pick>
+<pick thing="typHero" index="3275" batchindex="660" refcount="0" fieldcount="1">
+<field id="ctIsChosen" user="0."></field>
+</pick>
+<pick thing="typNPC" index="3277" batchindex="662" refcount="0" fieldcount="1">
+<field id="ctIsChosen" user="1."></field>
+</pick>
+<pick thing="typPlacehl" index="3278" batchindex="663" refcount="0" default="yes"></pick>
+<pick thing="wGauntArm" index="88" batchindex="28" uniqueness="unique" count="0" fieldcount="2" bootstrap="yes" live="no">
+<reference bootindex="101"/>
+<field id="gUserSel" user="0."></field>
+<field id="wCustMonDm"></field>
+</pick>
+<pick thing="wRay" index="3290" batchindex="665" refcount="0" fieldcount="3">
+<field id="gSize" value="-2."></field>
+<field id="gUserSel" user="0."></field>
+<field id="wCustMonDm"></field>
+</pick>
+<pick thing="wSting" index="4045" batchindex="821" root="no" fieldcount="1" bootstrap="yes">
+<reference pickindex="4035" batchindex="821" bootindex="1"/>
+<field id="polyDefLst" user="1."></field>
+</pick>
+<pick thing="wTouch" index="3291" batchindex="666" refcount="0" fieldcount="3">
+<field id="gSize" value="-2."></field>
+<field id="gUserSel" user="0."></field>
+<field id="wCustMonDm"></field>
+</pick>
+<pick thing="wUnarmed" index="87" batchindex="27" fieldcount="3" bootstrap="yes">
+<reference bootindex="100"/>
+<field id="gSize" value="-2."></field>
+<field id="gUserSel" user="0."></field>
+<field id="wCustMonDm"></field>
+</pick>
+<pick thing="xDamRsSoni" index="3749" batchindex="772" uniqueness="unique" fieldcount="1">
+<reference/>
+<field id="polyDefLst" user="1."></field>
+</pick>
+<pick thing="xFly" index="3757" batchindex="778" uniqueness="unique" refcount="2" fieldcount="1">
+<chain index="3758"/>
+<reference/>
+<reference pickindex="4035" batchindex="821" bootindex="1"/>
+<field id="polyDefLst" user="1."></field>
+</pick>
+<pick thing="xImmParaly" index="4055" batchindex="821" uniqueness="unique" root="no" fieldcount="1" bootstrap="yes">
+<chain index="4056"/>
+<reference pickindex="4048" batchindex="821" bootindex="1"/>
+<field id="polyDefLst" user="1."></field>
+</pick>
+<pick thing="xImmSleep" index="4054" batchindex="821" uniqueness="unique" root="no" fieldcount="1" bootstrap="yes">
+<reference pickindex="4048" batchindex="821" bootindex="1"/>
+<field id="polyDefLst" user="1."></field>
+</pick>
+<pick thing="xSplRs" index="3787" batchindex="786" uniqueness="unique" refcount="2" fieldcount="1">
+<chain index="3788"/>
+<reference/>
+<reference pickindex="4035" batchindex="821" bootindex="1"/>
+<field id="polyDefLst" user="1."></field>
+</pick>
+<pick thing="xTelepathy" index="4041" batchindex="821" root="no" fieldcount="1" bootstrap="yes">
+<reference pickindex="4035" batchindex="821" bootindex="1"/>
+<field id="polyDefLst" user="1."></field>
+</pick>
+</container>
+<source source="ACG" name="Advanced Class Guide" count="1"/>
+<source source="AHGGV1" name="RGG - Adventurer&apos;s Handbook: Volume 1" count="0"/>
+<source source="APG" name="Advanced Player&apos;s Guide" count="1"/>
+<source source="APGFamil" name="Advanced Player&apos;s Guide Familiars" count="1"/>
+<source source="APGHero" name="Advanced Player&apos;s Guide Hero Points" count="0"/>
+<source source="APGManeuv" name="Advanced Player&apos;s Guide New Combat Maneuvers" count="1"/>
+<source source="APGSandPoi" name="Shadows Under Sandpoint" count="0"/>
+<source source="APGTrait" name="Advanced Player&apos;s Guide Traits" count="1"/>
+<source source="ARG" name="Advanced Race Guide" count="1"/>
+<source source="AWAventyr" name="Aventyr Setting" count="0"/>
+<source source="AWUnRaces" name="Underworld Races &amp; Classes" count="0"/>
+<source source="AdvenGuide" name="Adventurer&apos;s Guide" count="1"/>
+<source source="AirMagic" name="RGG - Air Magic" count="0"/>
+<source source="Arcana" name="Open Content from Unearthed Arcana" count="0"/>
+<source source="A110SpV" name="RGG - 110 Spell Variants 2" count="0"/>
+<source source="BP10Fear" name="RGG - Feats of Fear and Fearlessness (10)" count="0"/>
+<source source="BP10Hammer" name="RGG - Feats of Hammer and Thunder (10)" count="0"/>
+<source source="BP3SupNatM" name="RGG - Supernatural Monster Abilities (3)" count="0"/>
+<source source="BP4DMF" name="RGG - Death Mage Feats (4)" count="0"/>
+<source source="BP4GhstBst" name="RGG - Ghostbusting Items (4)" count="0"/>
+<source source="BP5CntlWtr" name="RGG - Control Water Feats (5)" count="0"/>
+<source source="BP5HellF" name="RGG - Hellfire Feats (5)" count="0"/>
+<source source="BP5HstSlw" name="RGG - Feats for Haste and Slow (5)" count="0"/>
+<source source="BP5MntStd" name="RGG - Feats for Mount and Steed (5)" count="0"/>
+<source source="BP5UnsnSrv" name="RGG - Unseen Servant Feats (5)" count="0"/>
+<source source="BP6ExtMrtS" name="RGG - Exotic and Martial Swords (6)" count="0"/>
+<source source="BP6Jester" name="RGG - Jester Feats (6)" count="0"/>
+<source source="BP6SumnMon" name="RGG - Feats for Summon Spells (6)" count="0"/>
+<source source="BP6Teleprt" name="RGG - Feats for Teleport Spells (6)" count="0"/>
+<source source="BP7FlyFoes" name="RGG - Feats for Flying Foes (7)" count="0"/>
+<source source="BP7Glutton" name="RGG - Sinful Feats of Gluttony (7)" count="0"/>
+<source source="BP7Lust" name="RGG - Sinful Feats of Lust (7)" count="0"/>
+<source source="BP7Pride" name="RGG - Sinful Feats of Pride (7)" count="0"/>
+<source source="BP7UndFts" name="RGG - Undead Feats (7)" count="0"/>
+<source source="BP9AlcBomb" name="RGG - Alchemical Bomb Discoveries (9)" count="0"/>
+<source source="Bard_Mstr" name="RGG - Bardic Masterpieces" count="0"/>
+<source source="BestFamil" name="Bestiary Familiars" count="1"/>
+<source source="Bestiary1" name="Bestiary" count="1"/>
+<source source="Bestiary2" name="Bestiary 2" count="1"/>
+<source source="Bestiary3" name="Bestiary 3" count="1"/>
+<source source="Bestiary4" name="Bestiary 4" count="1"/>
+<source source="Bestiary5" name="Bestiary 5" count="1"/>
+<source source="Bestiary6" name="Bestiary 6" count="1"/>
+<source source="Best1Free" name="Bestiary Free Content" count="1"/>
+<source source="BonusBest1" name="Bonus Bestiary" count="1"/>
+<source source="BookDamned" name="Book of the Damned" count="1"/>
+<source source="CB_Variant" name="FB - Variant Bestiary Races" count="0"/>
+<source source="CSAndoran" name="Andoran, Birthplace of Freedom" count="1"/>
+<source source="CSAquaAdve" name="Aquatic Adventures" count="1"/>
+<source source="CSArtifLeg" name="Artifacts &amp; Legends" count="1"/>
+<source source="CSBDFoHors" name="Book of the Damned 3: Horsemen of the Apocalypse" count="1"/>
+<source source="CSBDLrdCha" name="Book of the Damned 2: Lords of Chaos" count="1"/>
+<source source="CSBDPrince" name="Book of the Damned 1: Princes of Darkness" count="1"/>
+<source source="CSBelkzen" name="Belkzen, Hold of the Orc Lords" count="1"/>
+<source source="CSChelInEm" name="Cheliax, the Infernal Empire" count="1"/>
+<source source="CSChrRight" name="Chronicle of the Righteous" count="1"/>
+<source source="CSCitiesGo" name="Cities of Golarion" count="1"/>
+<source source="CSCityStra" name="City of Strangers" count="1"/>
+<source source="CSClHorror" name="Classic Horrors Revisited" count="1"/>
+<source source="CSClMonstr" name="Classic Monsters Revisited" count="1"/>
+<source source="CSClTreas" name="Classic Treasures Revisited" count="1"/>
+<source source="CSConcordanceRivals" name="Concordance of Rivals" count="1"/>
+<source source="CSConstructHa" name="Construct Handbook" count="1"/>
+<source source="CSDarkRevi" name="Darklands Revisited" count="1"/>
+<source source="CSDarkmoon" name="Guide to Darkmoon Vale" count="1"/>
+<source source="CSDemRevi" name="Demons Revisited" count="1"/>
+<source source="CSDisWorld" name="Distant Worlds" count="1"/>
+<source source="CSDistReal" name="Distant Realms" count="1"/>
+<source source="CSDistShor" name="Distant Shores" count="1"/>
+<source source="CSDraEmpGa" name="Dragon Empires Gazetteer" count="1"/>
+<source source="CSDragoRev" name="Dragons Revisited" count="1"/>
+<source source="CSDragonUn" name="Dragons Unleashed" count="1"/>
+<source source="CSDrumaProfit" name="Druma, Profit and Prophecy" count="1"/>
+<source source="CSDunDeniz" name="Dungeon Denizens Revisited" count="1"/>
+<source source="CSDungeon" name="Dungeons of Golarion" count="1"/>
+<source source="CSFactionG" name="Faction Guide" count="1"/>
+<source source="CSFaithsGolarion" name="Faiths of Golarion" count="1"/>
+<source source="CSFeyRevis" name="Fey Revisited" count="1"/>
+<source source="CSFieldGui" name="Pathfinder Society Field Guide" count="1"/>
+<source source="CSFirstWor" name="The First World, Realm of the Fey" count="1"/>
+<source source="CSGiantRev" name="Giants Revisited" count="1"/>
+<source source="CSGodsMagc" name="Gods &amp; Magic" count="1"/>
+<source source="CSGreatBey" name="The Great Beyond" count="1"/>
+<source source="CSHeartJun" name="Heart of the Jungle" count="1"/>
+<source source="CSHeavUnle" name="Heaven Unleashed" count="1"/>
+<source source="CSHellUnle" name="Hell Unleashed" count="1"/>
+<source source="CSHorrorRe" name="Horror Realms" count="1"/>
+<source source="CSISBeast" name="Inner Sea Bestiary" count="1"/>
+<source source="CSISCastle" name="Castles of the Inner Sea" count="1"/>
+<source source="CSISCombat" name="Inner Sea Combat" count="1"/>
+<source source="CSISFaiths" name="Inner Sea Faiths" count="1"/>
+<source source="CSISGods" name="Inner Sea Gods" count="1"/>
+<source source="CSISIntrig" name="Inner Sea Intrigue" count="1"/>
+<source source="CSISMagic" name="Inner Sea Magic" count="1"/>
+<source source="CSISMonCod" name="Inner Sea Monster Codex" count="1"/>
+<source source="CSISRaces" name="Inner Sea Races" count="1"/>
+<source source="CSISTavern" name="Inner Sea Taverns" count="1"/>
+<source source="CSISTemple" name="Inner Sea Temples" count="1"/>
+<source source="CSIntoDark" name="Into the Darklands" count="1"/>
+<source source="CSIrrisen" name="Irrisen, Land of Eternal Winter" count="1"/>
+<source source="CSKatapesh" name="Dark Markets: A Guide to Katapesh" count="1"/>
+<source source="CSLandConf" name="Lands of Conflict" count="1"/>
+<source source="CSLandLinn" name="Lands of the Linnorm Kings" count="1"/>
+<source source="CSLosTreas" name="Lost Treasures" count="1"/>
+<source source="CSLostCit" name="Lost Cities of Golarion" count="1"/>
+<source source="CSLostKing" name="Lost Kingdoms" count="1"/>
+<source source="CSMagnimar" name="Magnimar, City of Monuments" count="1"/>
+<source source="CSMisfitMn" name="Misfit Monsters Redeemed" count="1"/>
+<source source="CSMystMons" name="Mystery Monsters Revisited" count="1"/>
+<source source="CSMytRealm" name="Mythic Realms" count="1"/>
+<source source="CSMythicRe" name="Mythical Monsters Revisited" count="1"/>
+<source source="CSNidal" name="Nidal, Lands of Shadows" count="1"/>
+<source source="CSNumeria" name="Numeria, Land of Fallen Stars" count="1"/>
+<source source="CSOccuBest" name="Occult Bestiary" count="1"/>
+<source source="CSOccuReal" name="Occult Realms" count="1"/>
+<source source="CSOcculMys" name="Occult Mysteries" count="1"/>
+<source source="CSOsirion" name="Osirion, Legacy of the Pharaohs" count="1"/>
+<source source="CSPathPres" name="Paths of Prestige" count="1"/>
+<source source="CSPlanePow" name="Planes of Power" count="1"/>
+<source source="CSPthHellk" name="Path of the Hellknight" count="1"/>
+<source source="CSQadira" name="Qadira, Jewel of the East" count="1"/>
+<source source="CSRival" name="Rival Guide" count="1"/>
+<source source="CSRiverKin" name="Guide to the River Kingdoms" count="1"/>
+<source source="CSSandpoint" name="Sandpoint, Light of the Lost Coast" count="1"/>
+<source source="CSSeekerSe" name="Seekers of Secrets" count="1"/>
+<source source="CSShackles" name="Isles of the Shackles" count="1"/>
+<source source="CSShpInner" name="Ships of the Inner Sea" count="1"/>
+<source source="CSTaldFiEm" name="Taldor, the First Empire" count="1"/>
+<source source="CSTechGuid" name="Technology Guide" count="1"/>
+<source source="CSTombsGol" name="Tombs of Golarion" count="1"/>
+<source source="CSUndeadRe" name="Undead Revisited" count="1"/>
+<source source="CSUndeadUn" name="Undead Unleashed" count="1"/>
+<source source="CSWorldGui" name="Inner Sea World Guide" count="1"/>
+<source source="CSWorldwnd" name="The Worldwound" count="1"/>
+<source source="CoreDeity" name="Core Rulebook Deities" count="1"/>
+<source source="Crystal" name="RGG - Crystal Magic" count="0"/>
+<source source="D20Arcana" name="The Modern Path 2: Arcane Heroes" count="0"/>
+<source source="ExpStatAll" name="Show full statblock summary window" count="0"/>
+<source source="ExpStatNo" name="Don&apos;t show statblock summary window" count="1"/>
+<source source="ExpStatYes" name="Show statblock summary window" count="0"/>
+<source source="FGRazorCoa" name="Razor Coast" count="0"/>
+<source source="FGRazorGM" name="Razor Coast GM Content" count="0"/>
+<source source="FireAll" name="Guns Everywhere" count="0"/>
+<source source="FireCommon" name="Commonplace Guns" count="0"/>
+<source source="FireEmerg" name="Emerging Guns" count="1"/>
+<source source="FireNo" name="No Guns" count="0"/>
+<source source="FireVRare" name="Very Rare Guns" count="0"/>
+<source source="GGDeathMag" name="RGG - Death Mage" count="0"/>
+<source source="GMG" name="GameMastery Guide" count="1"/>
+<source source="GRCMP2MSR" name="MSRD Classes, Skills and Feats" count="0"/>
+<source source="GRCMP2ScF" name="MSRD Future: PL- 6 Fusion Age" count="0"/>
+<source source="GRCMP2tMP3" name="The Modern Path 2: Core Rules" count="0"/>
+<source source="HAExpCorr" name="Corruptions" count="0"/>
+<source source="HAExpFear" name="Horror Adventures Expanded Fear Rules" count="0"/>
+<source source="HAFleshwar" name="Horror Adventures Fleshwarp Mutations" count="0"/>
+<source source="HASanity" name="Horror Adventures Sanity Rules" count="0"/>
+<source source="HGJingGM" name="The Grande Temple of Jing GM Content" count="0"/>
+<source source="HGTmplJing" name="The Grande Temple of Jing" count="0"/>
+<source source="HaCorrUse" name="Useful Corruptions" count="0"/>
+<source source="HaCorrVile" name="Vile Corruptions" count="0"/>
+<source source="HorrorAdv" name="Horror Adventures" count="1"/>
+<source source="HouArmorCh" name="Ignore Armor Check Penalty" count="0"/>
+<source source="HouBonus0" name="Bonus 0-level spells" count="0"/>
+<source source="HouFavNotR" name="Favored Classes Not Required" count="0"/>
+<source source="HouKeen" name="Keen &amp; Imp. Critical Stack" count="0"/>
+<source source="HouLivingM" name="Use the old version of the Living Monolith" count="0"/>
+<source source="HouModLang" name="Allow all Modern Languages" count="0"/>
+<source source="HouNoComm" name="No Common Language" count="0"/>
+<source source="HouUnLang" name="Unrestricted Languages" count="0"/>
+<source source="HouUnTrait" name="Unrestricted Traits" count="0"/>
+<source source="InvisFeats" name="RGG - Invisibility Feats (4)" count="0"/>
+<source source="KKBlkMagic" name="RGG - Krazy Kragnar&apos;s Black Market Magic Items" count="0"/>
+<source source="KKMgcStfE" name="RGG - Krazy Kragnar&apos;s Magic Staff Emporium" count="0"/>
+<source source="KPHallMK" name="Halls of the Mountain-King" count="0"/>
+<source source="KPHallMKGM" name="Halls of the Mountain-King GM Content" count="0"/>
+<source source="LGMyAltRec" name="Alternate Recuperation" count="0"/>
+<source source="LGMyAltUns" name="Alternate Unstoppable" count="0"/>
+<source source="LGMyAmIni3" name="3rd Tier Universal Path Ability" count="0"/>
+<source source="LGMyAmIni6" name="6th Tier Universal Path Ability" count="0"/>
+<source source="LGMyArSOpt" name="Modify Arcane Surge/Recalled Blessing" count="0"/>
+<source source="LGMyArcOpt" name="Modify Wild Arcana/Inspired Spell" count="0"/>
+<source source="LGMyAttFla" name="Modify Attribute Display and Adroit" count="0"/>
+<source source="LGMyAttOpt" name="Gain +1 Inherit Bonus/Tier" count="0"/>
+<source source="LGMyDamRd" name="Add Mythic Damage Reduction" count="0"/>
+<source source="LGMyDefSur" name="Add Defensive Surge" count="0"/>
+<source source="LGMyHMPDay" name="Regain Half Tier MP/day" count="0"/>
+<source source="LGMyImpFam" name="Mythic Familiars Require Tier/Rank" count="0"/>
+<source source="LGMyInhEqp" name="Inherent Mythic Bonuses" count="0"/>
+<source source="LGMyInitia" name="Replace with Mythic Initiative" count="0"/>
+<source source="LGMyPowAlt" name="Reduced Mythic Power" count="0"/>
+<source source="LGMyPowAtk" name="Modify Power Attack" count="0"/>
+<source source="LGMyRemIni" name="Remove Amazing Initiative" count="0"/>
+<source source="LGMyRepInF" name="Replace with Mythic Feat" count="0"/>
+<source source="LGMySurDel" name="Delayed Surge" count="0"/>
+<source source="LGMySurDic" name="Surge Dice Always d6" count="0"/>
+<source source="LGMySwfAct" name="Modify Swift Action Path Abilities" count="0"/>
+<source source="LGMyTitBan" name="Modify Titan&apos;s Bane" count="0"/>
+<source source="LGMyVitStr" name="Modify Vital Strike" count="0"/>
+<source source="LGMyWillSu" name="Add I Will Survive" count="0"/>
+<source source="LGMythHero" name="Mythic Hero&apos;s Handbook" count="1"/>
+<source source="LGMythMon" name="Mythic Monster Manual" count="1"/>
+<source source="LGMythSpl" name="Mythic Spell Compendium" count="1"/>
+<source source="LGMy1MPDay" name="Regain 1 MP/day" count="0"/>
+<source source="LghtnBltFt" name="RGG - Lightning Bolt Feats (8)" count="0"/>
+<source source="Lore1stLan" name="RGG - Lore of the First Language" count="0"/>
+<source source="L4L9BellBC" name="RGG - Bell, Book, and Candle" count="0"/>
+<source source="MMFeats" name="RGG - Magic Missile Feats (7)" count="0"/>
+<source source="MPAeSpelcf" name="The Modern Path 2: Arcane of the Spellcrafter" count="0"/>
+<source source="MPArandeMd" name="The Modern Path 2: Arcane of the Mind" count="0"/>
+<source source="MPArcana" name="The Modern Path 2: Arcane of the Forbidden" count="0"/>
+<source source="MPClassic" name="The Modern Path 2: Modern Classic Heroes" count="0"/>
+<source source="MPIAPL4IAg" name="OGL Pulp Material" count="0"/>
+<source source="MPIAPL4IA2" name="Hide PL- 5 (modern) material" count="0"/>
+<source source="MPMoney" name="The Modern Path 2: Modern Currency" count="0"/>
+<source source="MPNMPModMg" name="Ninja Monkey Press: Modern Magic" count="0"/>
+<source source="MPPFAmDmg" name="The Modern Path 2: Firearm Adjustments" count="0"/>
+<source source="MPRGGAnac" name="Rogue Genius Games: Anachronistic" count="0"/>
+<source source="MPRPGOBB" name="Blood and Brains" count="0"/>
+<source source="MPScrEyeG" name="Scrying Eye Games: Welcome to Mortiston" count="0"/>
+<source source="MSRDFutur7" name="MSRD Future: PL- 7 Gravity Age" count="0"/>
+<source source="MSRDFutur8" name="MSRD Future: PL- 8 Energy Age" count="0"/>
+<source source="MattDroz" name="MattDroz" count="0"/>
+<source source="MnstrFeats" name="RGG - Monster Feats (10)" count="0"/>
+<source source="ModAPCont" name="Module &amp; Adventure Path Content" count="1"/>
+<source source="ModAcadGM" name="Academy of Secrets GM Content" count="0"/>
+<source source="ModBroChGM" name="Broken Chains GM Content" count="0"/>
+<source source="ModCarrHGM" name="Carrion Hill GM Content" count="0"/>
+<source source="ModDaugFGM" name="Daughters of Fury GM Content" count="0"/>
+<source source="ModDaugFur" name="Daughters of Fury" count="1"/>
+<source source="ModDeepmGM" name="No Response from Deepmar GM Content" count="0"/>
+<source source="ModDeepmar" name="No Response from Deepmar" count="1"/>
+<source source="ModDoomDGM" name="Doom Comes to Dustpawn GM Content" count="0"/>
+<source source="ModDoomDus" name="Doom Comes to Dustpawn" count="1"/>
+<source source="ModDrDemGM" name="The Dragon&apos;s Demand GM Content" count="0"/>
+<source source="ModDragDem" name="The Dragon&apos;s Demand" count="1"/>
+<source source="ModEmSpiGM" name="The Emerald Spire GM Content" count="0"/>
+<source source="ModEmerSpi" name="The Emerald Spire" count="1"/>
+<source source="ModFngKeep" name="Fangwood Keep" count="1"/>
+<source source="ModFngKpGM" name="Fangwood Keep GM Content" count="0"/>
+<source source="ModHarrGM" name="The Harrowing GM Content" count="0"/>
+<source source="ModHarrow" name="The Harrowing" count="1"/>
+<source source="ModMdMirGM" name="The Midnight Mirror GM Content" count="0"/>
+<source source="ModMidnMir" name="The Midnight Mirror" count="1"/>
+<source source="ModMurMark" name="Murder&apos;s Mark" count="1"/>
+<source source="ModMurMkGM" name="Murder&apos;s Mark GM Content" count="0"/>
+<source source="ModPlPerGM" name="Plunder and Peril GM Content" count="0"/>
+<source source="ModPlunPer" name="Plunder and Peril" count="1"/>
+<source source="ModTearBGM" name="Tears at Bitter Manor GM Content" count="0"/>
+<source source="ModTearBit" name="Tears at Bitter Manor" count="1"/>
+<source source="MonstCodex" name="Monster Codex" count="1"/>
+<source source="MythicAdv" name="Mythic Adventures" count="1"/>
+<source source="MythicFlaw" name="Use Mythic Flaws" count="1"/>
+<source source="OAChakras" name="Occult Adventures Chakras" count="0"/>
+<source source="OAPsyDuel" name="Occult Adventures Psychic Duels" count="0"/>
+<source source="OARituals" name="Occult Adventures Occult Rituals" count="0"/>
+<source source="OSGentlema" name="Gentleman Class" count="0"/>
+<source source="OccultAdv" name="Occult Adventures" count="1"/>
+<source source="OccultSkl" name="Occult Adventures Occult Skill Unlocks" count="0"/>
+<source source="OptACGPFS" name="Use PFS&apos;s ACG playtest changes" count="0"/>
+<source source="OptAction" name="Use Action Points" count="0"/>
+<source source="OptAddPow" name="Allow Powers for Fixed Power items" count="0"/>
+<source source="OptAniSlot" name="Enforce Animal Magic Item Slots" count="0"/>
+<source source="OptAnyMin" name="Don&apos;t Restrict Companion Race" count="0"/>
+<source source="OptBody" name="No Age, Height, Weight Limits" count="0"/>
+<source source="OptBonHD" name="Allow PCs to add Bonus HD" count="0"/>
+<source source="OptDrawbac" name="Use Drawbacks" count="0"/>
+<source source="OptFaction" name="Use Factions/Backgrounds" count="0"/>
+<source source="OptHPAvg" name="Average HPs at New Levels" count="0"/>
+<source source="OptHPs" name="Max HPs at New Levels" count="0"/>
+<source source="OptKPElfma" name="Midgard Option: Elfmarked as feat" count="0"/>
+<source source="OptKPNoLan" name="Midgard Option: Hide non-Midgard languages" count="0"/>
+<source source="OptKPRaces" name="Midgard Option: Use Midgard unique races" count="0"/>
+<source source="OptKPStatu" name="Midgard Option: Use Status" count="0"/>
+<source source="OptLGChiru" name="Gothic Option: Use Chirurgical Procedures" count="0"/>
+<source source="OptLGMytho" name="Gothic Option: Add Mythos Subtype" count="0"/>
+<source source="OptLGSanMa" name="Gothic Option: Use Sanity and Madness" count="0"/>
+<source source="OptNoAdFir" name="Hide Advanced Firearms" count="0"/>
+<source source="OptNoAlFir" name="Hide Firearms &amp; Related" count="0"/>
+<source source="OptNoAniRa" name="No Minion Races" count="0"/>
+<source source="OptNoArti" name="No Artifacts" count="0"/>
+<source source="OptNoBrAge" name="Hide Bronze Age Weapons &amp; Armor" count="0"/>
+<source source="OptNoCoinW" name="No Coin Weight" count="0"/>
+<source source="OptNoCurse" name="No Cursed Items" count="0"/>
+<source source="OptNoEast" name="Hide Eastern Weapons &amp; Armor" count="0"/>
+<source source="OptNoEnc" name="No Encumbrance" count="0"/>
+<source source="OptNoFeatu" name="No Featured Races" count="0"/>
+<source source="OptNoFewMm" name="Don&apos;t Require Memorized Spells" count="0"/>
+<source source="OptNoGladi" name="Hide Gladiator Weapons" count="0"/>
+<source source="OptNoHiTec" name="Hide High-Tech Items" count="0"/>
+<source source="OptNoMonst" name="No Uncommon Races" count="0"/>
+<source source="OptNoNPC" name="No NPC Classes" count="0"/>
+<source source="OptNoNPCRa" name="No NPC Races" count="0"/>
+<source source="OptNoPrest" name="No Prestige Classes" count="0"/>
+<source source="OptNoSFire" name="Hide Simple Firearms" count="0"/>
+<source source="OptNoSiege" name="Hide Siege Weapons" count="0"/>
+<source source="OptNoStAge" name="Hide Stone Age Weapons &amp; Armor" count="0"/>
+<source source="OptNoTempl" name="No Templates" count="0"/>
+<source source="OptNoTools" name="Skills Don&apos;t Need Tools" count="0"/>
+<source source="OptPrestig" name="Use Prestige Awards" count="0"/>
+<source source="OptRchEqp" name="Hide Weapon Reach unless Equipped" count="0"/>
+<source source="OptRchEqup" name="Hide Weapon Reach on Statblock" count="0"/>
+<source source="OptRepItem" name="Replace Item Creation Bonus Feats" count="0"/>
+<source source="OptReson1" name="No Method 1 Resonant Powers" count="0"/>
+<source source="OptSLAChec" name="SLAs report error if incorrect level" count="0"/>
+<source source="OptSkillTr" name="Use Skill Tricks" count="0"/>
+<source source="OptTraits" name="Use Traits &amp; Flaws" count="0"/>
+<source source="OptUpbring" name="Free Upbringing Feat" count="0"/>
+<source source="OptVariant" name="Use Archetypes" count="0"/>
+<source source="OutAdjList" name="Show Activated Abilities &amp; Adjustments" count="1"/>
+<source source="OutAmmo" name="Hide Ammo (in weapons)" count="1"/>
+<source source="OutHideBck" name="Hide Background Details" count="0"/>
+<source source="OutImage" name="Show Hero Portrait" count="1"/>
+<source source="OutShUnarm" name="Show Unarmed (in weapons)" count="0"/>
+<source source="OutShldBas" name="Always Print Shield Bash Attacks" count="0"/>
+<source source="OutSitApp" name="List at the End" count="0"/>
+<source source="OutSitBoth" name="With Each Thing and At the End" count="0"/>
+<source source="OutSitInc" name="Include with Each Thing" count="1"/>
+<source source="OutSitNone" name="Don&apos;t Print Situational Modifiers" count="0"/>
+<source source="OutSkills" name="Hide Unusable Skills" count="1"/>
+<source source="OutSpecDsc" name="Show Feat / Ability Descriptions" count="0"/>
+<source source="OutSrcBook" name="Show Sourcebook Report" count="1"/>
+<source source="OutTwoWep" name="Always Print 2-Weapon Attacks" count="0"/>
+<source source="OutValid" name="Hide Validation Messages" count="1"/>
+<source source="PARoyal" name="Royal Class" count="0"/>
+<source source="PCAdvArm" name="Adventurer&apos;s Armory" count="1"/>
+<source source="PCAdvArm2" name="Adventurer&apos;s Armory 2" count="1"/>
+<source source="PCAdvClOrg" name="Advanced Class Origins" count="1"/>
+<source source="PCAgentEvi" name="Agents of Evil" count="1"/>
+<source source="PCAlchMan" name="Alchemy Manual" count="1"/>
+<source source="PCAndoran" name="Andoran, Spirit of Liberty" count="1"/>
+<source source="PCAnimArch" name="Animal Archive" count="1"/>
+<source source="PCAntHerHa" name="Antihero&apos;s Handbook" count="1"/>
+<source source="PCArcaAnth" name="Arcane Anthology" count="1"/>
+<source source="PCArmoMast" name="Armor Master&apos;s Handbook" count="1"/>
+<source source="PCBastards" name="Bastards of Golarion" count="1"/>
+<source source="PCBlackMar" name="Black Markets" count="1"/>
+<source source="PCBldAngel" name="Blood of Angels" count="1"/>
+<source source="PCBldBeast" name="Blood of the Beast" count="1"/>
+<source source="PCBldCoven" name="Blood of the Coven" count="1"/>
+<source source="PCBldElem" name="Blood of the Elements" count="1"/>
+<source source="PCBldFiend" name="Blood of Fiends" count="1"/>
+<source source="PCBldMoon" name="Blood of the Moon" count="1"/>
+<source source="PCBldNight" name="Blood of the Night" count="1"/>
+<source source="PCBldSea" name="Blood of the Sea" count="1"/>
+<source source="PCBldShad" name="Blood of Shadows" count="1"/>
+<source source="PCBloodAnc" name="Blood of the Ancients" count="1"/>
+<source source="PCChampBal" name="Champions of Balance" count="1"/>
+<source source="PCChampCor" name="Champions of Corruption" count="1"/>
+<source source="PCChampPur" name="Champions of Purity" count="1"/>
+<source source="PCCheliax" name="Cheliax, Empire of Devils" count="1"/>
+<source source="PCChronLegends" name="Chronicle of Legends" count="1"/>
+<source source="PCCohoComp" name="Cohorts and Companions" count="1"/>
+<source source="PCDemHunt" name="Demon Hunter&apos;s Handbook" count="1"/>
+<source source="PCDirTacti" name="Dirty Tactics Toolbox" count="1"/>
+<source source="PCDiscDoct" name="Disciple&apos;s Doctrine" count="1"/>
+<source source="PCDiviAnth" name="Divine Anthology" count="1"/>
+<source source="PCDraEmpPr" name="Dragon Empires Primer" count="1"/>
+<source source="PCDragonsl" name="Dragonslayer&apos;s Handbook" count="1"/>
+<source source="PCDungHand" name="Dungeoneer&apos;s Handbook" count="1"/>
+<source source="PCDwarvGol" name="Dwarves of Golarion" count="1"/>
+<source source="PCElemMast" name="Elemental Master&apos;s Handbook" count="1"/>
+<source source="PCElvesGol" name="Elves of Golarion" count="1"/>
+<source source="PCFaithBal" name="Faiths of Balance" count="1"/>
+<source source="PCFaithCor" name="Faiths of Corruption" count="1"/>
+<source source="PCFaithPhi" name="Faiths and Philosophies" count="1"/>
+<source source="PCFaithPur" name="Faiths of Purity" count="1"/>
+<source source="PCFamFolio" name="Familiar Folio" count="1"/>
+<source source="PCGianHunt" name="Giant Hunter&apos;s Handbook" count="1"/>
+<source source="PCGnomeGol" name="Gnomes of Golarion" count="1"/>
+<source source="PCGobliGol" name="Goblins of Golarion" count="1"/>
+<source source="PCHalflGol" name="Halflings of Golarion" count="1"/>
+<source source="PCHarrowHb" name="Harrow Handbook" count="1"/>
+<source source="PCHaunHero" name="Haunted Heroes Handbook" count="1"/>
+<source source="PCHealHand" name="Healer&apos;s Handbook" count="1"/>
+<source source="PCHeroDark" name="Heroes of the Darklands" count="1"/>
+<source source="PCHeroFrin" name="Heroes from the Fringe" count="1"/>
+<source source="PCHeroGolarion" name="Heroes of Golarion" count="1"/>
+<source source="PCHeroHigh" name="Heroes of the High Court" count="1"/>
+<source source="PCHeroStre" name="Heroes of the Streets" count="1"/>
+<source source="PCHeroWild" name="Heroes of the Wild" count="1"/>
+<source source="PCHumanGol" name="Humans of Golarion" count="1"/>
+<source source="PCInSeaPri" name="Inner Sea Primer" count="1"/>
+<source source="PCKnights" name="Knights of the Inner Sea" count="1"/>
+<source source="PCKobolGol" name="Kobolds of Golarion" count="1"/>
+<source source="PCLegaDrag" name="Legacy of Dragons" count="1"/>
+<source source="PCLegaFirW" name="Legacy of the First World" count="1"/>
+<source source="PCMagMark" name="Magical Marketplace" count="1"/>
+<source source="PCMagTacti" name="Magic Tactics Toolbox" count="1"/>
+<source source="PCMarArtHa" name="Martial Arts Handbook" count="1"/>
+<source source="PCMelTacti" name="Melee Tactics Toolbox" count="1"/>
+<source source="PCMerchMan" name="Merchant&apos;s Manifest" count="1"/>
+<source source="PCMonHunHa" name="Monster Hunter&apos;s Handbook" count="1"/>
+<source source="PCMonsSumm" name="Monster Summoner&apos;s Handbook" count="1"/>
+<source source="PCMythOrig" name="Mythic Origins" count="1"/>
+<source source="PCOccuOrig" name="Occult Origins" count="1"/>
+<source source="PCOrcsGol" name="Orcs of Golarion" count="1"/>
+<source source="PCOsirion" name="Osirion, Land of Pharaohs" count="1"/>
+<source source="PCPathRigh" name="Paths of the Righteous" count="1"/>
+<source source="PCPeopNort" name="People of the North" count="1"/>
+<source source="PCPeopSand" name="People of the Sands" count="1"/>
+<source source="PCPeopWast" name="People of the Wastes" count="1"/>
+<source source="PCPirates" name="Pirates of the Inner Sea" count="1"/>
+<source source="PCPlaneHop" name="Plane-Hopper&apos;s Handbook" count="1"/>
+<source source="PCPotPois" name="Potions &amp; Poisons" count="1"/>
+<source source="PCPplRivr" name="People of the River" count="1"/>
+<source source="PCPplStar" name="People of the Stars" count="1"/>
+<source source="PCPsyAnth" name="Psychic Anthology" count="1"/>
+<source source="PCQadira" name="Qadira, Gateway to the East" count="1"/>
+<source source="PCQuesCamp" name="Quests &amp; Campaigns" count="1"/>
+<source source="PCRanTacti" name="Ranged Tactics Toolbox" count="1"/>
+<source source="PCSargava" name="Sargava, the Lost Colony" count="1"/>
+<source source="PCSpyMast" name="Spymaster&apos;s Handbook" count="1"/>
+<source source="PCTaldor" name="Taldor, Echoes of Glory" count="1"/>
+<source source="PCUndSlay" name="Undead Slayer&apos;s Handbook" count="1"/>
+<source source="PCVarisia" name="Varisia, Birthplace of Legends" count="1"/>
+<source source="PCWeapMast" name="Weapon Master&apos;s Handbook" count="1"/>
+<source source="PCWildOrigins" name="Wilderness Origins" count="1"/>
+<source source="PFS_Boons" name="PFS Boons (as Vanities)" count="0"/>
+<source source="PGCthulhu" name="Sandy Petersen&apos;s Cthulhu Mythos" count="0"/>
+<source source="PGOptDread" name="Option: Dread" count="0"/>
+<source source="PGOptRitua" name="Option: Mythos Rituals" count="0"/>
+<source source="PUAltCraft" name="Alternate Crafting and Profession Rules" count="0"/>
+<source source="PUArtLore" name="Use Artistry and Lore skills" count="0"/>
+<source source="PUAutoBNoM" name="Auto Bonus Progression (No magic treasure)" count="0"/>
+<source source="PUAutoBon" name="Auto Bonus Progression" count="0"/>
+<source source="PUBackSkil" name="Background Skills" count="0"/>
+<source source="PUClasses" name="Unchained Classes" count="1"/>
+<source source="PUConsSkil" name="Consolidated Skills" count="0"/>
+<source source="PUDynItem" name="Dynamic Item Creation" count="0"/>
+<source source="PUEsoMat" name="Esoteric Material Components" count="0"/>
+<source source="PUFractBon" name="Fractional Base Bonuses" count="0"/>
+<source source="PUGroupSkl" name="Grouped Skills" count="0"/>
+<source source="PUInnaBon" name="Innate Item Bonuses" count="0"/>
+<source source="PULimMagic" name="Limited Magic" count="0"/>
+<source source="PUMonWound" name="Monster Wound Thresholds" count="0"/>
+<source source="PUMultiCla" name="Variant Multiclassing" count="0"/>
+<source source="PUNumAlign" name="Unchained Alignment" count="0"/>
+<source source="PUOverSpl" name="Overclocked Spells" count="0"/>
+<source source="PUPoiDis" name="Diseases and Poisons" count="1"/>
+<source source="PURemAlign" name="Removing Alignment" count="0"/>
+<source source="PURemItAtt" name="Removing Iterative Attacks" count="0"/>
+<source source="PURevActi" name="Revised Action Economy" count="0"/>
+<source source="PUScalItem" name="Scaling Items" count="1"/>
+<source source="PUSimSpell" name="Simplified Spellcasting" count="0"/>
+<source source="PUSkilUnlo" name="Skill Unlocks" count="0"/>
+<source source="PUSplAttRo" name="Spell Attack Roll" count="0"/>
+<source source="PUStagAdv" name="Staggered Advancement" count="0"/>
+<source source="PUStamAll" name="Free for everyone" count="0"/>
+<source source="PUStamFBon" name="Fighter bonus feats only" count="0"/>
+<source source="PUStamFigh" name="Free for Fighters" count="0"/>
+<source source="PUStamFt" name="Feat Access" count="0"/>
+<source source="PUWndGrit" name="Gritty Mode" count="0"/>
+<source source="PUWound" name="Wound Thresholds" count="0"/>
+<source source="PaizoBlog" name="Paizo Blog" count="1"/>
+<source source="PathCCrown" name="Carrion Crown" count="1"/>
+<source source="PathCounTh" name="Council of Thieves" count="1"/>
+<source source="PathCurHar" name="Option: Harrow Points" count="0"/>
+<source source="PathCursGM" name="Curse of the Crimson Throne GM Content" count="0"/>
+<source source="PathCurse" name="Curse of the Crimson Throne" count="1"/>
+<source source="PathGianGM" name="Giantslayer GM Content" count="0"/>
+<source source="PathGiants" name="Giantslayer" count="1"/>
+<source source="PathHeReGM" name="Hell&apos;s Rebels GM Content" count="0"/>
+<source source="PathHeVeGM" name="Hell&apos;s Vengeance GM Content" count="0"/>
+<source source="PathHelReb" name="Hell&apos;s Rebels" count="1"/>
+<source source="PathHelVen" name="Hell&apos;s Vengeance" count="1"/>
+<source source="PathIrGoGM" name="Iron Gods GM Content" count="0"/>
+<source source="PathIrInGM" name="Ironfang Invasion GM Content" count="0"/>
+<source source="PathIroInv" name="Ironfang Invasion" count="1"/>
+<source source="PathIronGo" name="Iron Gods" count="1"/>
+<source source="PathJadeRe" name="Jade Regent" count="1"/>
+<source source="PathKingma" name="Kingmaker" count="1"/>
+<source source="PathLegacy" name="Legacy of Fire" count="0"/>
+<source source="PathMuMask" name="Mummy&apos;s Mask" count="1"/>
+<source source="PathRetRune" name="Return of the Runelords" count="1"/>
+<source source="PathRetRuneGM" name="Return of the Runelords GM Content" count="0"/>
+<source source="PathRgnWin" name="Reign of Winter" count="1"/>
+<source source="PathRise" name="Rise of the Runelords Anniversary Edition" count="1"/>
+<source source="PathRiseGM" name="Rise of the Runelords GM Content" count="0"/>
+<source source="PathRuAzGM" name="Ruins of Azlant GM Content" count="0"/>
+<source source="PathRuAzla" name="Ruins of Azlant" count="1"/>
+<source source="PathSecond" name="Second Darkness" count="0"/>
+<source source="PathSerpSk" name="Serpent&apos;s Skull" count="1"/>
+<source source="PathShStar" name="Shattered Star" count="1"/>
+<source source="PathSkulSh" name="Skull &amp; Shackles" count="1"/>
+<source source="PathSoPri" name="Pathfinder Society Primer" count="1"/>
+<source source="PathStAeGM" name="Strange Aeons GM Content" count="0"/>
+<source source="PathStrAeo" name="Strange Aeons" count="1"/>
+<source source="PathTyrGrasp" name="Tyrant&apos;s Grasp" count="1"/>
+<source source="PathTyrGraspGM" name="Tyrant&apos;s Grasp GM Content" count="0"/>
+<source source="PathWaCrGM" name="War for the Crown GM Content" count="0"/>
+<source source="PathWarCro" name="War for the Crown" count="1"/>
+<source source="PathWraRig" name="Wrath of the Righteous" count="1"/>
+<source source="Phosnith" name="RGG - Phosonith the Cruel Charmer" count="0"/>
+<source source="PlanarAdv" name="Planar Adventures" count="1"/>
+<source source="RPHeroJade" name="Heroes of the Jade Oath" count="0"/>
+<source source="RPItCoDrag" name="In the Company of Dragons" count="0"/>
+<source source="RPItCoFey" name="In the Company of Fey" count="0"/>
+<source source="RPItCoMons" name="In the Company of Monsters" count="0"/>
+<source source="RPItCoUni" name="In the Company of Unicorns" count="0"/>
+<source source="RPOBldBlde" name="Blood and Blades" count="0"/>
+<source source="RPSecrAdv" name="The Secrets of Adventuring" count="0"/>
+<source source="RWAjinan" name="Realm Works - Isle of Kandril" count="0"/>
+<source source="RaceBuild" name="Race Builder" count="1"/>
+<source source="RoHH" name="RGG - Races of Hoof and Horn" count="0"/>
+<source source="RoWW" name="RGG - Races of Wind and Wing" count="0"/>
+<source source="RseDdFeat" name="RGG - Raise Dead Feats (4)" count="0"/>
+<source source="SGGBfirbll" name="RGG - Fireball Feats (5)" count="0"/>
+<source source="SGG_FOB" name="RGG - Feats of Battle" count="0"/>
+<source source="SGG_FOCC" name="RGG - Feats of Critical Combat" count="0"/>
+<source source="SGG_FODM" name="RGG - Feats of Divine Might" count="0"/>
+<source source="SGG_FOIA" name="RGG - Feats of Immediate Action" count="0"/>
+<source source="SGG_FOMM" name="RGG - Feats of Metamagic" count="0"/>
+<source source="SGG_FORMI" name="RGG - Feats of Runic Might I" count="0"/>
+<source source="SGG_FORMII" name="RGG - Feats of Runic Might II" count="0"/>
+<source source="SGG_FOSF" name="RGG - Feats of Subterfuge" count="0"/>
+<source source="SGG_FOSP" name="RGG - Feats of Spellcasting" count="0"/>
+<source source="SGG_HEXES" name="RGG - Advanced Options Witches" count="0"/>
+<source source="SGG_HOverP" name="RGG - Horrifically Overpowered Feats" count="0"/>
+<source source="SGG_MOverP" name="RGG - More Horrifically Overpowered Feats" count="0"/>
+<source source="SHModPath" name="The Modern Path 2: Shadow Heroes" count="0"/>
+<source source="SRDAnimals" name="d20 SRD Animals" count="0"/>
+<source source="SRDItems" name="d20 SRD Magic Items" count="0"/>
+<source source="SRDSpells" name="d20 SRD Spells" count="0"/>
+<source source="ShldSplFt" name="RGG - Shield Spell Feats (7)" count="0"/>
+<source source="ShowTrackR" name="Include Tracked Resources on Statblock" count="0"/>
+<source source="SocChar" name="Pathfinder Society Organized Play Character" count="0"/>
+<source source="SocContent" name="Pathfinder Society Content (no Restrictions)" count="0"/>
+<source source="SocCore" name="Pathfinder Society Core Campaign Character" count="0"/>
+<source source="SplMastAll" name="Spell Mastery for all spellbook users" count="0"/>
+<source source="SprtWeapFt" name="RGG - Spiritual Weapon Feats (6)" count="0"/>
+<source source="SummonCrea" name="Summoned Creature" count="0"/>
+<source source="SummonMons" name="Summoner&apos;s Sidekick" count="1"/>
+<source source="SwrdnBrd" name="RGG - Sword and Board Feats (7)" count="0"/>
+<source source="S2Eberron" name="Eberron Campaign Setting" count="0"/>
+<source source="TOBForgotF" name="S2P - Forgotten Foes" count="0"/>
+<source source="TomeOfSecr" name="C7E - Tome of Secrets" count="0"/>
+<source source="UCAlignmnt" name="Ultimate Campaign Numerical Alignment" count="0"/>
+<source source="UCArmorDR" name="Ultimate Combat Armor/DR" count="0"/>
+<source source="UCBackAcc" name="Traits &amp; Drawbacks Require a Background" count="0"/>
+<source source="UCBackgrnd" name="Unrestricted Traits &amp; Drawbacks" count="1"/>
+<source source="UCCallShot" name="Ultimate Combat Called Shots" count="0"/>
+<source source="UCCampaign" name="Ultimate Campaign Campaign Systems" count="0"/>
+<source source="UCExpMod" name="Expanding Settlement Modifiers" count="0"/>
+<source source="UCNoBack" name="Don&apos;t Use Backgrounds" count="0"/>
+<source source="UCPieceArm" name="Ultimate Combat Piecemeal Armor" count="0"/>
+<source source="UCReputat" name="Ultimate Campaign Reputation and Fame" count="0"/>
+<source source="UCSettSize" name="Settlement Size" count="0"/>
+<source source="UCWound" name="Ultimate Combat Wounds &amp; Vigor" count="0"/>
+<source source="UMFamil" name="Ultimate Magic Familiars" count="1"/>
+<source source="UMWords" name="Words of Power" count="0"/>
+<source source="UltCamp" name="Ultimate Campaign" count="1"/>
+<source source="UltCombat" name="Ultimate Combat" count="1"/>
+<source source="UltEquip" name="Ultimate Equipment" count="1"/>
+<source source="UltIntri" name="Ultimate Intrigue" count="1"/>
+<source source="UltMagic" name="Ultimate Magic" count="1"/>
+<source source="UltWild" name="Ultimate Wilderness" count="1"/>
+<source source="UmTotM" name="LG - Treasury of the Macabre" count="0"/>
+<source source="VarDragons" name="FB - Variant Dragons" count="0"/>
+<source source="VillCodex" name="Villain Codex" count="1"/>
+<source source="WarMast" name="RGG - War Master" count="0"/>
+<source source="WebTraits" name="Character Traits Web Enhancement" count="1"/>
+<source source="WitchHexes" name="RGG - Witch Hexes (13)" count="0"/>
+<source source="WtchDgger" name="RGG - Witch&apos;s Daggers (5)" count="0"/>
+<source source="XPFast" name="Fast Advancement" count="0"/>
+<source source="XPMedium" name="Medium Advancement" count="1"/>
+<source source="XPShadow" name="No XP Required for Advancement" count="0"/>
+<source source="XPSlow" name="Slow Advancement" count="0"/>
+<source source="XPSociety" name="Pathfinder Society Advancement" count="0"/>
+<source source="bKPAdvRace" name="Advanced Races Compendium" count="0"/>
+<source source="bKPDeepMag" name="Deep Magic" count="0"/>
+<source source="bKPMidBest" name="Midgard Bestiary" count="0"/>
+<source source="bKPMidgCS" name="Midgard Campaign Setting" count="0"/>
+<source source="bKPMidgPG" name="Midgard Player&apos;s Guide" count="1"/>
+<source source="bKPNewExpa" name="New Paths Compendium Expanded Edition" count="0"/>
+<source source="bKPNewPath" name="New Paths Compendium" count="0"/>
+<source source="bKPPGCross" name="Player&apos;s Guide to the Crossroads" count="0"/>
+<source source="bKPQuaterl" name="Kobold Quarterly" count="1"/>
+<source source="bKPSouthBe" name="Southlands Bestiary" count="0"/>
+<source source="bKPSouthCS" name="Southlands Campaign Setting" count="0"/>
+<source source="bKPZobeAll" name="Alleys of Zobeck" count="0"/>
+<source source="bKPZobeGaz" name="Zobeck Gazetteer" count="0"/>
+<source source="bKPZobeStr" name="Streets of Zobeck" count="0"/>
+<source source="bPF1001" name="1001 Spells" count="1"/>
+<source source="bTomeHorr" name="The Tome of Horrors Complete" count="0"/>
+<source source="bTomeHor4" name="The Tome of Horrors IV" count="0"/>
+<source source="fAntimagic" name="RGG - Antimagic Field Feats (6)" count="0"/>
+<source source="fMageArmor" name="RGG - Mage Armor Feats (10)" count="0"/>
+<source source="fTentacle" name="RGG - Tendril Tentacle Feats (7)" count="0"/>
+<source source="jadeDragon" name="GR - Jade Dragons &amp; Hungry Ghosts" count="0"/>
+<source source="oGRFreeAdp" name="Use Variant Adept" count="0"/>
+<source source="oGRFreeFbn" name="Forbidden Knowledge" count="0"/>
+<source source="oGRFreeIns" name="Expanded Insanity Rules" count="0"/>
+<source source="optKPDFeat" name="New Paths Option: Death Feats require Flaw" count="0"/>
+<source source="optKPDFlaw" name="New Paths Option: Death Flaws grant Death Feat" count="0"/>
+<source source="optKPGearP" name="Advanced Races Option: Use Gear Points" count="0"/>
+<source source="optKPLead" name="New Paths Option: Split Leadership Feat" count="0"/>
+<source source="optKPRunes" name="Deep Magic Option: Use Runes &amp; Incantations" count="0"/>
+<source source="optKPScale" name="New Paths Option: Use Scaling Feats" count="0"/>
+<source source="optKPTrick" name="New Paths Option: Variant Trickster Casting" count="0"/>
+<source source="pFoPM" name="RGG - Feats of Psionic Might" count="0"/>
+<source source="pGRAdvBes" name="Advanced Bestiary" count="0"/>
+<source source="pGRFreePlG" name="Freeport Player&apos;s Guide" count="0"/>
+<source source="pGRFreePth" name="Fury in Freeport" count="0"/>
+<source source="pGRFreeSet" name="Freeport: City of Adventure" count="0"/>
+<source source="pHellfire" name="RGG - Hellfire Magic" count="0"/>
+<source source="pLGGothCom" name="Gothic Campaign Compendium" count="1"/>
+<source source="pPsiUn" name="DSP - Ultimate Psionics" count="0"/>
+<source source="pWotW" name="Way of the Wicked AP" count="0"/>
+<source source="sggDragRid" name="RGG - Dragonrider" count="0"/>
+<source source="srcARK" name="Arkadia" count="0"/>
+<source source="srcAcadSec" name="Academy of Secrets" count="0"/>
+<source source="srcAdvBest" name="GR - Advanced Bestiary" count="0"/>
+<source source="srcAdvRcCx" name="GR - Advanced Race Codex" count="0"/>
+<source source="srcBdDrgsc" name="Blood of Dragonscar" count="0"/>
+<source source="srcBeyVlt" name="Beyond the Vault of Souls" count="0"/>
+<source source="srcBookFnd" name="GR - Book of Fiends" count="0"/>
+<source source="srcBroken" name="Broken Chains" count="0"/>
+<source source="srcCarHill" name="Carrion Hill" count="0"/>
+<source source="srcCarnTea" name="Carnival of Tears" count="0"/>
+<source source="srcCityDea" name="City of Golden Death" count="0"/>
+<source source="srcClshKS" name="Clash of the Kingslayers" count="0"/>
+<source source="srcCoBeAdj" name="Frumple Adjustments" count="0"/>
+<source source="srcCqtBsVl" name="Conquest of Bloodsworn Vale" count="0"/>
+<source source="srcCrKobK" name="Crown of the Kobold King" count="0"/>
+<source source="srcCrucChs" name="Crucible of Chaos" count="0"/>
+<source source="srcCryEver" name="Crypt of the Everflame" count="0"/>
+<source source="srcCseRvSk" name="Curse of the Riven Sky" count="0"/>
+<source source="srcCultEbD" name="Cult of the Ebon Destroyer" count="0"/>
+<source source="srcDCtDust" name="Doom Comes to Dustpawn" count="0"/>
+<source source="srcDPthMed" name="DSP - Divergent Paths: Medic" count="0"/>
+<source source="srcDawnSS" name="Dawn of the Scarlet Sun" count="0"/>
+<source source="srcDeadMan" name="FGG - Dead Man&apos;s Chest (d20)" count="0"/>
+<source source="srcDemWth" name="The Demon Within" count="0"/>
+<source source="srcDoom" name="Doom Comes to Dustpawn" count="0"/>
+<source source="srcDrgDem" name="The Dragon&apos;s Demand" count="0"/>
+<source source="srcEmerSpi" name="The Emerald Spire Superdungeon" count="0"/>
+<source source="srcEntPhar" name="Entombed with the Pharaohs" count="0"/>
+<source source="srcFASB" name="FGG - Fire As She Bears" count="0"/>
+<source source="srcFBFeats" name="Frumple Feats &amp; Traits" count="0"/>
+<source source="srcFaOfEb" name="Faiths of Eberron" count="0"/>
+<source source="srcFangKe" name="Fangwood Keep" count="0"/>
+<source source="srcFeastRv" name="The Feast of Ravenmoor" count="0"/>
+<source source="srcFltRdRv" name="Flight of the Red Raven" count="0"/>
+<source source="srcFrmShS" name="From Shore to Sea" count="0"/>
+<source source="srcGGPLago" name="GGP - Race: Lagos" count="0"/>
+<source source="srcGGPScyl" name="GGP - Race: Scyleen" count="0"/>
+<source source="srcGalEvil" name="Gallery of Evil" count="0"/>
+<source source="srcGesAttr" name="Attribute Bonus Option" count="0"/>
+<source source="srcGesHD" name="HD Bonus Option" count="0"/>
+<source source="srcGesSave" name="Saving Throw Bonus Option" count="0"/>
+<source source="srcGesSklB" name="Skills Bonus Option" count="0"/>
+<source source="srcGesSkll" name="Skill Points Bonus Option" count="0"/>
+<source source="srcGesWlth" name="Starting Wealth Calculation" count="0"/>
+<source source="srcGestalt" name="Gestalt Variant Core" count="0"/>
+<source source="srcGiftBla" name="Free Gifted Blade for soulknives" count="0"/>
+<source source="srcGodHer" name="The Godsmouth Heresy" count="0"/>
+<source source="srcGrdDrg" name="Guardians of Dragonfall" count="0"/>
+<source source="srcHangN" name="Hangman&apos;s Noose" count="0"/>
+<source source="srcHantFor" name="Into the Haunted Forest" count="0"/>
+<source source="srcHarrow" name="The Harrowing" count="0"/>
+<source source="srcHideDei" name="Hide Community Deities" count="0"/>
+<source source="srcHideEth" name="Hide Non-Eberron Ethnicities" count="0"/>
+<source source="srcHideLan" name="Hide Non-Eberron Campaign Languages" count="0"/>
+<source source="srcHideReg" name="Hide Region of Origin Tab" count="0"/>
+<source source="srcHngDead" name="Hungry are the Dead" count="0"/>
+<source source="srcHollLHp" name="Hollow&apos;s Last Hope" count="0"/>
+<source source="srcHotJ" name="Paizo - Heart of the Jungle" count="0"/>
+<source source="srcIcoBest" name="RA - The Iconic Bestiary: Classics of Fantasy" count="0"/>
+<source source="srcIntDark" name="Paizo - Into the Darklands" count="0"/>
+<source source="srcLGUltBa" name="LG - Ultimate Battle" count="0"/>
+<source source="srcLegPlAP" name="LG - Legendary Planet AP" count="0"/>
+<source source="srcLibVamp" name="NNW -  Liber Vampyr" count="0"/>
+<source source="srcMidBest" name="KP - Midgard Bestiary" count="0"/>
+<source source="srcMidMirr" name="The Midnight Mirror" count="0"/>
+<source source="srcMoFoGra" name="Monster Focus - Gravelings" count="0"/>
+<source source="srcMoFoSke" name="Monster Focus - Skeletons" count="0"/>
+<source source="srcMonkTal" name="RGG - Talented Monk" count="0"/>
+<source source="srcMoonsca" name="The Moonscar" count="0"/>
+<source source="srcMskLvG" name="Masks of the Living God" count="0"/>
+<source source="srcMstFFrt" name="Master of the Fallen Fortress" count="0"/>
+<source source="srcMurdMrk" name="Murder&apos;s Mark" count="0"/>
+<source source="srcMyPsi" name="DSP - Mythic Psionics" count="0"/>
+<source source="srcNyambe" name="AG - Nyambe: African Adventures" count="0"/>
+<source source="srcOnlyEbe" name="Hide Non-Eberron Deities" count="0"/>
+<source source="srcPOWEx" name="DSP - Path of War Expanded Playtest" count="0"/>
+<source source="srcPUAuSev" name="DSP - Psionics Augmented: 7th Path" count="0"/>
+<source source="srcPathOfW" name="DSP - Path of War" count="0"/>
+<source source="srcPctStn" name="The Pact Stone Pyramid" count="0"/>
+<source source="srcRaOfEb" name="Races of Eberron" count="0"/>
+<source source="srcRespDpm" name="No Response from Deepmar" count="0"/>
+<source source="srcRlmFelQ" name="Realm of the Fellnight Queen" count="0"/>
+<source source="srcRobmanc" name="SKR - Robomancer" count="0"/>
+<source source="srcRubyPhx" name="Ruby Phoenix Tournament" count="0"/>
+<source source="srcRvgKbld" name="Revenge of the Kobold King" count="0"/>
+<source source="srcRvrDrkn" name="River into Darkness" count="0"/>
+<source source="srcSharn" name="Sharn City of Towers" count="0"/>
+<source source="srcSimMoTe" name="SGG - Simple Monster Templates" count="0"/>
+<source source="srcStarRPG" name="Starfinder" count="0"/>
+<source source="srcSvnSin" name="Seven Swords of Sin" count="0"/>
+<source source="srcS2Adjus" name="ShadowChemosh&apos;s Adjustments" count="0"/>
+<source source="srcS2Arche" name="ShadowChemosh&apos;s Archetypes &amp; Classes" count="0"/>
+<source source="srcS2Feat" name="ShadowChemosh&apos;s Feats" count="0"/>
+<source source="srcS2Gear" name="ShadowChemosh&apos;s Equipment" count="0"/>
+<source source="srcTearMan" name="Tears at Bitter Manor" count="0"/>
+<source source="srcTombIrM" name="Tomb of the Iron Medusa" count="0"/>
+<source source="srcTomeHor" name="FGG - Tome of Horrors" count="0"/>
+<source source="srcTrsChim" name="Treasure of Chimera Cove" count="0"/>
+<source source="srcTwLstBr" name="Tower of the Last Barron" count="0"/>
+<source source="srcUnBbnAr" name="Unchained Barbarian Archetypes" count="0"/>
+<source source="srcUnBlrAr" name="Unchained Bloodrager Archetypes" count="0"/>
+<source source="srcUnDom" name="Unchained Domains" count="0"/>
+<source source="srcUnMnkAr" name="Unchained Monk Archetypes" count="0"/>
+<source source="srcUnNinAr" name="Unchained Ninja Archetypes" count="0"/>
+<source source="srcUnRogAr" name="Unchained Rogue Archetypes" count="0"/>
+<source source="srcUnWarAr" name="Unchained Warpriest Archetypes" count="0"/>
+<source source="srcWardFrg" name="Wardens of the Reborn Forge" count="0"/>
+<source source="srcWeGob" name="We Be Goblins" count="0"/>
+<source source="srcWeGob2" name="We Be Goblins Too (PFS)" count="0"/>
+<source source="srcWitchL" name="The WItchwar Legacy" count="0"/>
+<source source="src110SPV4" name="RGG - 110 Spell Variants 4" count="0"/>
+<source source="src5DraAr" name="RGG - Dragonhide Armor (5)" count="0"/>
+<source source="src7CLWFea" name="RGG - Cure Light Wounds Feats (7)" count="0"/>
+<source source="110SpV" name="RGG - 110 Spell Variants 1&amp;3" count="0"/>
+<source source="13EvilSpl" name="RGG - 13 Evil Spells from The Forge" count="0"/>
+<source source="TestMe" name="Test Me!" count="0"/>
+<requiredsources>
+<picksources>
+<pickinfo thingid="rYoCrysDra" thingname="Dragon, Crystal, Young"/>
+<needsource source="Bestiary2" name="Bestiary 2"/>
+</picksources>
+<picksources>
+<pickinfo thingid="rmPseudo" thingname="Pseudodragon" important="yes"/>
+<needsource source="Bestiary1" name="Bestiary"/>
+<needsource source="BestFamil" name="Bestiary Familiars"/>
+</picksources>
+</requiredsources>
+<creatureids>
+<creatureid creatureid="pseudodragon"/>
+</creatureids>
+<userimage imageindex="1" filename="C:\Users\Technokat\Downloads\Bestiary-small\Pseudodragon copy.jpg" imagefile="6_1_Pseudodragon.jpg"/>
+</hero>
+</document>

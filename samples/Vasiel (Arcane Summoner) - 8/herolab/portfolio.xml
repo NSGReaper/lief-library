@@ -1,0 +1,830 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document signature="Hero Lab Portfolio Index">
+<product major="8" minor="9" patch="8" build="958"/>
+<game folder="pathfinder" game="Pathfinder Roleplaying Game" major="14" minor="19"/>
+<portfolio herocount="7" activehero="1">
+<tactical combatturn="0"/>
+<notes/>
+<hero playername="" heroindex="1" herosummary="Elf Wiz 8 - NG Medium humanoid" leadfile="lead1.xml" heroname="Vasiel Yal" activemode="1" allegianceid="algAlly" hasacted="no">
+<needsource source="OptAniSlot" name="Enforce Animal Magic Item Slots"/>
+<requiredsources>
+<picksources>
+<pickinfo thingid="arFamEmis" thingname="Emissary" important="yes"/>
+<needsource source="PCFamFolio" name="Familiar Folio"/>
+<needsource source="UltWild" name="Ultimate Wilderness"/>
+</picksources>
+<picksources>
+<pickinfo thingid="arWizThass" thingname="Thassilonian Specialist" important="yes"/>
+<needsource source="AdvenGuide" name="Adventurer&apos;s Guide"/>
+<needsource source="CSISMagic" name="Inner Sea Magic"/>
+<needsource source="PathRise" name="Rise of the Runelords Anniversary Edition"/>
+<needsource source="PathRiseGM" name="Rise of the Runelords GM Content"/>
+</picksources>
+<picksources>
+<pickinfo thingid="deiMilani" thingname="Milani"/>
+<needsource source="CSGodsMagc" name="Gods &amp; Magic"/>
+<needsource source="CSISGods" name="Inner Sea Gods"/>
+<needsource source="CSWorldGui" name="Inner Sea World Guide"/>
+<needsource source="CSISFaiths" name="Inner Sea Faiths"/>
+<needsource source="PathHeReGM" name="Hell&apos;s Rebels GM Content" ismodifyonly="yes"/>
+</picksources>
+<picksources>
+<pickinfo thingid="drMeticulo" thingname="Meticulous"/>
+<needsource source="UltCamp" name="Ultimate Campaign"/>
+</picksources>
+<picksources>
+<pickinfo thingid="fEvoSumMon" thingname="Evolved Summoned Monster"/>
+<needsource source="ACG" name="Advanced Class Guide"/>
+</picksources>
+<picksources>
+<pickinfo thingid="fInsMagTat" thingname="Inscribe Magical Tattoo"/>
+<needsource source="CSISMagic" name="Inner Sea Magic"/>
+<needsource source="PathRiseGM" name="Rise of the Runelords GM Content" ismodifyonly="yes"/>
+</picksources>
+<picksources>
+<pickinfo thingid="fPFAcadama" thingname="Acadamae Graduate"/>
+<needsource source="PathCurse" name="Curse of the Crimson Throne"/>
+</picksources>
+<picksources>
+<pickinfo thingid="fTattAttun" thingname="Tattoo Attunement"/>
+<needsource source="PCMonsSumm" name="Monster Summoner&apos;s Handbook"/>
+</picksources>
+<picksources>
+<pickinfo thingid="gBagWP" thingname="Waterproof bag"/>
+<needsource source="PCAdvArm" name="Adventurer&apos;s Armory"/>
+<needsource source="UltEquip" name="Ultimate Equipment"/>
+<needsource source="PathHeVeGM" name="Hell&apos;s Vengeance GM Content" ismodifyonly="yes"/>
+</picksources>
+<picksources>
+<pickinfo thingid="gBookLaria" thingname="Book lariat"/>
+<needsource source="ACG" name="Advanced Class Guide"/>
+</picksources>
+<picksources>
+<pickinfo thingid="gFamiliSat" thingname="Familiar satchel"/>
+<needsource source="UltEquip" name="Ultimate Equipment"/>
+</picksources>
+<picksources>
+<pickinfo thingid="gJournal" thingname="Journal"/>
+<needsource source="CSFieldGui" name="Pathfinder Society Field Guide"/>
+<needsource source="UltEquip" name="Ultimate Equipment"/>
+<needsource source="PathRiseGM" name="Rise of the Runelords GM Content" ismodifyonly="yes"/>
+<needsource source="ModEmSpiGM" name="The Emerald Spire GM Content" ismodifyonly="yes"/>
+<needsource source="PathWaCrGM" name="War for the Crown GM Content" ismodifyonly="yes"/>
+</picksources>
+<picksources>
+<pickinfo thingid="gMSBackpac" thingname="Backpack, masterwork"/>
+<needsource source="APG" name="Advanced Player&apos;s Guide"/>
+<needsource source="PCAdvArm" name="Adventurer&apos;s Armory"/>
+<needsource source="UltEquip" name="Ultimate Equipment"/>
+<needsource source="PathIrGoGM" name="Iron Gods GM Content" ismodifyonly="yes"/>
+<needsource source="PathIrInGM" name="Ironfang Invasion GM Content" ismodifyonly="yes"/>
+<needsource source="ModPlPerGM" name="Plunder and Peril GM Content" ismodifyonly="yes"/>
+<needsource source="PathWaCrGM" name="War for the Crown GM Content" ismodifyonly="yes"/>
+</picksources>
+<picksources>
+<pickinfo thingid="gMessKit" thingname="Mess kit"/>
+<needsource source="UltEquip" name="Ultimate Equipment"/>
+<needsource source="PathCursGM" name="Curse of the Crimson Throne GM Content" ismodifyonly="yes"/>
+<needsource source="PathIrInGM" name="Ironfang Invasion GM Content" ismodifyonly="yes"/>
+<needsource source="PathRuAzGM" name="Ruins of Azlant GM Content" ismodifyonly="yes"/>
+<needsource source="PathWaCrGM" name="War for the Crown GM Content" ismodifyonly="yes"/>
+<needsource source="PathRetRuneGM" name="Return of the Runelords GM Content" ismodifyonly="yes"/>
+</picksources>
+<picksources>
+<pickinfo thingid="gScrollBox" thingname="Scroll box"/>
+<needsource source="UltEquip" name="Ultimate Equipment"/>
+</picksources>
+<picksources>
+<pickinfo thingid="ioIouCDsRs" thingname="Ioun stone (dusty rose prism, cracked)"/>
+<needsource source="CSSeekerSe" name="Seekers of Secrets"/>
+</picksources>
+<picksources>
+<pickinfo thingid="lNecril" thingname="Necril"/>
+<needsource source="CSWorldGui" name="Inner Sea World Guide"/>
+<needsource source="CSISRaces" name="Inner Sea Races"/>
+<needsource source="PCHeroDark" name="Heroes of the Darklands"/>
+<needsource source="PathRiseGM" name="Rise of the Runelords GM Content" ismodifyonly="yes"/>
+<needsource source="PathHeReGM" name="Hell&apos;s Rebels GM Content" ismodifyonly="yes"/>
+</picksources>
+<picksources>
+<pickinfo thingid="lPFVarisia" thingname="Varisian"/>
+<needsource source="CSWorldGui" name="Inner Sea World Guide"/>
+<needsource source="CSISRaces" name="Inner Sea Races"/>
+<needsource source="PathRiseGM" name="Rise of the Runelords GM Content" ismodifyonly="yes"/>
+<needsource source="PathHeReGM" name="Hell&apos;s Rebels GM Content" ismodifyonly="yes"/>
+</picksources>
+<picksources>
+<pickinfo thingid="pHeigtAwa" thingname="Heightened Awareness"/>
+<needsource source="ACG" name="Advanced Class Guide"/>
+</picksources>
+<picksources>
+<pickinfo thingid="pKinBurn" thingname="Kineticist: Burn"/>
+<needsource source="OccultAdv" name="Occult Adventures"/>
+</picksources>
+<picksources>
+<pickinfo thingid="pTearsToWine" thingname="Tears to Wine"/>
+<needsource source="PCArcaAnth" name="Arcane Anthology"/>
+</picksources>
+<picksources>
+<pickinfo thingid="raElfOvMag" thingname="Overwhelming Magic"/>
+<needsource source="CSISRaces" name="Inner Sea Races"/>
+</picksources>
+<picksources>
+<pickinfo thingid="sPFInfHea1" thingname="Infernal Healing"/>
+<needsource source="PathCounTh" name="Council of Thieves"/>
+<needsource source="PathHelVen" name="Hell&apos;s Vengeance"/>
+<needsource source="CSWorldGui" name="Inner Sea World Guide"/>
+<needsource source="PathHeVeGM" name="Hell&apos;s Vengeance GM Content" ismodifyonly="yes"/>
+</picksources>
+<picksources>
+<pickinfo thingid="spCmProEn4" thingname="Protection from Energy, Communal"/>
+<needsource source="UltCombat" name="Ultimate Combat"/>
+</picksources>
+<picksources>
+<pickinfo thingid="spCmResEn3" thingname="Resist Energy, Communal"/>
+<needsource source="UltCombat" name="Ultimate Combat"/>
+<needsource source="PathHeVeGM" name="Hell&apos;s Vengeance GM Content" ismodifyonly="yes"/>
+</picksources>
+<picksources>
+<pickinfo thingid="spCmSpiCl3" thingname="Spider Climb, Communal"/>
+<needsource source="UltCombat" name="Ultimate Combat"/>
+</picksources>
+<picksources>
+<pickinfo thingid="spCrafFor1" thingname="Crafter&apos;s Fortune"/>
+<needsource source="APG" name="Advanced Player&apos;s Guide"/>
+<needsource source="PathIrGoGM" name="Iron Gods GM Content" ismodifyonly="yes"/>
+<needsource source="PathHeReGM" name="Hell&apos;s Rebels GM Content" ismodifyonly="yes"/>
+<needsource source="PathHeVeGM" name="Hell&apos;s Vengeance GM Content" ismodifyonly="yes"/>
+<needsource source="PathIrInGM" name="Ironfang Invasion GM Content" ismodifyonly="yes"/>
+<needsource source="PathWaCrGM" name="War for the Crown GM Content" ismodifyonly="yes"/>
+<needsource source="PathTyrGraspGM" name="Tyrant&apos;s Grasp GM Content" ismodifyonly="yes"/>
+</picksources>
+<picksources>
+<pickinfo thingid="spCreaPit2" thingname="Create Pit"/>
+<needsource source="APG" name="Advanced Player&apos;s Guide"/>
+<needsource source="PathHeReGM" name="Hell&apos;s Rebels GM Content" ismodifyonly="yes"/>
+<needsource source="PathHeVeGM" name="Hell&apos;s Vengeance GM Content" ismodifyonly="yes"/>
+<needsource source="PathCursGM" name="Curse of the Crimson Throne GM Content" ismodifyonly="yes"/>
+<needsource source="PathIrInGM" name="Ironfang Invasion GM Content" ismodifyonly="yes"/>
+<needsource source="PathRuAzGM" name="Ruins of Azlant GM Content" ismodifyonly="yes"/>
+<needsource source="PathWaCrGM" name="War for the Crown GM Content" ismodifyonly="yes"/>
+<needsource source="PathRetRuneGM" name="Return of the Runelords GM Content" ismodifyonly="yes"/>
+<needsource source="KPHallMKGM" name="Halls of the Mountain-King GM Content" ismodifyonly="yes"/>
+</picksources>
+<picksources>
+<pickinfo thingid="spDeteFie0" thingname="Detect Fiendish Presence"/>
+<needsource source="PCAgentEvi" name="Agents of Evil"/>
+<needsource source="PathHeVeGM" name="Hell&apos;s Vengeance GM Content" ismodifyonly="yes"/>
+</picksources>
+<picksources>
+<pickinfo thingid="spDracAll3" thingname="Draconic Ally"/>
+<needsource source="PCLegaDrag" name="Legacy of Dragons"/>
+</picksources>
+<picksources>
+<pickinfo thingid="spDrench0" thingname="Drench"/>
+<needsource source="UltMagic" name="Ultimate Magic"/>
+<needsource source="PaizoBlog" name="Paizo Blog"/>
+</picksources>
+<picksources>
+<pickinfo thingid="spHeigAwa1" thingname="Heightened Awareness"/>
+<needsource source="ACG" name="Advanced Class Guide"/>
+<needsource source="PathStAeGM" name="Strange Aeons GM Content" ismodifyonly="yes"/>
+<needsource source="PathRuAzGM" name="Ruins of Azlant GM Content" ismodifyonly="yes"/>
+<needsource source="PathRetRuneGM" name="Return of the Runelords GM Content" ismodifyonly="yes"/>
+</picksources>
+<picksources>
+<pickinfo thingid="spJolt0" thingname="Jolt"/>
+<needsource source="UltMagic" name="Ultimate Magic"/>
+<needsource source="PaizoBlog" name="Paizo Blog"/>
+</picksources>
+<picksources>
+<pickinfo thingid="spMinMons1" thingname="Summon Minor Monster"/>
+<needsource source="UltMagic" name="Ultimate Magic"/>
+</picksources>
+<picksources>
+<pickinfo thingid="spPhanCha4" thingname="Phantom Chariot"/>
+<needsource source="UltCombat" name="Ultimate Combat"/>
+</picksources>
+<picksources>
+<pickinfo thingid="spScriCha0" thingname="Scrivener&apos;s Chant"/>
+<needsource source="CSSeekerSe" name="Seekers of Secrets"/>
+<needsource source="PathIrGoGM" name="Iron Gods GM Content" ismodifyonly="yes"/>
+</picksources>
+<picksources>
+<pickinfo thingid="spSeclGri1" thingname="Secluded Grimoire"/>
+<needsource source="PCMagTacti" name="Magic Tactics Toolbox"/>
+</picksources>
+<picksources>
+<pickinfo thingid="spTearWin2" thingname="Tears to Wine"/>
+<needsource source="PCArcaAnth" name="Arcane Anthology"/>
+</picksources>
+<picksources>
+<pickinfo thingid="trArcTempe" thingname="Arcane Temper"/>
+<needsource source="UltCamp" name="Ultimate Campaign"/>
+</picksources>
+<picksources>
+<pickinfo thingid="trElemTies" thingname="Elemental Ties (Osirion)"/>
+<needsource source="PCMonsSumm" name="Monster Summoner&apos;s Handbook"/>
+</picksources>
+<picksources>
+<pickinfo thingid="trScholAnc" thingname="Scholar of the Ancients"/>
+<needsource source="PathRise" name="Rise of the Runelords Anniversary Edition"/>
+</picksources>
+<picksources>
+<pickinfo thingid="cdRestorat" thingname="Restoration"/>
+<needsource source="APG" name="Advanced Player&apos;s Guide"/>
+</picksources>
+<picksources>
+<pickinfo thingid="raEmissar" thingname="Emissary"/>
+<needsource source="PCFamFolio" name="Familiar Folio"/>
+</picksources>
+<picksources>
+<pickinfo thingid="rmHareArct" thingname="Arctic Hare"/>
+<needsource source="PathRgnWin" name="Reign of Winter"/>
+<needsource source="UltWild" name="Ultimate Wilderness"/>
+</picksources>
+</requiredsources>
+<userimage imageindex="1" filename="E:\Pictures\Avatars\elf-book-wizard-2.jpg" imagefile="1_1_Vasiel_Yal.jpg"/>
+</hero>
+<hero playername="" heroindex="2" herosummary="Small earth elemental - N Small outsider" leadfile="lead2.xml" issecure="yes" nonce="fVNGHbVjQARUblfiNoJ58Q==" heroname="Elemental (Small), Earth" activemode="1" allegianceid="algAlly" hasacted="no">
+<requiredsources>
+<picksources>
+<pickinfo thingid="rmEarElSm" thingname="Elemental, Earth, Small" important="yes"/>
+<needsource source="Bestiary1" name="Bestiary"/>
+<needsource source="BestFamil" name="Bestiary Familiars"/>
+<needsource source="SummonMons" name="Summoner&apos;s Sidekick" ismodifyonly="yes"/>
+</picksources>
+</requiredsources>
+<userimage imageindex="1" filename="C:\Users\Technokat\Downloads\Bestiary-small\Bestiary-small\Elemental, Earth copy.jpg" imagefile="2_1_Elemental_Small_Earth.jpg"/>
+</hero>
+<hero playername="" heroindex="3" herosummary="Celestial leopard - N Medium animal" leadfile="lead3.xml" issecure="yes" nonce="94neN/07dxXC3YldhhkzAg==" heroname="Leopard (cat)" activemode="1" allegianceid="algAlly" hasacted="no">
+<requiredsources>
+<picksources>
+<pickinfo thingid="rcEiSticky" thingname="Sticky"/>
+<needsource source="PCChampCor" name="Champions of Corruption"/>
+</picksources>
+<picksources>
+<pickinfo thingid="rmLeopard" thingname="Cat, Leopard" important="yes"/>
+<needsource source="Bestiary1" name="Bestiary"/>
+<needsource source="PathRiseGM" name="Rise of the Runelords GM Content" ismodifyonly="yes"/>
+<needsource source="PathStAeGM" name="Strange Aeons GM Content" ismodifyonly="yes"/>
+<needsource source="PathIrInGM" name="Ironfang Invasion GM Content" ismodifyonly="yes"/>
+<needsource source="SummonMons" name="Summoner&apos;s Sidekick" ismodifyonly="yes"/>
+<needsource source="ModEmSpiGM" name="The Emerald Spire GM Content" ismodifyonly="yes"/>
+<needsource source="ModDoomDGM" name="Doom Comes to Dustpawn GM Content" ismodifyonly="yes"/>
+</picksources>
+<picksources>
+<pickinfo thingid="tmCelest" thingname="Celestial" important="yes"/>
+<needsource source="Best1Free" name="Bestiary Free Content"/>
+<needsource source="Bestiary1" name="Bestiary"/>
+<needsource source="PathHeVeGM" name="Hell&apos;s Vengeance GM Content" ismodifyonly="yes"/>
+<needsource source="SummonMons" name="Summoner&apos;s Sidekick"/>
+</picksources>
+</requiredsources>
+<userimage imageindex="1" filename="C:\Users\Technokat\Downloads\Bestiary-small\Bestiary-small\cat copy.jpg" imagefile="3_1_Leopard_cat.jpg"/>
+</hero>
+<hero playername="" heroindex="4" herosummary="Celestial aurochs - N Large animal" leadfile="lead4.xml" issecure="yes" nonce="t7k99qiFVW99osjDDWlODA==" heroname="Aurochs (herd animal)" activemode="1" allegianceid="algAlly" hasacted="no">
+<requiredsources>
+<picksources>
+<pickinfo thingid="rAurochs" thingname="Herd Animal, Aurochs" important="yes"/>
+<needsource source="Bestiary1" name="Bestiary"/>
+<needsource source="PathRiseGM" name="Rise of the Runelords GM Content" ismodifyonly="yes"/>
+<needsource source="PathIrInGM" name="Ironfang Invasion GM Content" ismodifyonly="yes"/>
+<needsource source="SummonMons" name="Summoner&apos;s Sidekick" ismodifyonly="yes"/>
+<needsource source="ModDaugFGM" name="Daughters of Fury GM Content" ismodifyonly="yes"/>
+<needsource source="PathCursGM" name="Curse of the Crimson Throne GM Content" ismodifyonly="yes"/>
+</picksources>
+<picksources>
+<pickinfo thingid="rcEiUnnAur" thingname="Unnatural Aura"/>
+<needsource source="UltMagic" name="Ultimate Magic"/>
+</picksources>
+<picksources>
+<pickinfo thingid="tmCelest" thingname="Celestial" important="yes"/>
+<needsource source="Best1Free" name="Bestiary Free Content"/>
+<needsource source="Bestiary1" name="Bestiary"/>
+<needsource source="PathHeVeGM" name="Hell&apos;s Vengeance GM Content" ismodifyonly="yes"/>
+<needsource source="SummonMons" name="Summoner&apos;s Sidekick"/>
+</picksources>
+</requiredsources>
+<userimage imageindex="1" filename="C:\Users\Technokat\Downloads\Bestiary-small\Herd Animal copy.jpg" imagefile="4_1_Aurochs_herd_animal.jpg"/>
+</hero>
+<hero playername="" heroindex="5" herosummary="Celestial dire bat - N Large animal" leadfile="lead5.xml" issecure="yes" nonce="8wTZPGu4FOfw9l55Jg77ug==" heroname="Dire bat" activemode="1" allegianceid="algAlly" hasacted="no">
+<requiredsources>
+<picksources>
+<pickinfo thingid="rmDiBat" thingname="Bat, Dire" important="yes"/>
+<needsource source="Bestiary1" name="Bestiary"/>
+<needsource source="PathRiseGM" name="Rise of the Runelords GM Content" ismodifyonly="yes"/>
+<needsource source="SummonMons" name="Summoner&apos;s Sidekick" ismodifyonly="yes"/>
+<needsource source="HGJingGM" name="The Grande Temple of Jing GM Content" ismodifyonly="yes"/>
+</picksources>
+<picksources>
+<pickinfo thingid="tmCelest" thingname="Celestial" important="yes"/>
+<needsource source="Best1Free" name="Bestiary Free Content"/>
+<needsource source="Bestiary1" name="Bestiary"/>
+<needsource source="PathHeVeGM" name="Hell&apos;s Vengeance GM Content" ismodifyonly="yes"/>
+<needsource source="SummonMons" name="Summoner&apos;s Sidekick"/>
+</picksources>
+</requiredsources>
+<userimage imageindex="1" filename="C:\Users\Technokat\Downloads\Bestiary-small\Bestiary-small\bat copy.jpg" imagefile="5_1_Dire_bat.jpg"/>
+</hero>
+<hero playername="" heroindex="6" herosummary="NG Tiny dragon" leadfile="lead6.xml" heroname="Pseudodragon" activemode="1" allegianceid="algAlly" hasacted="no">
+<requiredsources>
+<picksources>
+<pickinfo thingid="rYoCrysDra" thingname="Dragon, Crystal, Young"/>
+<needsource source="Bestiary2" name="Bestiary 2"/>
+</picksources>
+<picksources>
+<pickinfo thingid="rmPseudo" thingname="Pseudodragon" important="yes"/>
+<needsource source="Bestiary1" name="Bestiary"/>
+<needsource source="BestFamil" name="Bestiary Familiars"/>
+</picksources>
+</requiredsources>
+<creatureids>
+<creatureid creatureid="pseudodragon"/>
+</creatureids>
+<userimage imageindex="1" filename="C:\Users\Technokat\Downloads\Bestiary-small\Pseudodragon copy.jpg" imagefile="6_1_Pseudodragon.jpg"/>
+</hero>
+<hero playername="" heroindex="7" herosummary="Celestial crocodile - N Large animal" leadfile="lead7.xml" issecure="yes" nonce="6Uz8J4Z2EILh9MYeJiO7nA==" heroname="Crocodile" activemode="1" allegianceid="algAlly" hasacted="no">
+<requiredsources>
+<picksources>
+<pickinfo thingid="rmCroc" thingname="Crocodile" important="yes"/>
+<needsource source="Bestiary1" name="Bestiary"/>
+<needsource source="PathGianGM" name="Giantslayer GM Content" ismodifyonly="yes"/>
+<needsource source="PathHeReGM" name="Hell&apos;s Rebels GM Content" ismodifyonly="yes"/>
+<needsource source="PathCursGM" name="Curse of the Crimson Throne GM Content" ismodifyonly="yes"/>
+<needsource source="SummonMons" name="Summoner&apos;s Sidekick" ismodifyonly="yes"/>
+<needsource source="FGRazorGM" name="Razor Coast GM Content" ismodifyonly="yes"/>
+<needsource source="HGJingGM" name="The Grande Temple of Jing GM Content" ismodifyonly="yes"/>
+</picksources>
+<picksources>
+<pickinfo thingid="tmCelest" thingname="Celestial" important="yes"/>
+<needsource source="Best1Free" name="Bestiary Free Content"/>
+<needsource source="Bestiary1" name="Bestiary"/>
+<needsource source="PathHeVeGM" name="Hell&apos;s Vengeance GM Content" ismodifyonly="yes"/>
+<needsource source="SummonMons" name="Summoner&apos;s Sidekick"/>
+</picksources>
+</requiredsources>
+<userimage imageindex="1" filename="C:\Users\Technokat\Downloads\Bestiary-small\Bestiary-small\Crocodile copy.jpg" imagefile="7_1_Crocodile.jpg"/>
+</hero>
+<deffield id="UserLevel" text="0"/>
+<deffield id="UserName"/>
+<deffield id="aUser" text="10"/>
+<deffield id="aUserDash" text="0"/>
+<deffield id="aaClass"/>
+<deffield id="aaLevel" text="0"/>
+<deffield id="abUser" text="0"/>
+<deffield id="abUserVal" text="0"/>
+<deffield id="abilActive" text="0"/>
+<deffield id="abilAct2" text="0"/>
+<deffield id="acBookId"/>
+<deffield id="acBookName"/>
+<deffield id="acType"/>
+<deffield id="actUser" text="0"/>
+<deffield id="adjChosen"/>
+<deffield id="adjEnabled" text="1"/>
+<deffield id="adjIndex"/>
+<deffield id="adjLasts"/>
+<deffield id="adjSource"/>
+<deffield id="adjUser" text="0"/>
+<deffield id="affStage" text="0"/>
+<deffield id="allegUser"/>
+<deffield id="armComCha" text="0"/>
+<deffield id="armComLdr" text="0"/>
+<deffield id="armComName"/>
+<deffield id="armComNote"/>
+<deffield id="armComSold" text="0"/>
+<deffield id="armSize" text="4"/>
+<deffield id="armUnitNum"/>
+<deffield id="armUsrMrl" text="0"/>
+<deffield id="atnOrder"/>
+<deffield id="bAge" text="0"/>
+<deffield id="bDeity"/>
+<deffield id="bDeityAlgn" text="0"/>
+<deffield id="bEyes"/>
+<deffield id="bGenUser"/>
+<deffield id="bGender" text="3"/>
+<deffield id="bHair"/>
+<deffield id="bHeight" text="0"/>
+<deffield id="bInfo"/>
+<deffield id="bSkin"/>
+<deffield id="bWeight" text="0"/>
+<deffield id="bkAdopSibs" text="0"/>
+<deffield id="bkBioSibs" text="0"/>
+<deffield id="bsClass"/>
+<deffield id="bsLevel" text="0"/>
+<deffield id="cAttrBonus" text="0"/>
+<deffield id="cClrNeutGE" text="0"/>
+<deffield id="cExMember" text="0"/>
+<deffield id="cFavorBon" text="-1"/>
+<deffield id="cFavorChc"/>
+<deffield id="cFavorChc2"/>
+<deffield id="cHP" text="0"/>
+<deffield id="cIndex" text="0"/>
+<deffield id="cIndexCopy" text="0"/>
+<deffield id="cIndexUser"/>
+<deffield id="cPoolUser" text="0"/>
+<deffield id="cStagBAB" text="0"/>
+<deffield id="cStagHP" text="0"/>
+<deffield id="cStagSave" text="0"/>
+<deffield id="cmhBurrow" text="0"/>
+<deffield id="cmhCL" text="0"/>
+<deffield id="cmhCR" text="1"/>
+<deffield id="cmhClimb" text="0"/>
+<deffield id="cmhClsSkl1"/>
+<deffield id="cmhClsSkl2"/>
+<deffield id="cmhClsSkl3"/>
+<deffield id="cmhClsSkl4"/>
+<deffield id="cmhFly" text="0"/>
+<deffield id="cmhFlyMan" text="2"/>
+<deffield id="cmhHD" text="1"/>
+<deffield id="cmhHands" text="0"/>
+<deffield id="cmhLand" text="30"/>
+<deffield id="cmhLegs" text="2"/>
+<deffield id="cmhLotLegs" text="0"/>
+<deffield id="cmhNatAC" text="0"/>
+<deffield id="cmhSR" text="0"/>
+<deffield id="cmhSize" text="0"/>
+<deffield id="cmhSpCL" text="0"/>
+<deffield id="cmhSplAs"/>
+<deffield id="cmhSvGood1" text="1"/>
+<deffield id="cmhSvGood2" text="2"/>
+<deffield id="cmhSwim" text="0"/>
+<deffield id="conRisk" text="1"/>
+<deffield id="corOrder"/>
+<deffield id="corStage" text="0"/>
+<deffield id="ctIsChosen" text="0"/>
+<deffield id="ctWasCheck" text="0"/>
+<deffield id="custOrder"/>
+<deffield id="dashUser"/>
+<deffield id="deiAllies"/>
+<deffield id="deiCentWor"/>
+<deffield id="deiDivGift"/>
+<deffield id="deiEnemies"/>
+<deffield id="deiEpithet"/>
+<deffield id="deiHerald"/>
+<deffield id="deiHolyDays"/>
+<deffield id="deiMinions"/>
+<deffield id="deiNation"/>
+<deffield id="deiObedien"/>
+<deffield id="deiPortfol"/>
+<deffield id="deiRealm"/>
+<deffield id="deiRelations"/>
+<deffield id="deiSacAnim"/>
+<deffield id="deiSacColo"/>
+<deffield id="deiSymbol"/>
+<deffield id="deiTemples"/>
+<deffield id="deiVarSpel"/>
+<deffield id="deiWorship"/>
+<deffield id="diOtherAtt" text="0"/>
+<deffield id="domDomain"/>
+<deffield id="ecAttType" text="0"/>
+<deffield id="encChars" text="0"/>
+<deffield id="encIncEnem" text="0"/>
+<deffield id="encIsAlly" text="0"/>
+<deffield id="encPoints" text="0"/>
+<deffield id="encRating" text="0"/>
+<deffield id="encTargCR" text="0"/>
+<deffield id="esFlurry" text="0"/>
+<deffield id="esOrder"/>
+<deffield id="esStatLoc" text="0"/>
+<deffield id="esUserName"/>
+<deffield id="foDCOver" text="10"/>
+<deffield id="foUserName"/>
+<deffield id="gCrafted" text="0"/>
+<deffield id="gCustBonus" text="0"/>
+<deffield id="gCustPurp"/>
+<deffield id="gCustUserN"/>
+<deffield id="gCust2nd" text="1"/>
+<deffield id="gInnaAttr1" text="0"/>
+<deffield id="gInnaAttr2" text="0"/>
+<deffield id="gInnaAttr3" text="0"/>
+<deffield id="gInnaSkl1"/>
+<deffield id="gInnaSkl2"/>
+<deffield id="gInnaSkl3"/>
+<deffield id="gIsEquip" text="0"/>
+<deffield id="gIsIntel" text="0"/>
+<deffield id="gIsLegend" text="0"/>
+<deffield id="gMaster" text="0"/>
+<deffield id="gQuantity" text="-1"/>
+<deffield id="gQuantityR" text="-1"/>
+<deffield id="gSize" text="0"/>
+<deffield id="gUserEquip" text="0"/>
+<deffield id="gUserSel" text="-1"/>
+<deffield id="gUsrCost" text="0"/>
+<deffield id="gUsrWeight" text="0"/>
+<deffield id="genAbType"/>
+<deffield id="genAutoDC"/>
+<deffield id="genDCMod" text="0"/>
+<deffield id="genDesc"/>
+<deffield id="genSpType"/>
+<deffield id="genSpecAtt"/>
+<deffield id="hiDiscUsed" text="0"/>
+<deffield id="hxLocation" text="(Describe Location)"/>
+<deffield id="hxNPCs"/>
+<deffield id="hxName"/>
+<deffield id="hxPopBreak"/>
+<deffield id="hxType"/>
+<deffield id="iCustSpec"/>
+<deffield id="iRingInna" text="1"/>
+<deffield id="icCustSpec"/>
+<deffield id="iiCustSpec"/>
+<deffield id="imgIndex"/>
+<deffield id="invFinRet" text="0"/>
+<deffield id="invNormRet" text="0"/>
+<deffield id="invUsrAdd" text="0"/>
+<deffield id="jBP" text="0"/>
+<deffield id="jCP" text="0"/>
+<deffield id="jCustCn1" text="0"/>
+<deffield id="jCustCn2" text="0"/>
+<deffield id="jCustCn3" text="0"/>
+<deffield id="jCustCn4" text="0"/>
+<deffield id="jFaction"/>
+<deffield id="jFixedFac" text="0"/>
+<deffield id="jGP" text="0"/>
+<deffield id="jGoods" text="0"/>
+<deffield id="jGranary" text="0"/>
+<deffield id="jHonor" text="0"/>
+<deffield id="jInfluence" text="0"/>
+<deffield id="jLabor" text="0"/>
+<deffield id="jLevel" text="0"/>
+<deffield id="jMagic" text="0"/>
+<deffield id="jPP" text="0"/>
+<deffield id="jPresSpent" text="0"/>
+<deffield id="jPrestige" text="0"/>
+<deffield id="jSP" text="0"/>
+<deffield id="jTrials" text="0"/>
+<deffield id="jUnrest" text="0"/>
+<deffield id="jXP" text="0"/>
+<deffield id="jXPHalfSoc" text="0"/>
+<deffield id="jXPSociety" text="0"/>
+<deffield id="jrnDescr"/>
+<deffield id="jrnGame"/>
+<deffield id="jrnReal"/>
+<deffield id="jrnReward"/>
+<deffield id="jrnTitle" text="Title"/>
+<deffield id="khReput" text="0"/>
+<deffield id="lCustName"/>
+<deffield id="lIndexUser"/>
+<deffield id="laEnable" text="1"/>
+<deffield id="lsEnable" text="1"/>
+<deffield id="lsMenu"/>
+<deffield id="mArea"/>
+<deffield id="mDuration"/>
+<deffield id="mPreReq" text="0"/>
+<deffield id="mRange"/>
+<deffield id="mSave"/>
+<deffield id="mTarget"/>
+<deffield id="mhTierUser" text="1"/>
+<deffield id="mlClass"/>
+<deffield id="mlClass2"/>
+<deffield id="mmLevel" text="0"/>
+<deffield id="mtIndex"/>
+<deffield id="npcInfo"/>
+<deffield id="pAdjust" text="0"/>
+<deffield id="pChosen"/>
+<deffield id="pChosen2"/>
+<deffield id="pDuration"/>
+<deffield id="pIndex"/>
+<deffield id="pIsOn" text="0"/>
+<deffield id="pMode" text="0"/>
+<deffield id="pMount"/>
+<deffield id="pSource"/>
+<deffield id="pSpellLvl" text="0"/>
+<deffield id="phBurrow" text="0"/>
+<deffield id="phClimb" text="0"/>
+<deffield id="phDarkvis" text="0"/>
+<deffield id="phFly" text="0"/>
+<deffield id="phJet" text="0"/>
+<deffield id="phPoDice" text="0"/>
+<deffield id="phPoDieSze" text="0"/>
+<deffield id="phPoDurati" text="0"/>
+<deffield id="phPoSaves" text="0"/>
+<deffield id="phSpeed" text="0"/>
+<deffield id="phSwim" text="0"/>
+<deffield id="phWebAtk" text="0"/>
+<deffield id="phWebDC" text="0"/>
+<deffield id="polyDefLst" text="0"/>
+<deffield id="polyDefRet" text="1"/>
+<deffield id="psiExtra" text="0"/>
+<deffield id="purOrder"/>
+<deffield id="purStrtCP" text="0"/>
+<deffield id="purStrtCn1" text="0"/>
+<deffield id="purStrtCn2" text="0"/>
+<deffield id="purStrtCn3" text="0"/>
+<deffield id="purStrtCn4" text="0"/>
+<deffield id="purStrtGP" text="0"/>
+<deffield id="purStrtMon" text="0"/>
+<deffield id="purStrtPP" text="0"/>
+<deffield id="purStrtSP" text="0"/>
+<deffield id="rcOrder"/>
+<deffield id="relType" text="0"/>
+<deffield id="roAbilMod" text="0"/>
+<deffield id="roIsVacant" text="0"/>
+<deffield id="roLeader"/>
+<deffield id="roModifier" text="0"/>
+<deffield id="roName"/>
+<deffield id="roSelAttr"/>
+<deffield id="roSelAttr2"/>
+<deffield id="roSelRole"/>
+<deffield id="sBkSplitCl"/>
+<deffield id="sCastCount" text="0"/>
+<deffield id="sCasterLev" text="0"/>
+<deffield id="sDecipherd" text="0"/>
+<deffield id="sLevelAdj" text="0"/>
+<deffield id="sPrepCount" text="1"/>
+<deffield id="sSplbkFree" text="0"/>
+<deffield id="sSplbkOthe" text="0"/>
+<deffield id="skGroupSkl" text="0"/>
+<deffield id="skSpecSkl" text="0"/>
+<deffield id="skTools" text="0"/>
+<deffield id="skUser" text="0"/>
+<deffield id="skUserName"/>
+<deffield id="slOriPrice"/>
+<deffield id="smAbil1"/>
+<deffield id="smAbil2"/>
+<deffield id="smAbil3"/>
+<deffield id="smCR" text="1"/>
+<deffield id="smSkill"/>
+<deffield id="socDescrip"/>
+<deffield id="socUser" text="1"/>
+<deffield id="spPsyExtra" text="0"/>
+<deffield id="spcPromote" text="0"/>
+<deffield id="stackEach"/>
+<deffield id="stackQty" text="1"/>
+<deffield id="tBackTrade" text="0"/>
+<deffield id="tCREstim" text="0"/>
+<deffield id="tCharSpHld" text="0"/>
+<deffield id="tCustRcNam"/>
+<deffield id="tDamage" text="0"/>
+<deffield id="tEncNumber" text="1"/>
+<deffield id="tFavCl"/>
+<deffield id="tFocused" text="0"/>
+<deffield id="tGearSize" text="0"/>
+<deffield id="tGen" text="-999"/>
+<deffield id="tGenChoice"/>
+<deffield id="tGoodVEvil" text="5"/>
+<deffield id="tIsVassal" text="0"/>
+<deffield id="tLawVChaos" text="5"/>
+<deffield id="tLethality" text="0"/>
+<deffield id="tMaskCopy"/>
+<deffield id="tMythic" text="0"/>
+<deffield id="tNoHonor" text="0"/>
+<deffield id="tNoPreSel" text="0"/>
+<deffield id="tNonlethal" text="0"/>
+<deffield id="tPrnEqpSet" text="0"/>
+<deffield id="tPurseEarn"/>
+<deffield id="tPursePull"/>
+<deffield id="tPursePush"/>
+<deffield id="tRCAbils" text="0"/>
+<deffield id="tRCFeats" text="0"/>
+<deffield id="tRCLangs" text="0"/>
+<deffield id="tRCRole" text="0"/>
+<deffield id="tRCSkills" text="0"/>
+<deffield id="tRCSpecial" text="0"/>
+<deffield id="tRCUnique" text="0"/>
+<deffield id="tRCVariant" text="0"/>
+<deffield id="tRestAbil" text="1"/>
+<deffield id="tRestHeal" text="1"/>
+<deffield id="tRestPsi" text="1"/>
+<deffield id="tRestSpell" text="1"/>
+<deffield id="tRitSecCas" text="0"/>
+<deffield id="tSCRAutSet" text="1"/>
+<deffield id="tSCRStCaAc" text="0"/>
+<deffield id="tSanDam" text="0"/>
+<deffield id="tSecFavCl"/>
+<deffield id="tSocChar" text="1"/>
+<deffield id="tSocID" text="0"/>
+<deffield id="tStartBP" text="50"/>
+<deffield id="tStartCDef" text="1"/>
+<deffield id="tStartCP" text="0"/>
+<deffield id="tStartCn1" text="0"/>
+<deffield id="tStartCn2" text="0"/>
+<deffield id="tStartCn3" text="0"/>
+<deffield id="tStartCn4" text="0"/>
+<deffield id="tStartGP" text="0"/>
+<deffield id="tStartLev" text="1"/>
+<deffield id="tStartPP" text="0"/>
+<deffield id="tStartSP" text="0"/>
+<deffield id="tSumTempRq" text="0"/>
+<deffield id="tThiFavCl"/>
+<deffield id="tTradeComm" text="0"/>
+<deffield id="tTranCP" text="0"/>
+<deffield id="tTranCn1" text="0"/>
+<deffield id="tTranCn2" text="0"/>
+<deffield id="tTranCn3" text="0"/>
+<deffield id="tTranCn4" text="0"/>
+<deffield id="tTranGP" text="0"/>
+<deffield id="tTranLog"/>
+<deffield id="tTranNum" text="0"/>
+<deffield id="tTranPP" text="0"/>
+<deffield id="tTranSP" text="0"/>
+<deffield id="tUseHeroP" text="0"/>
+<deffield id="tacDefer" text="0"/>
+<deffield id="tactInit"/>
+<deffield id="tactInitOv"/>
+<deffield id="tactInit2"/>
+<deffield id="tactLast"/>
+<deffield id="tactNotes"/>
+<deffield id="tactSave2"/>
+<deffield id="tactSystem"/>
+<deffield id="tactUser"/>
+<deffield id="tactUser2"/>
+<deffield id="thpOrder"/>
+<deffield id="thpSetMax" text="0"/>
+<deffield id="tmInfSumm"/>
+<deffield id="trkUser" text="0"/>
+<deffield id="uImage" text="0"/>
+<deffield id="uIndex"/>
+<deffield id="unSize" text="0"/>
+<deffield id="unUpChosen"/>
+<deffield id="useredit"/>
+<deffield id="username"/>
+<deffield id="usrChosen1"/>
+<deffield id="usrChosen2"/>
+<deffield id="usrChosen3"/>
+<deffield id="usrChosen4"/>
+<deffield id="usrIndex" text="0"/>
+<deffield id="usrIndxFix" text="0"/>
+<deffield id="usrIsCheck" text="0"/>
+<deffield id="usrSelect"/>
+<deffield id="usrShwMenu" text="0"/>
+<deffield id="usuPeriod"/>
+<deffield id="usuUsage" text="0"/>
+<deffield id="wCustMonDm"/>
+<deffield id="wCustMonNm" text="1"/>
+<deffield id="wIsDouble" text="0"/>
+<deffield id="wIs2nd" text="0"/>
+<deffield id="wMaxStrUsr" text="0"/>
+<deffield id="wMenuEquip" text="11"/>
+<deffield id="wmChosen"/>
+<deffield id="wmSelect"/>
+<deffield id="wndInPlay" text="0"/>
+<deffield id="xactBP" text="0"/>
+<deffield id="xactBPBase" text="0"/>
+<deffield id="xactBPEach" text="0"/>
+<deffield id="xactBPres" text="0"/>
+<deffield id="xactBuyStr" text="0"/>
+<deffield id="xactCP" text="0"/>
+<deffield id="xactCn1" text="0"/>
+<deffield id="xactCn2" text="0"/>
+<deffield id="xactCn3" text="0"/>
+<deffield id="xactCn4" text="0"/>
+<deffield id="xactCrOver" text="0"/>
+<deffield id="xactCraft" text="0"/>
+<deffield id="xactCrfPer" text="0"/>
+<deffield id="xactCurBP" text="0"/>
+<deffield id="xactCurPr" text="0"/>
+<deffield id="xactCust"/>
+<deffield id="xactCustDs"/>
+<deffield id="xactCustom" text="0"/>
+<deffield id="xactEach"/>
+<deffield id="xactFacLis" text="Faction.?"/>
+<deffield id="xactFact"/>
+<deffield id="xactFixFac"/>
+<deffield id="xactFrCust" text="0"/>
+<deffield id="xactFree" text="0"/>
+<deffield id="xactGP" text="0"/>
+<deffield id="xactGear" text="0"/>
+<deffield id="xactGooTot" text="0"/>
+<deffield id="xactGoods" text="0"/>
+<deffield id="xactHIDisc" text="0"/>
+<deffield id="xactHexMul" text="0"/>
+<deffield id="xactInGrSb" text="0"/>
+<deffield id="xactInfTot" text="0"/>
+<deffield id="xactInflu" text="0"/>
+<deffield id="xactIsBP" text="0"/>
+<deffield id="xactIsCust" text="0"/>
+<deffield id="xactIsHex" text="0"/>
+<deffield id="xactIsRing" text="0"/>
+<deffield id="xactIsSpl" text="0"/>
+<deffield id="xactIsVani" text="0"/>
+<deffield id="xactLabTot" text="0"/>
+<deffield id="xactLabor" text="0"/>
+<deffield id="xactLimit"/>
+<deffield id="xactMagTot" text="0"/>
+<deffield id="xactMagic" text="0"/>
+<deffield id="xactName"/>
+<deffield id="xactNoCraf" text="0"/>
+<deffield id="xactNoMult" text="0"/>
+<deffield id="xactPP" text="0"/>
+<deffield id="xactPortal" text="0"/>
+<deffield id="xactPrEach" text="0"/>
+<deffield id="xactPrP" text="0"/>
+<deffield id="xactQty"/>
+<deffield id="xactRingIn" text="1"/>
+<deffield id="xactSP" text="0"/>
+<deffield id="xactSplCCo" text="0"/>
+<deffield id="xactSplLev" text="0"/>
+<deffield id="xactSplTyp" text="0"/>
+<deffield id="xactStack"/>
+<deffield id="xactStr" text="0"/>
+<deffield id="CompClEnab" text="0"/>
+<deffield id="CompName"/>
+<deffield id="Notes"/>
+<deffield id="SizeLarge" text="0"/>
+<deffield id="SizeMedium" text="0"/>
+<deffield id="S2MaxLevel" text="0"/>
+<deffield id="S2MinLevel" text="0"/>
+<deffield id="S2Total" text="0"/>
+</portfolio>
+</document>
