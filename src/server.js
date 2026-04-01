@@ -62,7 +62,10 @@ function parsePortfolio(buffer) {
   const charName = pcNode.getAttribute('name') || 'Unknown';
 
   // Step 4: Extract character class/level summary
-  const charSummary = pcChar.getAttribute('summary') || '';
+  const classesNode = Array.from(pcNode.getElementsByTagName('classes'))[0];
+  const charSummary = classesNode ? classesNode.getAttribute('summary') || '' : '';
+  const magusClass = Array.from(classesNode.getElementsByTagName('class')).find(cl => cl.getAttribute('name').startsWith('Magus'));
+  const casterLevel = magusClass ? parseInt(magusClass.getAttribute('level') || '0') : 0;
 
   // Step 5: Extract attack information
   const attackNodes = Array.from(pcNode.getElementsByTagName('attack'));
@@ -143,10 +146,13 @@ function parsePortfolio(buffer) {
       spells.push({
         name: spellNode.getAttribute('name') || '',
         level: parseInt(spellNode.getAttribute('level') || '0', 10),
+        casterLevel: parseInt(spellNode.getAttribute('casterlevel') || '0', 10),
         castTime: spellNode.getAttribute('casttime') || '',
         range: spellNode.getAttribute('range') || '',
-        dc: spellNode.getAttribute('dc') || '',
+        dc: parseInt(spellNode.getAttribute('dc')) || 0,
         school: spellNode.getAttribute('schooltext') || '',
+        spellResistance: spellNode.getAttribute('resist') || '',
+        save: spellNode.getAttribute('save') || '',
         castsLeft: castsleft !== undefined ? parseInt(castsleft, 10) : null,
         unlimited: unlimited === 'yes',
       });
@@ -170,6 +176,7 @@ function parsePortfolio(buffer) {
   return {
     name: charName,
     summary: charSummary,
+    casterLevel: casterLevel,
     baseAttack: baseAttackStr,
     primaryBAB,
     charRangedAttack: rangedAttackStr,

@@ -4,6 +4,8 @@
  * Handles state management, attack calculation, and UI rendering.
  * All state is stored in localStorage to survive page refreshes.
  */
+import { ATTACK_OPTIONS } from './options.js';
+import { DamageCalculator, filterValidSpellstrikeSpells } from './spells.js';
 
 // ─── State ────────────────────────────────────────────────────────────────────
 
@@ -404,7 +406,7 @@ function renderAttackCard() {
       <div class="atk-index">${atk.label}</div>
       <div class="atk-label flex-grow-1">
         <strong>${atk.isSpellstrike ? 'Spellstrike Arrow' : 'Arrow'}</strong>
-        <br>${atk.isSpellstrike ? 'Ranged touch · spell on hit' : (atk.source === 'extra' ? `${atk.label} bonus attack` : 'Normal ranged attack')}
+        <br>${atk.isSpellstrike ? 'Spellstrike' : (atk.source === 'extra' ? `${atk.label} bonus attack` : 'Iterative attack')}
       </div>
       <div class="${hitClass}">
         ${hitBonus}
@@ -426,12 +428,19 @@ function renderAttackCard() {
         <div class="spell-icon">⚡</div>
         <div class="flex-grow-1">
           <div class="d-flex align-items-baseline justify-content-between">
-            <span class="spell-name">${spell.name}</span>
-            <span class="spell-meta">Lvl ${spell.level} · ${spell.castTime}</span>
+            <span class="spell-item-name">${spell.name}</span>
+            <span class="spell-item-damage">${spell.damageExpression || (Object.hasOwn(spell, 'damageFn') ? spell.damageFn(new DamageCalculator(spell.casterLevel)) : '')}</span>
           </div>
-          <div class="spell-detail">${spell.school}</div>
+          <span class="spell-item-description">${spell.description || (Object.hasOwn(spell, 'descriptionFn') ? spell.descriptionFn(spell.casterLevel) : '')}</span>
         </div>
       `;
+      spellBanner.addEventListener('click', () => {
+        state.selectedSpell = null;
+        saveState();
+        renderAll();
+        document.getElementById('spell-selector-panel').style.display = '';
+        document.getElementById('spell-selector-panel').scrollIntoView({ behavior: 'smooth' });
+      });
       container.appendChild(spellBanner);
     } else if (atk.isSpellstrike && !state.selectedSpell) {
       const spellBanner = document.createElement('div');
@@ -458,23 +467,23 @@ function renderSpellSelector() {
   list.innerHTML = '';
 
   const spells = state.character?.spells || [];
-  const touchSpells = spells.filter(s =>
-    s.range.toLowerCase().includes('touch') || s.range === 'touch');
+  const spellstrikeSpells = filterValidSpellstrikeSpells(spells);
 
-  if (touchSpells.length === 0) {
-    list.innerHTML = '<div class="spell-none">No touch spells available</div>';
+  if (spellstrikeSpells.length === 0) {
+    list.innerHTML = '<div class="spell-none">No spells available for Spellstrike</div>';
     return;
   }
 
-  for (const spell of touchSpells) {
+  for (const spell of spellstrikeSpells) {
+    console.log(spell)
     const item = document.createElement('div');
     item.className = `spell-item${state.selectedSpell?.name === spell.name ? ' selected' : ''}`;
     item.innerHTML = `
       <div class="d-flex align-items-baseline justify-content-between">
         <span class="spell-item-name">${spell.name}</span>
-        <span class="spell-item-meta">Lvl ${spell.level} · ${spell.castTime}</span>
+        <span class="spell-item-damage">${spell.damageExpression || (Object.hasOwn(spell, 'damageFn') ? spell.damageFn(new DamageCalculator(spell.casterLevel)) : '&nbsp;')}</span>
       </div>
-      <div class="spell-item-detail">${spell.school}</div>
+      <span class="spell-item-description">${spell.description || (Object.hasOwn(spell, 'descriptionFn') ? spell.descriptionFn(spell.casterLevel) : '&nbsp;')}</span>
     `;
     item.addEventListener('click', () => {
       state.selectedSpell = spell;
