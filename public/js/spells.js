@@ -5,7 +5,7 @@
  * Only spells in this list can be used with the Spellstrike option.
  */
 
-
+import { buildDamageString } from './utilities.js';
 
 
 export const SPELLSTRIKE_SPELLS = {
@@ -134,7 +134,7 @@ export function getSpellsByLevel(level) {
  */
 export function isValidSpellstrikeSpell(spellName) {
     const normalizedSpellName = normalizeSpellName(spellName);
-    return SPELLSTRIKE_SPELLS.hasOwnProperty(normalizedSpellName);
+    return Object.hasOwn(SPELLSTRIKE_SPELLS, normalizedSpellName);
 }
 
 function normalizeSpellName(spellName) {
@@ -146,7 +146,7 @@ function normalizeSpellName(spellName) {
  */
 export function getSpellByName(spellName) {
   const normalizedSpellName = normalizeSpellName(spellName);
-  return SPELLSTRIKE_SPELLS[normalizedSpellName] || null;
+  return isValidSpellstrikeSpell(normalizedSpellName) ? SPELLSTRIKE_SPELLS[normalizedSpellName] : null;
 }
 
 /**
@@ -240,8 +240,7 @@ export class DamageCalculator {
         if (this._casterLevelBonus) {
             bonus += Math.floor(this._casterLevelBonus * this._casterLevel);
         }
-        const bonusString = bonus ? ` + ${bonus}` : '';
         const dmgTypeString = this._dmgType ? ` ${this._dmgType}` : '';
-        return `${numDice}d${this._dieSize}${bonusString}${dmgTypeString}`;
+        return buildDamageString(`${numDice}d${this._dieSize}`, bonus) + dmgTypeString;
     }
 }

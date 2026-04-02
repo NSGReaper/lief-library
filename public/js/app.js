@@ -5,7 +5,8 @@
  * All state is stored in localStorage to survive page refreshes.
  */
 import { ATTACK_OPTIONS } from './options.js';
-import { DamageCalculator, filterValidSpellstrikeSpells } from './spells.js';
+import { DamageCalculator, filterValidSpellstrikeSpells, getSpellByName } from './spells.js';
+import { parseWeaponAttack, formatBonus, parseDamageBonus, buildDamageString } from './utilities.js';
 
 // ─── State ────────────────────────────────────────────────────────────────────
 
@@ -27,7 +28,7 @@ function saveState() {
     character: state.character,
     optionStates: state.optionStates,
     arcanePoolSpent: state.arcanePoolSpent,
-    selectedSpell: state.selectedSpell,
+    selectedSpell: state.selectedSpell?.name || null,
   };
   localStorage.setItem(LS_KEY, JSON.stringify(data));
 }
@@ -40,7 +41,7 @@ function loadState() {
     state.character = data.character || null;
     state.optionStates = data.optionStates || {};
     state.arcanePoolSpent = data.arcanePoolSpent || 0;
-    state.selectedSpell = data.selectedSpell || null;
+    state.selectedSpell = data.selectedSpell ? getSpellByName(data.selectedSpell) : null;
 
     // Re-compute derived fields if character is present but missing them
     if (state.character && state.character.weaponPrimary == null) {
@@ -63,30 +64,6 @@ function loadState() {
   }
 }
 
-// ─── Utility ──────────────────────────────────────────────────────────────────
-
-function formatBonus(n) {
-  return n >= 0 ? `+${n}` : `${n}`;
-}
-
-/** Parse a weapon attack string like "+15/+15/+15/+10" into an array of integers. */
-function parseWeaponAttack(str) {
-  if (!str) return [];
-  return str.split('/').map(s => parseInt(s.replace(/\s/g, ''), 10)).filter(n => !isNaN(n));
-}
-
-function parseDamageBonus(dmgStr) {
-  // e.g., "1d8+6" → { dice: "1d8", bonus: 6 }
-  const m = dmgStr.match(/^(\d+d\d+)([+-]\d+)?$/);
-  if (!m) return { dice: dmgStr, bonus: 0 };
-  return { dice: m[1], bonus: m[2] ? parseInt(m[2], 10) : 0 };
-}
-
-function buildDamageString(dice, bonus) {
-  if (bonus === 0) return dice;
-  return `${dice}${formatBonus(bonus)}`;
-}
-
 // ─── Attack Calculation ───────────────────────────────────────────────────────
 
 /**
@@ -105,7 +82,7 @@ function buildDamageString(dice, bonus) {
  *  Extra attacks come from options that add extraAttacks when currently enabled.
  *
  * Returns an array of attack objects:
- *   { label, attackBonus, damageString, isSpellstrike, spellstrikeHitBonus }
+ *   { label, attackBonus, damageString, isSpellstrike }
  */
 function calculateAttacks() {
   const char = state.character;
@@ -137,7 +114,6 @@ function calculateAttacks() {
   let totalDmgBonus = 0;
   const extraAttacks = [];
   let isSpellstrike = false;
-  let spellstrikeHitBonus = 0;
 
   for (const option of ATTACK_OPTIONS) {
     const enabled = state.optionStates[option.id] ?? false;
@@ -148,7 +124,6 @@ function calculateAttacks() {
     if (eff.hitBonus) totalHitBonus += eff.hitBonus;
     if (eff.damageBonus) totalDmgBonus += eff.damageBonus;
     if (eff.isSpellstrike) isSpellstrike = true;
-    if (eff.spellstrikeHitBonus) spellstrikeHitBonus += eff.spellstrikeHitBonus;
 
     if (eff.extraAttacks) {
       for (const extra of eff.extraAttacks) {
@@ -174,7 +149,6 @@ function calculateAttacks() {
       damageBonus: perDmg,
       dmgDice,
       isSpellstrike: false,
-      spellstrikeHitBonus: 0,
       source: 'iterative',
     });
   }
@@ -189,7 +163,6 @@ function calculateAttacks() {
       damageBonus: perDmg,
       dmgDice,
       isSpellstrike: false,
-      spellstrikeHitBonus: 0,
       source: 'extra',
     });
   }
@@ -204,8 +177,6 @@ function calculateAttacks() {
   // 6. Apply spellstrike to first attack
   if (isSpellstrike && attacks.length > 0) {
     attacks[0].isSpellstrike = true;
-    attacks[0].spellstrikeHitBonus = spellstrikeHitBonus;
-    attacks[0].label = 'Spellstrike';
   }
 
   // 7. Build final damage strings
