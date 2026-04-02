@@ -113,6 +113,7 @@ function calculateAttacks() {
   let totalHitBonus = 0;
   let totalDmgBonus = 0;
   const extraAttacks = [];
+  const extraDamages = [];
   let isSpellstrike = false;
 
   for (const option of ATTACK_OPTIONS) {
@@ -129,10 +130,15 @@ function calculateAttacks() {
       for (const extra of eff.extraAttacks) {
         extraAttacks.push({
           label: extra.label,
-          atIndexOffset: extra.atIndexOffset,
           hitBonusOffset: extra.hitBonusOffset,
           source: option.id,
         });
+      }
+    }
+
+    if (eff.extraDamage) {
+      for (const ed of eff.extraDamage) {
+        extraDamages.push(ed);
       }
     }
   }
@@ -150,13 +156,12 @@ function calculateAttacks() {
       dmgDice,
       isSpellstrike: false,
       source: 'iterative',
+      extraDamages,
     });
   }
 
   // 4. Add extra attacks from enabled options
   for (const extra of extraAttacks) {
-    const refIdx = Math.min(extra.atIndexOffset, attacks.length - 1);
-    const refAtk = attacks[refIdx];
     attacks.push({
       label: extra.label,
       attackBonus: perAttack + extra.hitBonusOffset,
@@ -164,6 +169,7 @@ function calculateAttacks() {
       dmgDice,
       isSpellstrike: false,
       source: 'extra',
+      extraDamages,
     });
   }
 
@@ -290,8 +296,9 @@ function renderWeapon() {
 function renderOptions() {
   const categories = [
     { id: 'per-attack', title: 'Per-Attack Decisions', colorClass: 'gold' },
-    { id: 'swift-buff', title: 'Swift-Action Buffs · 1 Round', colorClass: 'teal' },
+    { id: 'arcane-pool', title: 'Arcane Pool', colorClass: 'teal' },
     { id: 'conditional', title: 'Conditional Buffs', colorClass: 'orange' },
+    { id: 'buff', title: 'Active Buffs', colorClass: 'fire' },
   ];
 
   for (const cat of categories) {
@@ -351,6 +358,13 @@ function renderOptions() {
   }
 }
 
+function getDamageTypeClass(expression) {
+  const ENERGY_TYPES = ['acid', 'fire', 'cold', 'electricity', 'sonic', 'force', 'bleed'];
+  const lower = expression.toLowerCase();
+  const match = ENERGY_TYPES.find(t => lower.includes(t));
+  return match ? `dmg-${match}` : '';
+}
+
 function renderAttackCard() {
   const attacks = calculateAttacks();
   const container = document.getElementById('attacks-list');
@@ -389,6 +403,27 @@ function renderAttackCard() {
     `;
 
     container.appendChild(row);
+
+    // Extra damage tags (Flame Arrow, Shocking Burst, etc.)
+    if (atk.extraDamages?.length > 0) {
+      for (const ed of atk.extraDamages) {
+        const edRow = document.createElement('div');
+        const typeClass = getDamageTypeClass(ed.type || '');
+        const typeClassString = typeClass ? ` ${typeClass}` : '';
+        edRow.className = `extra-dmg-row${typeClassString}`;
+
+        edRow.innerHTML = `
+          <span class="extra-dmg-tag${typeClassString}">${ed.label}</span>
+          <div class="dmg-block">
+            <div class="dmg-dice${typeClassString}">${ed.damage}</div>
+            ${ed.critOnly ? '<div class="extra-dmg-crit"> (on crit)</div>' : ''}
+            <div class="dmg-type${typeClassString}">${ed.type?.toLowerCase() || ''}</div>
+          </div>
+        `;
+
+        container.appendChild(edRow);
+      }
+    }
 
     // Spell banner after spellstrike attack
     if (atk.isSpellstrike && state.selectedSpell) {
@@ -446,7 +481,6 @@ function renderSpellSelector() {
   }
 
   for (const spell of spellstrikeSpells) {
-    console.log(spell)
     const item = document.createElement('div');
     item.className = `spell-item${state.selectedSpell?.name === spell.name ? ' selected' : ''}`;
     item.innerHTML = `
@@ -522,6 +556,7 @@ async function uploadPortfolio(file) {
         if (option.defaultEnabled) defaultEnabledOptions.push(option.id);
       }
     }
+
 
     // Compute weapon primary attack value and iterative attack count
     const weaponAttackValues = parseWeaponAttack(character.weapon.attack);

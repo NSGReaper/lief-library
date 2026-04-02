@@ -30,6 +30,15 @@
       --crit-red:       #f87171;
       --hit-green:      #86efac;
       --dmg-amber:      #fbbf24;
+
+      /* damage type colours */
+      --dmg-fire:        #f97316;
+      --dmg-acid:        #84cc16;
+      --dmg-cold:        #38bdf8;
+      --dmg-electricity: #facc15;
+      --dmg-sonic:       #a78bfa;
+      --dmg-force:       #c084fc;
+      --dmg-bleed:       #f43f5e;
     }
 
     body {
@@ -293,8 +302,9 @@
     }
 
     .dot-per-attack  { background: var(--gold); box-shadow: 0 0 6px var(--gold); }
-    .dot-swift-buff  { background: var(--teal); box-shadow: 0 0 6px var(--teal); }
+    .dot-arcane-pool  { background: var(--teal); box-shadow: 0 0 6px var(--teal); }
     .dot-conditional { background: var(--orange); box-shadow: 0 0 6px var(--orange); }
+    .dot-buff        { background: var(--dmg-fire); box-shadow: 0 0 6px var(--dmg-fire); }
 
     .section-eyebrow {
       font-family: 'Cinzel', serif;
@@ -304,8 +314,9 @@
     }
 
     .section-eyebrow.per-attack  { color: var(--gold-dim); }
-    .section-eyebrow.swift-buff  { color: var(--teal-dim); }
+    .section-eyebrow.arcane-pool  { color: var(--teal-dim); }
     .section-eyebrow.conditional { color: var(--orange-dim); }
+    .section-eyebrow.buff        { color: var(--dmg-fire); opacity: 0.75; }
 
     .toggle-grid {
       display: flex;
@@ -372,6 +383,12 @@
       background: #1a100a;
       border-color: var(--orange-dim);
       color: var(--orange);
+    }
+
+    .chip-on-fire {
+      background: #1a0d06;
+      border-color: #7c2e10;
+      color: var(--dmg-fire);
     }
 
     /* OFF state */
@@ -455,7 +472,11 @@
       text-shadow: 0 0 10px #a78bfa55;
     }
 
-    .dmg-block { text-align: right; min-width: 80px; }
+    .dmg-block { 
+      display: flex;
+      justify-content: space-between;
+      min-width: 120px; 
+    }
 
     .dmg-dice {
       font-family: 'Cinzel', serif;
@@ -648,6 +669,36 @@
       letter-spacing: 0.5em;
       padding: 0.25rem 0;
     }
+
+    /* ── EXTRA DAMAGE TAGS ───────────────────────────────────── */
+    .extra-dmg-row {
+      padding: 0.1rem 1.4rem 0.3rem 76px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+      justify-content: right;
+    }
+
+    .extra-dmg-tag {
+      font-family: 'Crimson Pro', serif;
+      font-size: 0.72rem;
+      color: var(--dmg-amber);
+      opacity: 0.85;
+      padding-right: 1em;
+    }
+
+    .dmg-fire        { color: var(--dmg-fire); }
+    .dmg-acid        { color: var(--dmg-acid); }
+    .dmg-cold        { color: var(--dmg-cold); }
+    .dmg-electricity { color: var(--dmg-electricity); }
+    .dmg-sonic       { color: var(--dmg-sonic); }
+    .dmg-force       { color: var(--dmg-force); }
+    .dmg-bleed       { color: var(--dmg-bleed); }
+
+    .extra-dmg-crit {
+      font-size: 0.65rem;
+      opacity: 0.65;
+    }
   </style>
 </head>
 <body>
@@ -729,19 +780,28 @@
   <!-- SWIFT-ACTION BUFFS -->
   <div class="toggle-section">
     <div class="toggle-section-header">
-      <span class="section-dot dot-swift-buff"></span>
-      <span class="section-eyebrow swift-buff">Swift-Action Buffs · 1 Round</span>
+      <span class="section-dot dot-arcane-pool"></span>
+      <span class="section-eyebrow arcane-pool">Arcane Pool</span>
     </div>
-    <div class="toggle-grid" id="options-grid-swift-buff"></div>
+    <div class="toggle-grid" id="options-grid-arcane-pool"></div>
   </div>
 
   <!-- CONDITIONAL BUFFS -->
   <div class="toggle-section">
     <div class="toggle-section-header">
       <span class="section-dot dot-conditional"></span>
-      <span class="section-eyebrow conditional">Conditional Buffs</span>
+      <span class="section-eyebrow conditional">Conditional</span>
     </div>
     <div class="toggle-grid" id="options-grid-conditional"></div>
+  </div>
+
+  <!-- ACTIVE BUFFS -->
+  <div class="toggle-section">
+    <div class="toggle-section-header">
+      <span class="section-dot dot-buff"></span>
+      <span class="section-eyebrow buff">Active Buffs</span>
+    </div>
+    <div class="toggle-grid" id="options-grid-buff"></div>
   </div>
 
   <!-- ATTACKS -->
