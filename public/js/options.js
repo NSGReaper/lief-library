@@ -78,10 +78,10 @@ export const ATTACK_OPTIONS = [
     buffId: 'fDeadAim',
     defaultEnabled: false,
     arcanePointCost: 0,
-    description: '−3 to hit for +6 damage',
+    description: '−2 to hit for +4 damage',
     effect: {
-      hitBonus: -3,
-      damageBonus: 6,
+      hitBonus: -2,
+      damageBonus: 4,
     },
   },
   {

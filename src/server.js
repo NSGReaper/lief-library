@@ -137,11 +137,29 @@ function parsePortfolio(buffer) {
 
       const fields = Array.from(pick.getElementsByTagName('field'));
       const pIsOnField = fields.find(f => f.getAttribute('id') === 'pIsOn');
+      const abilActiveField = fields.find(f => f.getAttribute('id') === 'abilActive');
+
+      /*
+      <pick thing="fDeadAim" index="2670" batchindex="686" uniqueness="useronce" refcount="0" fieldcount="1" source="fTable">
+<chain index="2671"/>
+<field id="abilActive" user="1."></field>
+</pick>
+*/
+      let pIsEnabled = false;
       if (pIsOnField) {
         const val = pIsOnField.getAttribute('user') || '';
         if (val.startsWith('1')) {
-          activeBuffIds.add(thingId);
+          pIsEnabled = true;
         }
+      } else if (abilActiveField) {
+        const val = abilActiveField.getAttribute('user') || '';
+        if (val.startsWith('1')) {
+          pIsEnabled = true;
+        }
+      }
+
+      if (pIsEnabled) {
+        activeBuffIds.add(thingId);
       }
     }
   }
