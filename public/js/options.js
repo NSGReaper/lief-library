@@ -193,6 +193,7 @@ export const ATTACK_OPTIONS = [
     arcanePointCost: 0,
     description: 'Extra attack at highest BAB',
     effect: {
+      hitBonus: 1,
       extraAttacks: [
         { hitBonusOffset: 0, label: 'Haste' },
       ],

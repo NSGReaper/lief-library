@@ -699,6 +699,78 @@
       font-size: 0.65rem;
       opacity: 0.65;
     }
+
+    /* ── WATCH PATH INPUT ──────────────────────────────── */
+    .upload-divider {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin: 1.25rem 0 1rem;
+      color: var(--text-dim);
+      font-family: 'Cinzel', serif;
+      font-size: 0.6rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+    .upload-divider::before,
+    .upload-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border-dim);
+    }
+
+    .watch-row {
+      display: flex;
+      gap: 0.5rem;
+      align-items: stretch;
+    }
+
+    .watch-input {
+      flex: 1;
+      background: #0a0f1a;
+      border: 1px solid var(--border-dim);
+      border-radius: 4px;
+      padding: 0.45em 0.75em;
+      font-family: 'Crimson Pro', serif;
+      font-size: 0.82rem;
+      color: var(--text-primary);
+      outline: none;
+      transition: border-color 0.15s;
+    }
+    .watch-input:focus { border-color: var(--teal-dim); }
+    .watch-input::placeholder { color: var(--text-dim); opacity: 0.6; }
+
+    .watch-btn {
+      font-family: 'Cinzel', serif;
+      font-size: 0.62rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--teal);
+      background: none;
+      border: 1px solid var(--teal-dim);
+      border-radius: 4px;
+      padding: 0.45em 0.9em;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: border-color 0.15s, color 0.15s;
+    }
+    .watch-btn:hover { border-color: var(--teal); color: var(--teal-glow); }
+
+    /* ── LIVE INDICATOR ─────────────────────────────────── */
+    #watch-indicator {
+      display: none;
+      font-family: 'Cinzel', serif;
+      font-size: 0.58rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      border-radius: 3px;
+      padding: 0.2em 0.55em;
+      border: 1px solid transparent;
+    }
+    #watch-indicator[data-status='live']         { color: var(--hit-green); border-color: #166534; background: #052e16; }
+    #watch-indicator[data-status='reconnecting'] { color: var(--dmg-amber); border-color: #713f12; background: #1c0f03; }
+    #watch-indicator[data-status='lost']         { color: var(--crit-red);  border-color: #7f1d1d; background: #1c0f0f; }
   </style>
 </head>
 <body>
@@ -717,6 +789,15 @@
 
   <input type="file" id="portfolio-file" accept=".por" style="display:none" />
   <div id="upload-status" class="upload-status"></div>
+
+  <div class="upload-divider">or watch a local file</div>
+
+  <div class="watch-row">
+    <input id="watch-path-input" class="watch-input" type="text"
+           placeholder="C:\path\to\character.por" />
+    <button id="watch-btn" class="watch-btn">Watch</button>
+  </div>
+  <div id="watch-status" class="upload-status"></div>
 </div>
 
 <!-- ══════════════════════════════════════════
@@ -734,6 +815,7 @@
       </div>
       <div class="d-flex flex-column align-items-end gap-1">
         <span class="action-badge mt-1">Full Attack</span>
+        <span id="watch-indicator"></span>
         <a href="#" id="change-character-link" class="change-char-link">change character</a>
       </div>
     </div>

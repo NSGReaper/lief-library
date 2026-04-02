@@ -17,6 +17,7 @@ let state = {
   arcanePoolTotal: 0,    // max arcane pool
   arcanePoolLeft: 0,     // remaining arcane pool from portfolio
   selectedSpell: null,   // spell chosen for Spellstrike
+  portfolioSource: null, // { type: 'upload' } | { type: 'local', path: string }
 };
 
 // ─── Local Storage ────────────────────────────────────────────────────────────
@@ -29,6 +30,7 @@ function saveState() {
     optionStates: state.optionStates,
     arcanePoolSpent: state.arcanePoolSpent,
     selectedSpell: state.selectedSpell?.name || null,
+    portfolioSource: state.portfolioSource || null,
   };
   localStorage.setItem(LS_KEY, JSON.stringify(data));
 }
@@ -42,6 +44,7 @@ function loadState() {
     state.optionStates = data.optionStates || {};
     state.arcanePoolSpent = data.arcanePoolSpent || 0;
     state.selectedSpell = data.selectedSpell ? getSpellByName(data.selectedSpell) : null;
+    state.portfolioSource = data.portfolioSource || null;
 
     // Re-compute derived fields if character is present but missing them
     if (state.character && state.character.weaponPrimary == null) {
@@ -518,6 +521,132 @@ function renderAll() {
   renderSpellSelector();
 }
 
+// ─── Apply Character ──────────────────────────────────────────────────────────
+
+/**
+ * Apply a parsed character object to state and re-render.
+ *
+ * preserveManualToggles = false (initial load / file upload):
+ *   Full reset — all optionStates are derived from activeBuffIds and defaultEnabled.
+ *   arcanePoolSpent and selectedSpell reset to zero/null.
+ *
+ * preserveManualToggles = true (WebSocket live update):
+ *   Options with a buffId are updated to match the new activeBuffIds.
+ *   Options without a buffId are left as-is (user's manual state preserved).
+ *   arcanePoolSpent and selectedSpell are preserved.
+ */
+function applyCharacter(character, { preserveManualToggles = false } = {}) {
+  const activeBuffIds = new Set(character.activeBuffIds || []);
+
+  const defaultEnabledOptions = [];
+  const optionStates = preserveManualToggles ? { ...state.optionStates } : {};
+
+  for (const option of ATTACK_OPTIONS) {
+    if (option.buffId) {
+      // Always sync buff-controlled options from the portfolio
+      const isActive = activeBuffIds.has(option.buffId);
+      optionStates[option.id] = isActive;
+      if (isActive) defaultEnabledOptions.push(option.id);
+    } else if (!preserveManualToggles) {
+      optionStates[option.id] = option.defaultEnabled;
+      if (option.defaultEnabled) defaultEnabledOptions.push(option.id);
+    } else {
+      // Manual-only option: keep user's current state, track as default if it was on
+      if (optionStates[option.id]) defaultEnabledOptions.push(option.id);
+    }
+  }
+
+  // Compute weapon primary attack value and iterative attack count
+  const weaponAttackValues = parseWeaponAttack(character.weapon.attack);
+  const weaponPrimary = weaponAttackValues[0] || 0;
+  const iterativeCount = character.charRangedAttackValues.length;
+
+  // Detect unexplained extra attacks and auto-enable options (e.g. Rapid Shot) to account for them
+  const weaponTotalAttacks = weaponAttackValues.length;
+  let explainedExtras = 0;
+  for (const optId of defaultEnabledOptions) {
+    const opt = ATTACK_OPTIONS.find(o => o.id === optId);
+    if (opt?.effect?.extraAttacks) explainedExtras += opt.effect.extraAttacks.length;
+  }
+  const unexplainedExtras = weaponTotalAttacks - iterativeCount - explainedExtras;
+
+  let extrasToAssign = unexplainedExtras;
+  for (const option of ATTACK_OPTIONS) {
+    if (extrasToAssign <= 0) break;
+    if (defaultEnabledOptions.includes(option.id)) continue;
+    if (option.effect?.extraAttacks && option.effect.extraAttacks.length > 0) {
+      optionStates[option.id] = true;
+      defaultEnabledOptions.push(option.id);
+      extrasToAssign -= option.effect.extraAttacks.length;
+    }
+  }
+
+  character.weaponPrimary = weaponPrimary;
+  character.iterativeCount = iterativeCount;
+  character.defaultEnabledOptions = defaultEnabledOptions;
+
+  state.character = character;
+  state.optionStates = optionStates;
+
+  if (!preserveManualToggles) {
+    state.arcanePoolSpent = 0;
+    state.selectedSpell = null;
+  }
+
+  saveState();
+}
+
+// ─── WebSocket live watch ──────────────────────────────────────────────────────
+
+let wsReconnectDelay = 1000;
+let wsInstance = null;
+
+function setWatchIndicator(status) {
+  const el = document.getElementById('watch-indicator');
+  if (!el) return;
+  el.dataset.status = status;
+  el.style.display = status ? '' : 'none';
+  const labels = { live: '● Live', reconnecting: '● Connecting…', lost: '● File moved' };
+  el.textContent = labels[status] ?? '';
+}
+
+function connectWebSocket() {
+  if (wsInstance && wsInstance.readyState <= WebSocket.OPEN) wsInstance.close();
+
+  const ws = new WebSocket(`ws://${location.host}`);
+  wsInstance = ws;
+  setWatchIndicator('reconnecting');
+
+  ws.addEventListener('open', () => {
+    wsReconnectDelay = 1000;
+    setWatchIndicator('live');
+  });
+
+  ws.addEventListener('message', ({ data }) => {
+    try {
+      const msg = JSON.parse(data);
+      if (msg.type === 'character-update') {
+        applyCharacter(msg.character, { preserveManualToggles: true });
+        renderAll();
+        // Brief flash on the indicator to signal an update arrived
+        setWatchIndicator('live');
+      } else if (msg.type === 'watch-lost') {
+        setWatchIndicator('lost');
+      }
+    } catch {
+      // Malformed message — ignore
+    }
+  });
+
+  ws.addEventListener('close', () => {
+    setWatchIndicator('reconnecting');
+    setTimeout(connectWebSocket, wsReconnectDelay);
+    wsReconnectDelay = Math.min(wsReconnectDelay * 2, 30000);
+  });
+
+  ws.addEventListener('error', () => ws.close());
+}
+
 // ─── Portfolio Upload ──────────────────────────────────────────────────────────
 
 async function uploadPortfolio(file) {
@@ -540,61 +669,8 @@ async function uploadPortfolio(file) {
     }
 
     const character = await response.json();
-
-    // Initialize option states from active buffs
-    const defaultEnabledOptions = [];
-    const activeBuffIds = new Set(character.activeBuffIds || []);
-
-    // First pass: detect which options are enabled via Hero Lab buffs
-    const optionStates = {};
-    for (const option of ATTACK_OPTIONS) {
-      if (option.buffId && activeBuffIds.has(option.buffId)) {
-        optionStates[option.id] = true;
-        defaultEnabledOptions.push(option.id);
-      } else {
-        optionStates[option.id] = option.defaultEnabled;
-        if (option.defaultEnabled) defaultEnabledOptions.push(option.id);
-      }
-    }
-
-
-    // Compute weapon primary attack value and iterative attack count
-    const weaponAttackValues = parseWeaponAttack(character.weapon.attack);
-    const weaponPrimary = weaponAttackValues[0] || 0;
-    const iterativeCount = character.charRangedAttackValues.length; // from BAB
-
-    // Detect "unexplained" extra attacks (not from buff-controlled options)
-    // and auto-enable options like Rapid Shot to account for them
-    const weaponTotalAttacks = weaponAttackValues.length;
-    let explainedExtras = 0;
-    for (const optId of defaultEnabledOptions) {
-      const opt = ATTACK_OPTIONS.find(o => o.id === optId);
-      if (opt?.effect?.extraAttacks) explainedExtras += opt.effect.extraAttacks.length;
-    }
-    const unexplainedExtras = weaponTotalAttacks - iterativeCount - explainedExtras;
-
-    // Assign unexplained extras to options in declaration order (Rapid Shot is first)
-    let extrasToAssign = unexplainedExtras;
-    for (const option of ATTACK_OPTIONS) {
-      if (extrasToAssign <= 0) break;
-      if (defaultEnabledOptions.includes(option.id)) continue; // already assigned
-      if (option.effect?.extraAttacks && option.effect.extraAttacks.length > 0) {
-        optionStates[option.id] = true;
-        defaultEnabledOptions.push(option.id);
-        extrasToAssign -= option.effect.extraAttacks.length;
-      }
-    }
-
-    // Attach computed values to character for use in calculation
-    character.weaponPrimary = weaponPrimary;
-    character.iterativeCount = iterativeCount;
-    character.defaultEnabledOptions = defaultEnabledOptions;
-
-    state.character = character;
-    state.optionStates = optionStates;
-    state.arcanePoolSpent = 0;  // session spending starts fresh (portfolio shows remaining)
-    state.selectedSpell = null;
-
+    applyCharacter(character, { preserveManualToggles: false });
+    state.portfolioSource = { type: 'upload' };
     saveState();
 
     statusEl.textContent = `✓ Loaded: ${character.name}`;
@@ -602,6 +678,7 @@ async function uploadPortfolio(file) {
 
     document.getElementById('upload-section').style.display = 'none';
     document.getElementById('app-section').style.display = '';
+    setWatchIndicator(null);
 
     renderAll();
   } catch (err) {
@@ -610,15 +687,80 @@ async function uploadPortfolio(file) {
   }
 }
 
+// ─── Watch Path ────────────────────────────────────────────────────────────────
+
+async function watchPath(filePath) {
+  const statusEl = document.getElementById('watch-status');
+  statusEl.textContent = 'Loading…';
+  statusEl.className = 'upload-status loading';
+
+  try {
+    const response = await fetch('/api/watch', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ path: filePath }),
+    });
+
+    if (!response.ok) {
+      const err = await response.json();
+      throw new Error(err.error || `HTTP ${response.status}`);
+    }
+
+    const character = await response.json();
+    applyCharacter(character, { preserveManualToggles: false });
+    state.portfolioSource = { type: 'local', path: filePath };
+    saveState();
+
+    statusEl.textContent = '';
+    document.getElementById('upload-section').style.display = 'none';
+    document.getElementById('app-section').style.display = '';
+
+    connectWebSocket();
+    renderAll();
+  } catch (err) {
+    statusEl.textContent = `✗ ${err.message}`;
+    statusEl.className = 'upload-status error';
+  }
+}
+
 // ─── Bootstrap the app ────────────────────────────────────────────────────────
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
   // Try to restore from localStorage
   if (loadState() && state.character) {
-    // arcanePoolSpent is restored from localStorage (persisted session spending)
     document.getElementById('upload-section').style.display = 'none';
     document.getElementById('app-section').style.display = '';
     renderAll();
+
+    // If the portfolio was a watched local file, try to resume watching it
+    if (state.portfolioSource?.type === 'local' && state.portfolioSource.path) {
+      const input = document.getElementById('watch-path-input');
+      if (input) input.value = state.portfolioSource.path;
+      try {
+        const response = await fetch('/api/watch', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ path: state.portfolioSource.path }),
+        });
+        if (response.ok) {
+          const character = await response.json();
+          applyCharacter(character, { preserveManualToggles: true });
+          renderAll();
+          connectWebSocket();
+        }
+      } catch {
+        // Server not ready or path gone — silently continue with cached data
+      }
+    }
+  } else {
+    // No cached state — check if the server is already watching (e.g. server restarted,
+    // browser refreshed without localStorage) and reconnect if so
+    try {
+      const status = await fetch('/api/watch-status').then(r => r.json());
+      if (status.watching) connectWebSocket();
+    } catch {
+      // ignore
+    }
   }
 
   // File input change
@@ -645,6 +787,16 @@ document.addEventListener('DOMContentLoaded', () => {
     dropZone.addEventListener('click', () => fileInput?.click());
   }
 
+  // Watch path form
+  document.getElementById('watch-btn')?.addEventListener('click', () => {
+    const input = document.getElementById('watch-path-input');
+    const filePath = input?.value.trim();
+    if (filePath) watchPath(filePath);
+  });
+  document.getElementById('watch-path-input')?.addEventListener('keydown', e => {
+    if (e.key === 'Enter') document.getElementById('watch-btn')?.click();
+  });
+
   // "Change character" link
   document.getElementById('change-character-link')?.addEventListener('click', e => {
     e.preventDefault();
@@ -659,7 +811,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Reset round button
   document.getElementById('reset-round-btn')?.addEventListener('click', () => {
-    // Turn off all single-round options
     for (const option of ATTACK_OPTIONS) {
       if (option.arcanePointCost > 0 || option.category === 'per-attack') {
         state.optionStates[option.id] = false;

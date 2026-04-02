@@ -4,12 +4,26 @@ const express = require('express');
 const multer = require('multer');
 const AdmZip = require('adm-zip');
 const path = require('path');
+const fs = require('fs');
 const { DOMParser } = require('@xmldom/xmldom');
+const { WebSocketServer } = require('ws');
+const chokidar = require('chokidar');
 
 const app = express();
 const upload = multer({ storage: multer.memoryStorage() });
+app.use(express.json());
+
+// ─── Watch state ──────────────────────────────────────────────────────────────
+
+let activeWatcher = null;
+let watchedPath = null;
+let portfolioLastModified = null;
 
 app.use(express.static(path.join(__dirname, '..', 'public')));
+
+function log(msg) {
+  console.log(`[${new Date().toISOString()}] ${msg}`);
+}
 
 /**
  * Parse a signed numeric string like "+6", "-2", "+13/+8" into an array of integers.
@@ -191,19 +205,125 @@ function parsePortfolio(buffer) {
 
 // POST /api/portfolio — accept a portfolio file upload
 app.post('/api/portfolio', upload.single('portfolio'), (req, res) => {
+  log(`POST /api/portfolio — file: ${req.file?.originalname ?? '(none)'}, size: ${req.file?.size ?? 0} bytes`);
   try {
     if (!req.file) {
       return res.status(400).json({ error: 'No portfolio file uploaded' });
     }
 
     const characterData = parsePortfolio(req.file.buffer);
+    log(`  → parsed character: ${characterData.name} (${characterData.summary})`);
     return res.json(characterData);
   } catch (err) {
+    log(`  → parse error: ${err.message}`);
     return res.status(500).json({ error: err.message });
   }
 });
 
+// POST /api/watch — set a local file path to watch
+app.post('/api/watch', (req, res) => {
+  const filePath = req.body?.path;
+  log(`POST /api/watch — path: ${filePath ?? '(none)'}`);
+  if (!filePath) {
+    return res.status(400).json({ error: 'path is required' });
+  }
+
+  const resolved = path.resolve(filePath);
+  if (!fs.existsSync(resolved)) {
+    log(`  → file not found: ${resolved}`);
+    return res.status(400).json({ error: `File not found: ${resolved}` });
+  }
+
+  try {
+    const character = parsePortfolio(fs.readFileSync(resolved));
+    startWatching(resolved);
+    log(`  → parsed character: ${character.name} (${character.summary}), now watching`);
+    return res.json(character);
+  } catch (err) {
+    log(`  → parse error: ${err.message}`);
+    return res.status(500).json({ error: err.message });
+  }
+});
+
+// GET /api/watch-status — returns current watch state so the client can reconnect on page load
+app.get('/api/watch-status', (_req, res) => {
+  res.json({ watching: activeWatcher !== null, path: watchedPath });
+});
+
+// ─── Chokidar helpers ─────────────────────────────────────────────────────────
+
+function broadcast(message) {
+  const payload = JSON.stringify(message);
+  for (const client of wss.clients) {
+    if (client.readyState === client.OPEN) {
+      client.send(payload);
+    }
+  }
+}
+
+function startWatching(filePath) {
+  if (activeWatcher) {
+    activeWatcher.close();
+    activeWatcher = null;
+  }
+
+  watchedPath = filePath;
+  const fileInfo = fs.statSync(filePath);
+  portfolioLastModified = fileInfo.mtimeMs;
+
+  activeWatcher = chokidar.watch(filePath, {
+    persistent: true,
+    ignoreInitial: true,
+    awaitWriteFinish: { stabilityThreshold: 400, pollInterval: 100 },
+  });
+
+  activeWatcher.on('change', () => {
+    log(`Portfolio changed: ${filePath}`);
+    try {
+      const fileInfo = fs.statSync(filePath);
+      portfolioLastModified = fileInfo.mtimeMs;
+      const character = parsePortfolio(fs.readFileSync(filePath));
+      broadcast({ type: 'character-update', character });
+      log(`  → broadcast character-update: ${character.name}, ${wss.clients.size} client(s)`);
+    } catch (err) {
+      log(`  → parse error (skipping): ${err.message}`);
+    }
+  });
+
+  activeWatcher.on('unlink', () => {
+    log(`Portfolio lost: ${filePath} — attempting to re-watch`); // In case of temporary file move (e.g., Hero Lab saving)
+    setTimeout(() => {
+      try {
+        activeWatcher.close();
+        activeWatcher = null;
+        if (fs.existsSync(filePath)) {
+          const fileInfo = fs.statSync(filePath);
+          const lastModified = fileInfo.mtimeMs;
+          if (portfolioLastModified && lastModified > portfolioLastModified) {
+            const character = parsePortfolio(fs.readFileSync(filePath));
+            broadcast({ type: 'character-update', character });
+            log(`Portfolio reappeared: ${filePath} — broadcast character-update: ${character.name}, ${wss.clients.size} client(s)`);
+          }
+          portfolioLastModified = lastModified;
+          log(`Portfolio reappeared: ${filePath} — resuming watch`);
+          startWatching(filePath);
+        } else {
+          log(`Portfolio removed: ${filePath} — broadcasting watch-lost`);
+          broadcast({ type: 'watch-lost', path: filePath });
+          watchedPath = null;
+        }
+      } catch (err) {
+        log(`Error checking portfolio after unlink: ${err.message}`);
+      }
+    }, 1000);
+  });
+}
+
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log(`Eldritch Archer server running at http://localhost:${PORT}`);
 });
+
+// ─── WebSocket server ─────────────────────────────────────────────────────────
+
+const wss = new WebSocketServer({ server });
