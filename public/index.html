@@ -23,6 +23,9 @@
       --teal-dim:       #1a4a6a;
       --orange:         #fb923c;
       --orange-dim:     #7c3a1a;
+      --green:          #68b986;
+      --green-glow:     #86efac;
+      --green-dim:      #1a4030;
       --spell-purple:   #a78bfa;
       --spell-glow:     #7c3aed;
       --text-primary:   #e8dfc8;
@@ -367,6 +370,12 @@
     }
 
     /* ON states */
+    .chip-on-green {
+      background: #102918;
+      border-color: var(--green-dim);
+      color: var(--green);
+    }
+    
     .chip-on-gold {
       background: #1a1408;
       border-color: var(--gold-dim);
@@ -601,6 +610,14 @@
 
     .spell-item:hover { border-color: var(--spell-glow); background: #0e0f20; }
 
+    .spell-item.spell-depleted {
+      border-color: #4a1e2d;
+      background: #1a0f14;
+      opacity: 0.75;
+      cursor: default;
+      text-decoration: line-through;
+    }
+
     .spell-item.selected {
       border-color: var(--spell-purple);
       background: #100e20;
@@ -756,6 +773,75 @@
       transition: border-color 0.15s, color 0.15s;
     }
     .watch-btn:hover { border-color: var(--teal); color: var(--teal-glow); }
+    .watch-btn:disabled { opacity: 0.35; cursor: default; pointer-events: none; }
+
+    /* ── FILE BROWSER ───────────────────────────────────── */
+    #file-browser { margin-top: 0.1rem; }
+
+    .browser-shortcuts {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .shortcut-btn {
+      font-family: 'Cinzel', serif;
+      font-size: 0.56rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--teal);
+      background: none;
+      border: 1px solid var(--teal-dim);
+      border-radius: 3px;
+      padding: 0.2em 0.6em;
+      cursor: pointer;
+      transition: border-color 0.15s, color 0.15s;
+    }
+    .shortcut-btn:hover { border-color: var(--teal); color: var(--teal-glow); }
+
+    .browser-path-row {
+      display: flex;
+      gap: 0.5rem;
+      align-items: stretch;
+      margin-bottom: 0.4rem;
+    }
+
+    .browser-list {
+      max-height: 220px;
+      overflow-y: auto;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 0.2rem 0;
+      margin-bottom: 0.4rem;
+      scrollbar-width: thin;
+      scrollbar-color: var(--border) transparent;
+    }
+
+    .browser-item {
+      display: block;
+      width: 100%;
+      text-align: left;
+      background: none;
+      border: none;
+      padding: 0.22rem 0.65rem;
+      font-family: 'Crimson Pro', serif;
+      font-size: 0.82rem;
+      cursor: pointer;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      transition: background 0.1s;
+    }
+    .browser-item.is-dir  { color: var(--text-dim); }
+    .browser-item.is-file { color: var(--teal); }
+    .browser-item:hover   { background: #091820; }
+
+    .browser-divider {
+      border: none;
+      border-top: 1px solid var(--border-dim);
+      margin: 0.2rem 0;
+    }
 
     /* ── LIVE INDICATOR ─────────────────────────────────── */
     #watch-indicator {
@@ -790,14 +876,18 @@
   <input type="file" id="portfolio-file" accept=".por" style="display:none" />
   <div id="upload-status" class="upload-status"></div>
 
-  <div class="upload-divider">or watch a local file</div>
+  <div class="upload-divider">or browse a local file</div>
 
-  <div class="watch-row">
-    <input id="watch-path-input" class="watch-input" type="text"
-           placeholder="C:\path\to\character.por" />
-    <button id="watch-btn" class="watch-btn">Watch</button>
+  <div id="file-browser">
+    <div id="browser-shortcuts" class="browser-shortcuts"></div>
+    <div class="browser-path-row">
+      <input id="watch-path-input" class="watch-input" type="text"
+             placeholder="C:\path\to\character.por" />
+      <button id="browser-up-btn" class="watch-btn" disabled title="Go up one folder">↑</button>
+    </div>
+    <div id="browser-list" class="browser-list"></div>
+    <div id="watch-status" class="upload-status"></div>
   </div>
-  <div id="watch-status" class="upload-status"></div>
 </div>
 
 <!-- ══════════════════════════════════════════

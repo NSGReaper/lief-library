@@ -20,6 +20,8 @@ let state = {
   portfolioSource: null, // { type: 'upload' } | { type: 'local', path: string }
 };
 
+let browseState = null; // { path, parent, dirs, files }
+
 // ─── Local Storage ────────────────────────────────────────────────────────────
 
 const LS_KEY = 'eldritchArcher';
@@ -313,7 +315,8 @@ function renderOptions() {
     for (const option of catOptions) {
       const enabled = state.optionStates[option.id] ?? false;
       const chip = document.createElement('label');
-      chip.className = `toggle-chip ${enabled ? `chip-on-${cat.colorClass}` : 'chip-off'}`;
+      const colorClass = option.alignment === 'good' ? 'green' : cat.colorClass;
+      chip.className = `toggle-chip ${enabled ? `chip-on-${colorClass}` : 'chip-off'}`;
       chip.dataset.optionId = option.id;
       chip.title = option.description;
 
@@ -476,7 +479,10 @@ function renderSpellSelector() {
   list.innerHTML = '';
 
   const spells = state.character?.spells || [];
-  const spellstrikeSpells = filterValidSpellstrikeSpells(spells);
+  const spellstrikeSpells = filterValidSpellstrikeSpells(spells).sort((a, b) => {
+    if (a.level !== b.level) return a.level - b.level;
+    return a.name.localeCompare(b.name);
+  });
 
   if (spellstrikeSpells.length === 0) {
     list.innerHTML = '<div class="spell-none">No spells available for Spellstrike</div>';
@@ -485,7 +491,7 @@ function renderSpellSelector() {
 
   for (const spell of spellstrikeSpells) {
     const item = document.createElement('div');
-    item.className = `spell-item${state.selectedSpell?.name === spell.name ? ' selected' : ''}`;
+    item.className = `spell-item${state.selectedSpell?.name === spell.name ? ' selected' : ''}${spell.castsLeft === 0 ? ' spell-depleted' : ''}`;
     item.innerHTML = `
       <div class="d-flex align-items-baseline justify-content-between">
         <span class="spell-item-name">${spell.name}</span>
@@ -723,6 +729,86 @@ async function watchPath(filePath) {
   }
 }
 
+// ─── File Browser ────────────────────────────────────────────────────────────
+
+function joinBrowserPath(dir, name) {
+  const sep = dir.includes('\\') ? '\\' : '/';
+  return dir.endsWith(sep) ? dir + name : dir + sep + name;
+}
+
+async function browseTo(dirPath) {
+  try {
+    const res = await fetch(`/api/browse?path=${encodeURIComponent(dirPath)}`);
+    if (!res.ok) {
+      const err = await res.json();
+      console.warn('browse error:', err.error);
+      return;
+    }
+    browseState = await res.json();
+    renderBrowser();
+  } catch (err) {
+    console.warn('browse failed:', err);
+  }
+}
+
+function renderBrowser() {
+  if (!browseState) return;
+
+  const pathInput = document.getElementById('watch-path-input');
+  if (pathInput) pathInput.value = browseState.path;
+
+  const upBtn = document.getElementById('browser-up-btn');
+  if (upBtn) upBtn.disabled = browseState.parent === null;
+
+  const list = document.getElementById('browser-list');
+  if (!list) return;
+  list.innerHTML = '';
+
+  for (const dir of browseState.dirs) {
+    const btn = document.createElement('button');
+    btn.className = 'browser-item is-dir';
+    btn.textContent = '\uD83D\uDCC1 ' + dir;
+    btn.addEventListener('click', () => browseTo(joinBrowserPath(browseState.path, dir)));
+    list.appendChild(btn);
+  }
+
+  if (browseState.dirs.length > 0 && browseState.files.length > 0) {
+    const hr = document.createElement('div');
+    hr.className = 'browser-divider';
+    list.appendChild(hr);
+  }
+
+  for (const file of browseState.files) {
+    const btn = document.createElement('button');
+    btn.className = 'browser-item is-file';
+    btn.textContent = '\uD83D\uDCC4 ' + file;
+    btn.addEventListener('click', () => watchPath(joinBrowserPath(browseState.path, file)));
+    list.appendChild(btn);
+  }
+}
+
+async function initBrowser() {
+  try {
+    const shortcuts = await fetch('/api/browse/shortcuts').then(r => r.json());
+    const grid = document.getElementById('browser-shortcuts');
+    if (grid) {
+      grid.innerHTML = '';
+      for (const sc of shortcuts) {
+        const btn = document.createElement('button');
+        btn.className = 'shortcut-btn';
+        btn.textContent = sc.label;
+        btn.addEventListener('click', () => browseTo(sc.path));
+        grid.appendChild(btn);
+      }
+    }
+    // Auto-navigate to Hero Lab if present, else first shortcut
+    const target = shortcuts.find(s => s.label === 'Hero Lab') || shortcuts[0];
+    if (target) browseTo(target.path);
+  } catch {
+    // ignore — browser panel stays empty
+  }
+}
+
 // ─── Bootstrap the app ────────────────────────────────────────────────────────
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -787,15 +873,25 @@ document.addEventListener('DOMContentLoaded', async () => {
     dropZone.addEventListener('click', () => fileInput?.click());
   }
 
-  // Watch path form
-  document.getElementById('watch-btn')?.addEventListener('click', () => {
-    const input = document.getElementById('watch-path-input');
-    const filePath = input?.value.trim();
-    if (filePath) watchPath(filePath);
+  // File browser — Up button
+  document.getElementById('browser-up-btn')?.addEventListener('click', () => {
+    if (browseState?.parent) browseTo(browseState.parent);
   });
+
+  // Path bar — Enter to smart-navigate
   document.getElementById('watch-path-input')?.addEventListener('keydown', e => {
-    if (e.key === 'Enter') document.getElementById('watch-btn')?.click();
+    if (e.key === 'Enter') {
+      const val = e.target.value.trim();
+      if (val.toLowerCase().endsWith('.por')) {
+        watchPath(val);
+      } else if (val) {
+        browseTo(val);
+      }
+    }
   });
+
+  // Initialize file browser
+  initBrowser();
 
   // "Change character" link
   document.getElementById('change-character-link')?.addEventListener('click', e => {

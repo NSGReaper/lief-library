@@ -8,6 +8,7 @@ const fs = require('fs');
 const { DOMParser } = require('@xmldom/xmldom');
 const { WebSocketServer } = require('ws');
 const chokidar = require('chokidar');
+const os = require('os');
 
 const app = express();
 const upload = multer({ storage: multer.memoryStorage() });
@@ -266,6 +267,49 @@ app.post('/api/watch', (req, res) => {
 // GET /api/watch-status — returns current watch state so the client can reconnect on page load
 app.get('/api/watch-status', (_req, res) => {
   res.json({ watching: activeWatcher !== null, path: watchedPath });
+});
+
+// GET /api/browse/shortcuts — returns OS-resolved shortcut paths
+app.get('/api/browse/shortcuts', (_req, res) => {
+  const shortcuts = [];
+  const heroLab = path.join(os.homedir(), 'Documents', 'Hero Lab', 'portfolios');
+  if (fs.existsSync(heroLab)) {
+    shortcuts.push({ label: 'Hero Lab', path: heroLab });
+  }
+  shortcuts.push(
+    { label: 'Documents', path: path.join(os.homedir(), 'Documents') },
+    { label: 'Downloads', path: path.join(os.homedir(), 'Downloads') },
+    { label: 'Home', path: os.homedir() }
+  );
+  res.json(shortcuts);
+});
+
+// GET /api/browse?path=<dir> — lists a directory (dirs + .por files only)
+app.get('/api/browse', (req, res) => {
+  const requested = req.query.path || os.homedir();
+  const resolved = path.resolve(requested);
+  try {
+    const stat = fs.statSync(resolved);
+    if (!stat.isDirectory()) {
+      return res.status(400).json({ error: 'Not a directory' });
+    }
+    const entries = fs.readdirSync(resolved, { withFileTypes: true });
+    const dirs = entries
+      .filter(e => e.isDirectory())
+      .map(e => e.name)
+      .sort((a, b) => a.localeCompare(b));
+    const files = entries
+      .filter(e => e.isFile() && e.name.toLowerCase().endsWith('.por'))
+      .map(e => e.name)
+      .sort((a, b) => a.localeCompare(b));
+    const parent = (() => {
+      const p = path.dirname(resolved);
+      return p === resolved ? null : p;
+    })();
+    res.json({ path: resolved, parent, dirs, files });
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
 });
 
 // ─── Chokidar helpers ─────────────────────────────────────────────────────────

@@ -42,6 +42,9 @@ export const ATTACK_OPTIONS = [
     description: 'Deliver a prepared spell through your first ranged attack',
     effect: {
       isSpellstrike: true,
+      extraAttacks: [
+        { hitBonusOffset: 0, label: 'Spellstrike' },
+      ],
     },
   },
   {
@@ -135,11 +138,27 @@ export const ATTACK_OPTIONS = [
     defaultEnabled: false,
     arcanePointCost: 0,
     description: '+1 to hit and damage when target is within 30 ft',
+    alignment: 'good',
     effect: {
       hitBonus: 1,
       damageBonus: 1,
     },
   },
+  {
+    id: 'target-prone',
+    name: 'Target Prone',
+    category: 'conditional',
+    buffId: null,
+    defaultEnabled: false,
+    arcanePointCost: 0,
+    description: '-4 to hit against prone targets',
+    alignment: 'bad',
+    effect: {
+      hitBonus: -4,
+    },
+  },
+
+  /*
   {
     id: 'favored-enemy',
     name: 'Favored Enemy',
@@ -153,6 +172,7 @@ export const ATTACK_OPTIONS = [
       damageBonus: 2,
     },
   },
+  
   {
     id: 'flanking',
     name: 'Flanking',
@@ -165,6 +185,7 @@ export const ATTACK_OPTIONS = [
       hitBonus: 2,
     },
   },
+  */
 
   // ─── Active Buffs ────────────────────────────────────────────────────────
   {

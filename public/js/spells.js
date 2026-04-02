@@ -9,6 +9,31 @@ import { buildDamageString } from './utilities.js';
 
 
 export const SPELLSTRIKE_SPELLS = {
+  // Cantrips
+  /* {
+            "name": "Acid Splash",
+            "level": 0,
+            "casterLevel": 8,
+            "castTime": "1 action",
+            "range": "close (25 + 5 ft./2 levels)",
+            "dc": 15,
+            "school": "Conjuration, Earth Elemental",
+            "spellResistance": "no",
+            "save": "none",
+            "castsLeft": null,
+            "unlimited": true
+        }
+            */
+
+  'Acid Splash': {
+    name: 'Acid Splash',
+    level: 0,
+    school: 'conjuration',
+    description: '',
+    attackType: 'ranged',
+    spellResistance: false,
+    damageExpression: '1d3 acid',
+  },
   // 1st Level
   'Shocking Grasp': {
     name: 'Shocking Grasp',
