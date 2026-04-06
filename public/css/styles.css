@@ -1,0 +1,893 @@
+/* ── DESIGN TOKENS ─────────────────────────────────────── */
+:root {
+    --bg-deep:        #090c14;
+    --bg-card:        #0d1220;
+    --bg-section:     #111827;
+    --border-dim:     #1e2d4a;
+    --border-glow:    #c8922a;
+    --gold:           #d4a93a;
+    --gold-light:     #f0cc6a;
+    --gold-dim:       #7a5c1a;
+    --teal:           #4fc3f7;
+    --teal-glow:      #0ea5e9;
+    --teal-dim:       #1a4a6a;
+    --orange:         #fb923c;
+    --orange-dim:     #7c3a1a;
+    --green:          #68b986;
+    --green-glow:     #86efac;
+    --green-dim:      #1a4030;
+    --spell-purple:   #a78bfa;
+    --spell-glow:     #7c3aed;
+    --text-primary:   #e8dfc8;
+    --text-dim:       #8a8070;
+    --crit-red:       #f87171;
+    --hit-green:      #86efac;
+    --dmg-amber:      #fbbf24;
+
+    /* damage type colours */
+    --dmg-fire:        #f97316;
+    --dmg-acid:        #84cc16;
+    --dmg-cold:        #38bdf8;
+    --dmg-electricity: #facc15;
+    --dmg-sonic:       #a78bfa;
+    --dmg-force:       #c084fc;
+    --dmg-bleed:       #f43f5e;
+}
+
+body {
+    background: var(--bg-deep);
+    min-height: 100vh;
+    padding: 2rem 1rem 4rem;
+    font-family: 'Crimson Pro', Georgia, serif;
+    color: var(--text-primary);
+}
+
+/* ── UPLOAD SCREEN ─────────────────────────────────────── */
+.upload-screen {
+    max-width: 480px;
+    margin: 0 auto;
+    text-align: center;
+    padding-top: 6rem;
+}
+
+.upload-title {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 1.5rem;
+    color: var(--gold-light);
+    text-shadow: 0 0 24px #d4a93a44;
+    letter-spacing: 0.06em;
+    margin-bottom: 0.3rem;
+}
+
+.upload-subtitle {
+    font-family: 'Cinzel', serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 2rem;
+}
+
+.drop-zone {
+    border: 2px dashed var(--border-dim);
+    border-radius: 8px;
+    padding: 2.5rem 2rem;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+    background: var(--bg-card);
+}
+
+.drop-zone:hover,
+.drop-zone.drag-over {
+    border-color: var(--gold);
+    background: #0e1525;
+}
+
+.drop-zone-icon { font-size: 2.5rem; margin-bottom: 0.75rem; }
+
+.drop-zone-text {
+    font-family: 'Cinzel', serif;
+    font-size: 0.85rem;
+    letter-spacing: 0.08em;
+    color: var(--text-dim);
+}
+
+.upload-status {
+    font-family: 'Cinzel', serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    margin-top: 1rem;
+    min-height: 1.2em;
+}
+
+.upload-status.loading { color: var(--teal); }
+.upload-status.success  { color: var(--hit-green); }
+.upload-status.error    { color: var(--crit-red); }
+
+/* ── CARD SHELL ────────────────────────────────────────── */
+.attack-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-dim);
+    border-radius: 6px;
+    max-width: 600px;
+    width: 100%;
+    margin: 0 auto;
+    position: relative;
+    box-shadow:
+    0 0 0 1px #c8922a22,
+    0 0 30px #c8922a18,
+    0 8px 32px #00000088;
+    overflow: hidden;
+}
+
+.attack-card::before {
+    content: '';
+    display: block;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, var(--gold), var(--gold-light), var(--gold), transparent);
+}
+
+/* Responsive: wider layout on larger screens */
+@media (min-width: 1024px) {
+    .attack-card {
+    max-width: 1200px;
+    }
+
+    .card-content-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    }
+
+    .card-column-left {
+    border-right: 1px solid var(--border-dim);
+    }
+}
+
+/* ── HEADER ────────────────────────────────────────────── */
+.card-header-custom {
+    padding: 1.1rem 1.4rem 0.9rem;
+    border-bottom: 1px solid var(--border-dim);
+}
+
+.char-name {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--gold-light);
+    letter-spacing: 0.06em;
+    text-shadow: 0 0 18px #d4a93a55;
+}
+
+.char-meta {
+    font-family: 'Cinzel', serif;
+    font-size: 0.7rem;
+    color: var(--text-dim);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-top: 0.15rem;
+}
+
+.action-badge {
+    font-family: 'Cinzel', serif;
+    font-size: 0.6rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--bg-deep);
+    background: linear-gradient(135deg, var(--gold), var(--gold-dim));
+    border-radius: 2px;
+    padding: 0.25em 0.65em;
+}
+
+.change-char-link {
+    font-family: 'Cinzel', serif;
+    font-size: 0.58rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    text-decoration: none;
+    opacity: 0.6;
+}
+
+.change-char-link:hover { opacity: 1; color: var(--gold-dim); }
+
+/* ── ARCANE POOL ───────────────────────────────────────── */
+.arcane-pool-row {
+    padding: 0.65rem 1.4rem;
+    border-bottom: 1px solid var(--border-dim);
+    background: #0b1019;
+}
+
+.pool-label {
+    font-family: 'Cinzel', serif;
+    font-size: 0.62rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+}
+
+.pool-pip {
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    border: 1px solid var(--teal-dim);
+    display: inline-block;
+    margin: 0 2px;
+    transition: box-shadow 0.2s, background 0.2s;
+}
+
+.pool-pip.committed {
+    background: var(--teal);
+    border-color: var(--teal);
+    box-shadow: 0 0 6px var(--teal-glow), 0 0 12px var(--teal-glow);
+}
+
+.arcane-cost-display {
+    font-family: 'Crimson Pro', serif;
+    font-size: 0.7rem;
+    color: var(--spell-purple);
+    margin-top: 0.25rem;
+}
+
+/* ── WEAPON ────────────────────────────────────────────── */
+.weapon-row {
+    padding: 0.75rem 1.4rem;
+    border-bottom: 1px solid var(--border-dim);
+    background: #0e1520;
+}
+
+.weapon-name {
+    font-family: 'Cinzel', serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    letter-spacing: 0.04em;
+}
+
+.crit-tag {
+    font-family: 'Cinzel', serif;
+    font-size: 0.55rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--crit-red);
+    background: #2a0f0f;
+    border: 1px solid #7f1d1d;
+    border-radius: 2px;
+    padding: 0.1em 0.4em;
+    margin-left: 4px;
+    vertical-align: middle;
+}
+
+.stat-pill {
+    font-family: 'Cinzel', serif;
+    font-size: 0.62rem;
+    letter-spacing: 0.08em;
+    color: var(--text-dim);
+    background: #0a111d;
+    border: 1px solid var(--border-dim);
+    border-radius: 3px;
+    padding: 0.18em 0.5em;
+}
+
+.stat-pill span { color: var(--text-primary); }
+
+/* ── TOGGLE SECTIONS ────────────────────────────────────── */
+.toggle-section {
+    padding: 0.6rem 1.4rem 0.75rem;
+    border-bottom: 1px solid var(--border-dim);
+}
+
+.toggle-section-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.section-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.dot-per-attack  { background: var(--gold); box-shadow: 0 0 6px var(--gold); }
+.dot-arcane-pool  { background: var(--teal); box-shadow: 0 0 6px var(--teal); }
+.dot-conditional { background: var(--orange); box-shadow: 0 0 6px var(--orange); }
+.dot-buff        { background: var(--dmg-fire); box-shadow: 0 0 6px var(--dmg-fire); }
+
+.section-eyebrow {
+    font-family: 'Cinzel', serif;
+    font-size: 0.6rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+}
+
+.section-eyebrow.per-attack  { color: var(--gold-dim); }
+.section-eyebrow.arcane-pool  { color: var(--teal-dim); }
+.section-eyebrow.conditional { color: var(--orange-dim); }
+.section-eyebrow.buff        { color: var(--dmg-fire); opacity: 0.75; }
+
+.toggle-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+}
+
+.toggle-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35em;
+    font-family: 'Cinzel', serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.07em;
+    border-radius: 3px;
+    padding: 0.3em 0.6em;
+    cursor: pointer;
+    user-select: none;
+    border: 1px solid transparent;
+    transition: all 0.15s;
+    position: relative;
+}
+
+.toggle-chip input[type=checkbox] { display: none; }
+
+.chip-box {
+    width: 0.9em;
+    height: 0.9em;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7em;
+    flex-shrink: 0;
+}
+
+.chip-label { font-weight: 600; }
+.chip-effect { opacity: 0.7; font-size: 0.85em; }
+
+.chip-arcane-cost {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    font-size: 0.55rem;
+    color: var(--spell-purple);
+    background: var(--bg-card);
+    border-radius: 2px;
+    padding: 0 2px;
+}
+
+.chip-enhancement-cost {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    font-size: 0.55rem;
+    font-weight: 600;
+    color: var(--teal);
+    background: var(--bg-card);
+    border-radius: 2px;
+    padding: 0 2px;
+}
+
+.chip-disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+/* Enhancement budget display */
+.enhancement-budget-display {
+    padding: 0.5rem 1.4rem 0.75rem;
+    font-family: 'Crimson Pro', serif;
+    font-size: 0.75rem;
+    color: var(--teal);
+}
+
+.enhancement-label {
+    font-family: 'Cinzel', serif;
+    font-size: 0.62rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-right: 0.5rem;
+}
+
+.enhancement-total {
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: var(--teal);
+    margin-right: 0.4rem;
+}
+
+.enhancement-breakdown {
+    opacity: 0.7;
+    font-size: 0.7rem;
+}
+
+/* ON states */
+.chip-on-green {
+    background: #102918;
+    border-color: var(--green-dim);
+    color: var(--green);
+}
+
+.chip-on-gold {
+    background: #1a1408;
+    border-color: var(--gold-dim);
+    color: var(--gold);
+}
+
+.chip-on-teal {
+    background: #091820;
+    border-color: var(--teal-dim);
+    color: var(--teal);
+}
+
+.chip-on-orange {
+    background: #1a100a;
+    border-color: var(--orange-dim);
+    color: var(--orange);
+}
+
+.chip-on-fire {
+    background: #1a0d06;
+    border-color: #7c2e10;
+    color: var(--dmg-fire);
+}
+
+/* OFF state */
+.chip-off {
+    background: #0a0f1a;
+    border-color: #1a2535;
+    color: var(--text-dim);
+}
+
+.chip-off:hover {
+    border-color: #2a3a55;
+    color: var(--text-primary);
+}
+
+/* ── ATTACK SECTION ─────────────────────────────────────── */
+.attacks-section {
+    padding: 0.5rem 0 0.25rem;
+}
+
+.section-label {
+    font-family: 'Cinzel', serif;
+    font-size: 0.58rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    padding: 0.4rem 1.4rem 0.2rem;
+}
+
+.attack-row {
+    padding: 0.55rem 1.4rem;
+    border-bottom: 1px solid #0e1520;
+    position: relative;
+    transition: background 0.15s;
+}
+
+.attack-row:hover { background: #111827; }
+
+.attack-row.spellstrike {
+    background: #0e0f1f;
+    border-left: 3px solid var(--spell-purple);
+}
+
+.attack-row.spellstrike:hover { background: #12132a; }
+
+.atk-index {
+    font-family: 'Cinzel', serif;
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: var(--text-dim);
+    width: 60px;
+    flex-shrink: 0;
+}
+
+.atk-label {
+    font-family: 'Crimson Pro', serif;
+    font-style: italic;
+    font-size: 0.78rem;
+    color: var(--text-dim);
+}
+
+.atk-label strong {
+    font-style: normal;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.to-hit {
+    font-family: 'Cinzel', serif;
+    font-weight: 700;
+    font-size: 1.15rem;
+    color: var(--hit-green);
+    text-shadow: 0 0 10px #86efac55;
+    min-width: 52px;
+    text-align: center;
+    line-height: 1;
+}
+
+.to-hit.spellstrike-hit {
+    color: var(--spell-purple);
+    text-shadow: 0 0 10px #a78bfa55;
+}
+
+.dmg-block { 
+    display: flex;
+    justify-content: space-between;
+    min-width: 120px; 
+}
+
+.dmg-dice {
+    font-family: 'Cinzel', serif;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--dmg-amber);
+    line-height: 1.1;
+}
+
+.dmg-dice.spell-dmg {
+    color: var(--spell-purple);
+    text-shadow: 0 0 8px var(--spell-glow);
+}
+
+.dmg-type {
+    font-family: 'Crimson Pro', serif;
+    font-size: 0.65rem;
+    color: var(--text-dim);
+    margin-top: 1px;
+}
+
+/* ── SPELL BANNER ────────────────────────────────────────── */
+.spell-banner {
+    background: #0d0d20;
+    border: 1px solid #2e2060;
+    border-radius: 4px;
+    padding: 0.45rem 0.75rem;
+    margin: 0.3rem 1.4rem 0.4rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.spell-banner::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 20% 50%, #7c3aed18 0%, transparent 65%);
+    pointer-events: none;
+}
+
+.spell-banner { cursor: pointer; }
+.spell-banner:hover { border-color: #5040a0; }
+
+.spell-select-prompt {
+    font-family: 'Cinzel', serif;
+    font-size: 0.7rem;
+    color: var(--spell-purple);
+    opacity: 0.7;
+    letter-spacing: 0.06em;
+}
+
+.spell-icon { font-size: 1.2rem; line-height: 1; flex-shrink: 0; }
+
+.spell-name {
+    font-family: 'Cinzel', serif;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--spell-purple);
+    text-shadow: 0 0 10px var(--spell-glow);
+    letter-spacing: 0.04em;
+}
+
+.spell-detail {
+    font-family: 'Crimson Pro', serif;
+    font-size: 0.75rem;
+    color: #c4b5fd;
+    margin-top: 2px;
+}
+
+.spell-meta {
+    font-family: 'Cinzel', serif;
+    font-size: 0.58rem;
+    color: #6d5fa8;
+    letter-spacing: 0.1em;
+}
+
+/* ── SPELL SELECTOR PANEL ────────────────────────────────── */
+.spell-selector-panel {
+    border-top: 1px solid var(--border-dim);
+    background: #0b0f1c;
+    padding: 0.75rem 1.4rem 1rem;
+}
+
+.spell-selector-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.6rem;
+}
+
+.spell-selector-title {
+    font-family: 'Cinzel', serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--spell-purple);
+}
+
+.spell-selector-close {
+    font-family: 'Cinzel', serif;
+    font-size: 0.6rem;
+    color: var(--text-dim);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    letter-spacing: 0.08em;
+}
+
+.spell-selector-close:hover { color: var(--text-primary); }
+
+.spell-list { display: flex; flex-direction: column; gap: 0.3rem; }
+
+.spell-item {
+    background: #0d1220;
+    border: 1px solid #1e2d4a;
+    border-radius: 3px;
+    padding: 0.4rem 0.65rem;
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s;
+}
+
+.spell-item:hover { border-color: var(--spell-glow); background: #0e0f20; }
+
+.spell-item.spell-depleted {
+    border-color: #4a1e2d;
+    background: #1a0f14;
+    opacity: 0.75;
+    cursor: default;
+    text-decoration: line-through;
+}
+
+.spell-item.selected {
+    border-color: var(--spell-purple);
+    background: #100e20;
+}
+
+.spell-item-name {
+    font-family: 'Cinzel', serif;
+    font-size: 0.72rem;
+    color: var(--spell-purple);
+    font-weight: 600;
+}
+
+.spell-item-meta {
+    font-family: 'Cinzel', serif;
+    font-size: 0.58rem;
+    color: #6d5fa8;
+    letter-spacing: 0.08em;
+}
+
+.spell-item-detail {
+    font-family: 'Crimson Pro', serif;
+    font-size: 0.7rem;
+    color: var(--text-dim);
+    margin-top: 1px;
+}
+
+.spell-none {
+    font-family: 'Crimson Pro', serif;
+    font-size: 0.8rem;
+    color: var(--text-dim);
+    text-align: center;
+    padding: 0.5rem;
+}
+
+/* ── CARD FOOTER ─────────────────────────────────────────── */
+.card-footer-custom {
+    padding: 0.6rem 1.4rem 0.9rem;
+    border-top: 1px solid var(--border-dim);
+    background: #0a0f1a;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.reset-btn {
+    font-family: 'Cinzel', serif;
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    background: none;
+    border: 1px solid #1e2d4a;
+    border-radius: 3px;
+    padding: 0.3em 0.8em;
+    cursor: pointer;
+    transition: border-color 0.15s, color 0.15s;
+}
+
+.reset-btn:hover { border-color: var(--gold-dim); color: var(--gold-dim); }
+
+.divider-rune {
+    text-align: center;
+    font-size: 0.7rem;
+    color: var(--border-dim);
+    letter-spacing: 0.5em;
+    padding: 0.25rem 0;
+}
+
+/* ── EXTRA DAMAGE TAGS ───────────────────────────────────── */
+.extra-dmg-row {
+    padding: 0.1rem 1.4rem 0.3rem 76px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    justify-content: right;
+}
+
+.extra-dmg-tag {
+    font-family: 'Crimson Pro', serif;
+    font-size: 0.72rem;
+    color: var(--dmg-amber);
+    opacity: 0.85;
+    padding-right: 1em;
+}
+
+.dmg-fire        { color: var(--dmg-fire); }
+.dmg-acid        { color: var(--dmg-acid); }
+.dmg-cold        { color: var(--dmg-cold); }
+.dmg-electricity { color: var(--dmg-electricity); }
+.dmg-sonic       { color: var(--dmg-sonic); }
+.dmg-force       { color: var(--dmg-force); }
+.dmg-bleed       { color: var(--dmg-bleed); }
+
+.extra-dmg-crit {
+    font-size: 0.65rem;
+    opacity: 0.65;
+}
+
+/* ── WATCH PATH INPUT ──────────────────────────────── */
+.upload-divider {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin: 1.25rem 0 1rem;
+    color: var(--text-dim);
+    font-family: 'Cinzel', serif;
+    font-size: 0.6rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+}
+.upload-divider::before,
+.upload-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border-dim);
+}
+
+.watch-row {
+    display: flex;
+    gap: 0.5rem;
+    align-items: stretch;
+}
+
+.watch-input {
+    flex: 1;
+    background: #0a0f1a;
+    border: 1px solid var(--border-dim);
+    border-radius: 4px;
+    padding: 0.45em 0.75em;
+    font-family: 'Crimson Pro', serif;
+    font-size: 0.82rem;
+    color: var(--text-primary);
+    outline: none;
+    transition: border-color 0.15s;
+}
+.watch-input:focus { border-color: var(--teal-dim); }
+.watch-input::placeholder { color: var(--text-dim); opacity: 0.6; }
+
+.watch-btn {
+    font-family: 'Cinzel', serif;
+    font-size: 0.62rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--teal);
+    background: none;
+    border: 1px solid var(--teal-dim);
+    border-radius: 4px;
+    padding: 0.45em 0.9em;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: border-color 0.15s, color 0.15s;
+}
+.watch-btn:hover { border-color: var(--teal); color: var(--teal-glow); }
+.watch-btn:disabled { opacity: 0.35; cursor: default; pointer-events: none; }
+
+/* ── FILE BROWSER ───────────────────────────────────── */
+#file-browser { margin-top: 0.1rem; }
+
+.browser-shortcuts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    margin-bottom: 0.5rem;
+}
+
+.shortcut-btn {
+    font-family: 'Cinzel', serif;
+    font-size: 0.56rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--teal);
+    background: none;
+    border: 1px solid var(--teal-dim);
+    border-radius: 3px;
+    padding: 0.2em 0.6em;
+    cursor: pointer;
+    transition: border-color 0.15s, color 0.15s;
+}
+.shortcut-btn:hover { border-color: var(--teal); color: var(--teal-glow); }
+
+.browser-path-row {
+    display: flex;
+    gap: 0.5rem;
+    align-items: stretch;
+    margin-bottom: 0.4rem;
+}
+
+.browser-list {
+    max-height: 220px;
+    overflow-y: auto;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 0.2rem 0;
+    margin-bottom: 0.4rem;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+}
+
+.browser-item {
+    display: block;
+    width: 100%;
+    text-align: left;
+    background: none;
+    border: none;
+    padding: 0.22rem 0.65rem;
+    font-family: 'Crimson Pro', serif;
+    font-size: 0.82rem;
+    cursor: pointer;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: background 0.1s;
+}
+.browser-item.is-dir  { color: var(--text-dim); }
+.browser-item.is-file { color: var(--teal); }
+.browser-item:hover   { background: #091820; }
+
+.browser-divider {
+    border: none;
+    border-top: 1px solid var(--border-dim);
+    margin: 0.2rem 0;
+}
+
+/* ── LIVE INDICATOR ─────────────────────────────────── */
+#watch-indicator {
+    display: none;
+    font-family: 'Cinzel', serif;
+    font-size: 0.58rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border-radius: 3px;
+    padding: 0.2em 0.55em;
+    border: 1px solid transparent;
+}
+#watch-indicator[data-status='live']         { color: var(--hit-green); border-color: #166534; background: #052e16; }
+#watch-indicator[data-status='reconnecting'] { color: var(--dmg-amber); border-color: #713f12; background: #1c0f03; }
+#watch-indicator[data-status='lost']         { color: var(--crit-red);  border-color: #7f1d1d; background: #1c0f0f; }
