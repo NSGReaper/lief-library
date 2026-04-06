@@ -200,39 +200,20 @@
       color: var(--text-dim);
     }
 
-    .pool-available {
-      font-family: 'Cinzel', serif;
-      font-size: 0.62rem;
-      color: var(--teal);
-      letter-spacing: 0.06em;
-      margin-left: 0.5rem;
-    }
-
     .pool-pip {
       width: 13px;
       height: 13px;
       border-radius: 50%;
-      border: 1px solid var(--teal);
+      border: 1px solid var(--teal-dim);
       display: inline-block;
       margin: 0 2px;
-      cursor: pointer;
       transition: box-shadow 0.2s, background 0.2s;
     }
 
-    .pool-pip.filled {
-      background: var(--teal);
-      box-shadow: 0 0 6px var(--teal-glow), 0 0 12px var(--teal-glow);
-    }
-
     .pool-pip.committed {
-      background: #1a4060;
-      border-color: var(--teal-dim);
-      box-shadow: 0 0 4px var(--teal-dim);
-    }
-
-    .pool-pip.spent {
-      background: #1a2030;
-      border-color: #2a3550;
+      background: var(--teal);
+      border-color: var(--teal);
+      box-shadow: 0 0 6px var(--teal-glow), 0 0 12px var(--teal-glow);
     }
 
     .arcane-cost-display {
@@ -367,6 +348,53 @@
       background: var(--bg-card);
       border-radius: 2px;
       padding: 0 2px;
+    }
+
+    .chip-enhancement-cost {
+      position: absolute;
+      top: -4px;
+      right: -4px;
+      font-size: 0.55rem;
+      font-weight: 600;
+      color: var(--teal);
+      background: var(--bg-card);
+      border-radius: 2px;
+      padding: 0 2px;
+    }
+
+    .chip-disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+
+    /* Enhancement budget display */
+    .enhancement-budget-display {
+      padding: 0.5rem 1.4rem 0.75rem;
+      font-family: 'Crimson Pro', serif;
+      font-size: 0.75rem;
+      color: var(--teal);
+    }
+
+    .enhancement-label {
+      font-family: 'Cinzel', serif;
+      font-size: 0.62rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      margin-right: 0.5rem;
+    }
+
+    .enhancement-total {
+      font-weight: 600;
+      font-size: 0.85rem;
+      color: var(--teal);
+      margin-right: 0.4rem;
+    }
+
+    .enhancement-breakdown {
+      opacity: 0.7;
+      font-size: 0.7rem;
     }
 
     /* ON states */
@@ -914,10 +942,7 @@
   <!-- ARCANE POOL -->
   <div class="arcane-pool-row">
     <div class="d-flex align-items-center justify-content-between">
-      <div class="d-flex align-items-center">
-        <span class="pool-label">Arcane Pool</span>
-        <span class="pool-available" id="arcane-available"></span>
-      </div>
+      <span class="pool-label">Arcane Pool</span>
       <div id="arcane-pips"></div>
     </div>
     <div class="arcane-cost-display" id="arcane-cost-display" style="display:none"></div>
@@ -956,6 +981,16 @@
       <span class="section-eyebrow arcane-pool">Arcane Pool</span>
     </div>
     <div class="toggle-grid" id="options-grid-arcane-pool"></div>
+    <div class="enhancement-budget-display" id="enhancement-budget-display" style="display:none"></div>
+  </div>
+
+  <!-- ARCANE POOL PROPERTIES -->
+  <div class="toggle-section">
+    <div class="toggle-section-header">
+      <span class="section-dot dot-arcane-pool"></span>
+      <span class="section-eyebrow arcane-pool">Weapon Properties</span>
+    </div>
+    <div class="toggle-grid" id="options-grid-arcane-pool-properties"></div>
   </div>
 
   <!-- CONDITIONAL BUFFS -->
@@ -993,9 +1028,6 @@
 
   <!-- FOOTER -->
   <div class="card-footer-custom">
-    <div style="font-family:'Cinzel',serif; font-size:0.58rem; color:var(--text-dim); letter-spacing:0.1em; text-transform:uppercase;">
-      Click pips to mark arcane pool spent
-    </div>
     <button class="reset-btn" id="reset-round-btn">New Round</button>
   </div>
 

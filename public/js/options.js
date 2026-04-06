@@ -115,21 +115,129 @@ export const ATTACK_OPTIONS = [
     },
   },
 
-  /* We need a different way to handle arcane pool, as the enhancement bonus increases for every four magus levels after the 1st, and it can spent to add weapon special abilities instead of attack bonuses.
+  // ─── Arcane Pool ─────────────────────────────────────────────────────────
   {
     id: 'arcane-pool-enhance',
-    name: 'Arcane Pool: Enhance',
-    category: 'per-attack',
+    name: 'Arcane Pool: Weapon Enhancement',
+    category: 'arcane-pool',
     buffId: null,
     defaultEnabled: false,
-    arcanePointCost: 1,
-    description: 'Expend 1 arcane pool point: +1 enhancement bonus to weapon for 1 minute',
+    arcanePointCost: 0,
+    description: 'Expend 1 arcane pool point: grant weapon enhancement bonus for 1 minute (scales with level)',
     effect: {
-      hitBonus: 1,
-      damageBonus: 1,
+      // Enhancement bonus is applied dynamically in calculateAttacks() based on remaining budget
     },
   },
-  */
+
+  // ─── Arcane Pool Properties ──────────────────────────────────────────────
+  {
+    id: 'arcane-pool-flaming',
+    name: 'Flaming',
+    category: 'arcane-pool-properties',
+    buffId: null,
+    defaultEnabled: false,
+    arcanePointCost: 0,
+    enhancementCost: 1,
+    description: 'Weapon deals +1d6 fire damage',
+    effect: {
+      extraDamage: [
+        { label: 'Flaming', damage: '1d6', type: 'fire' },
+      ],
+    },
+  },
+  {
+    id: 'arcane-pool-flaming-burst',
+    name: 'Flaming Burst',
+    category: 'arcane-pool-properties',
+    buffId: null,
+    defaultEnabled: false,
+    arcanePointCost: 0,
+    enhancementCost: 2,
+    description: 'Weapon deals +1d6 fire damage and +1d10 fire on a crit',
+    effect: {
+      extraDamage: [
+        { label: 'Flaming Burst', damage: '1d6', type: 'fire' },
+        { label: 'Flaming Burst', damage: '1d10', type: 'fire', critOnly: true },
+      ],
+    },
+  },
+  {
+    id: 'arcane-pool-frost',
+    name: 'Frost',
+    category: 'arcane-pool-properties',
+    buffId: null,
+    defaultEnabled: false,
+    arcanePointCost: 0,
+    enhancementCost: 1,
+    description: 'Weapon deals +1d6 cold damage',
+    effect: {
+      extraDamage: [
+        { label: 'Frost', damage: '1d6', type: 'cold' },
+      ],
+    },
+  },
+  {
+    id: 'arcane-pool-icy-burst',
+    name: 'Icy Burst',
+    category: 'arcane-pool-properties',
+    buffId: null,
+    defaultEnabled: false,
+    arcanePointCost: 0,
+    enhancementCost: 2,
+    description: 'Weapon deals +1d6 cold damage and +1d10 cold on a crit',
+    effect: {
+      extraDamage: [
+        { label: 'Icy Burst', damage: '1d6', type: 'cold' },
+        { label: 'Icy Burst', damage: '1d10', type: 'cold', critOnly: true },
+      ],
+    },
+  },
+  {
+    id: 'arcane-pool-shock',
+    name: 'Shock',
+    category: 'arcane-pool-properties',
+    buffId: null,
+    defaultEnabled: false,
+    arcanePointCost: 0,
+    enhancementCost: 1,
+    description: 'Weapon deals +1d6 electricity damage',
+    effect: {
+      extraDamage: [
+        { label: 'Shock', damage: '1d6', type: 'electricity' },
+      ],
+    },
+  },
+  {
+    id: 'arcane-pool-shocking-burst',
+    name: 'Shocking Burst',
+    category: 'arcane-pool-properties',
+    buffId: null,
+    defaultEnabled: false,
+    arcanePointCost: 0,
+    enhancementCost: 2,
+    description: 'Weapon deals +1d6 electricity damage and +1d10 electricity on a crit',
+    effect: {
+      extraDamage: [
+        { label: 'Shocking Burst', damage: '1d6', type: 'electricity' },
+        { label: 'Shocking Burst', damage: '1d10', type: 'electricity', critOnly: true },
+      ],
+    },
+  },
+  {
+    id: 'arcane-pool-speed',
+    name: 'Speed',
+    category: 'arcane-pool-properties',
+    buffId: null,
+    defaultEnabled: false,
+    arcanePointCost: 0,
+    enhancementCost: 3,
+    description: 'Extra attack at highest BAB (like Haste, does not stack)',
+    effect: {
+      extraAttacks: [
+        { hitBonusOffset: 0, label: 'Speed' },
+      ],
+    },
+  },
 
   // ─── Conditional Buffs ───────────────────────────────────────────────────
   {

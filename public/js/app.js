@@ -13,9 +13,6 @@ import { parseWeaponAttack, formatBonus, parseDamageBonus, buildDamageString } f
 let state = {
   character: null,       // parsed character data from server
   optionStates: {},      // id → boolean (enabled/disabled)
-  arcanePoolSpent: 0,    // how many arcane points have been spent this round
-  arcanePoolTotal: 0,    // max arcane pool
-  arcanePoolLeft: 0,     // remaining arcane pool from portfolio
   selectedSpell: null,   // spell chosen for Spellstrike
   portfolioSource: null, // { type: 'upload' } | { type: 'local', path: string }
 };
@@ -30,7 +27,6 @@ function saveState() {
   const data = {
     character: state.character,
     optionStates: state.optionStates,
-    arcanePoolSpent: state.arcanePoolSpent,
     selectedSpell: state.selectedSpell?.name || null,
     portfolioSource: state.portfolioSource || null,
   };
@@ -44,7 +40,6 @@ function loadState() {
     const data = JSON.parse(raw);
     state.character = data.character || null;
     state.optionStates = data.optionStates || {};
-    state.arcanePoolSpent = data.arcanePoolSpent || 0;
     state.selectedSpell = data.selectedSpell ? getSpellByName(data.selectedSpell) : null;
     state.portfolioSource = data.portfolioSource || null;
 
@@ -148,6 +143,22 @@ function calculateAttacks() {
     }
   }
 
+  // 2a. Apply arcane pool weapon enhancement bonus (remaining after properties)
+  const enhancementBudget = calculateEnhancementBudget();
+  totalHitBonus += enhancementBudget.remaining;
+  totalDmgBonus += enhancementBudget.remaining;
+
+  // 2b. Deduplicate Speed and Haste extra attacks (they don't stack)
+  const hasSpeed = extraAttacks.some(ea => ea.source === 'arcane-pool-speed');
+  const hasHaste = extraAttacks.some(ea => ea.source === 'haste');
+  if (hasSpeed && hasHaste) {
+    // Remove Speed attack, keep Haste (both are functionally identical)
+    const speedIndex = extraAttacks.findIndex(ea => ea.source === 'arcane-pool-speed');
+    if (speedIndex !== -1) {
+      extraAttacks.splice(speedIndex, 1);
+    }
+  }
+
   // 3. Build iterative attacks
   const perAttack = cleanBase + totalHitBonus;
   const perDmg = cleanDmgBase + totalDmgBonus;
@@ -212,59 +223,76 @@ function calculateArcaneCost() {
   return total;
 }
 
+/**
+ * Calculate the total enhancement bonus from caster level.
+ * At 1st level: +1, then +1 for every 4 levels thereafter, max +5 at 17th level.
+ */
+function calculateEnhancementBonus(casterLevel) {
+  return Math.min(5, 1 + Math.floor((casterLevel - 1) / 4));
+}
+
+/**
+ * Calculate the enhancement budget for arcane pool weapon enhancement.
+ * Returns { total, spent, remaining } where:
+ *  - total: enhancement bonus from caster level (1-5)
+ *  - spent: sum of enhancementCost from active property options
+ *  - remaining: total - spent (applied to hit/damage)
+ */
+function calculateEnhancementBudget() {
+  const char = state.character;
+  if (!char) return { total: 0, spent: 0, remaining: 0 };
+
+  // Check if master enhancement is active
+  const masterEnabled = state.optionStates['arcane-pool-enhance'] ?? false;
+  if (!masterEnabled) {
+    return { total: 0, spent: 0, remaining: 0 };
+  }
+
+  const total = calculateEnhancementBonus(char.casterLevel);
+  
+  // Calculate spent on active properties
+  let spent = 0;
+  for (const option of ATTACK_OPTIONS) {
+    if (option.category === 'arcane-pool-properties' && 
+        state.optionStates[option.id] && 
+        option.enhancementCost) {
+      spent += option.enhancementCost;
+    }
+  }
+
+  return {
+    total,
+    spent,
+    remaining: Math.max(0, total - spent),
+  };
+}
+
+/**
+ * Check if a weapon property can be enabled given the current enhancement budget.
+ */
+function isPropertyAvailable(propertyId) {
+  const option = ATTACK_OPTIONS.find(o => o.id === propertyId);
+  if (!option || option.category !== 'arcane-pool-properties') return false;
+  
+  const budget = calculateEnhancementBudget();
+  const cost = option.enhancementCost || 0;
+  
+  return budget.remaining >= cost;
+}
+
 // ─── UI Rendering ─────────────────────────────────────────────────────────────
 
 function renderArcanePool() {
-  const pool = state.character?.arcanePool;
-  if (!pool) return;
-
-  const total = pool.max;
-  // arcanePoolSpent = extra points spent THIS session (on top of portfolio's used count)
-  const sessionSpent = state.arcanePoolSpent;
   const arcaneCost = calculateArcaneCost();
-  // How many are available to use: portfolio left minus session spending minus committed options
-  const available = Math.max(0, pool.left - sessionSpent - arcaneCost);
 
   const container = document.getElementById('arcane-pips');
   const costEl = document.getElementById('arcane-cost-display');
   container.innerHTML = '';
 
-  for (let i = 0; i < total; i++) {
+  // Render only the committed pips (no empty pips for unused pool)
+  for (let i = 0; i < arcaneCost; i++) {
     const pip = document.createElement('span');
-    pip.className = 'pool-pip';
-
-    const portfolioUsed = pool.max - pool.left; // pips already spent before this session
-    const thisSessionSpent = sessionSpent;
-
-    if (i < available) {
-      pip.classList.add('filled');
-    } else if (i < available + arcaneCost) {
-      pip.classList.add('committed');
-    } else if (i < pool.left) {
-      // Spent in this session
-      pip.classList.add('spent');
-      pip.title = 'Click to restore';
-    } else {
-      // Spent before session (from portfolio)
-      pip.classList.add('spent');
-    }
-
-    // Allow clicking filled pips to spend them, or session-spent pips to restore
-    pip.addEventListener('click', () => {
-      if (pip.classList.contains('filled')) {
-        state.arcanePoolSpent = Math.min(sessionSpent + 1, pool.left - arcaneCost);
-        saveState();
-        renderArcanePool();
-      } else if (pip.classList.contains('spent') && i < pool.left) {
-        // Only restore session-spent pips (i < pool.left means it was "left" in portfolio)
-        if (sessionSpent > 0) {
-          state.arcanePoolSpent = sessionSpent - 1;
-          saveState();
-          renderArcanePool();
-        }
-      }
-    });
-
+    pip.className = 'pool-pip committed';
     container.appendChild(pip);
   }
 
@@ -272,11 +300,9 @@ function renderArcanePool() {
     costEl.textContent = `${arcaneCost} point${arcaneCost !== 1 ? 's' : ''} committed this round`;
     costEl.style.display = '';
   } else {
-    costEl.style.display = 'none';
+    costEl.textContent = 'No arcane points committed';
+    costEl.style.display = '';
   }
-
-  document.getElementById('arcane-available').textContent =
-    `${available} / ${total}`;
 }
 
 function renderWeapon() {
@@ -302,9 +328,13 @@ function renderOptions() {
   const categories = [
     { id: 'per-attack', title: 'Per-Attack Decisions', colorClass: 'gold' },
     { id: 'arcane-pool', title: 'Arcane Pool', colorClass: 'teal' },
+    { id: 'arcane-pool-properties', title: 'Arcane Pool Properties', colorClass: 'teal' },
     { id: 'conditional', title: 'Conditional Buffs', colorClass: 'orange' },
     { id: 'buff', title: 'Active Buffs', colorClass: 'fire' },
   ];
+
+  const enhancementActive = state.optionStates['arcane-pool-enhance'] ?? false;
+  const budget = calculateEnhancementBudget();
 
   for (const cat of categories) {
     const grid = document.getElementById(`options-grid-${cat.id}`);
@@ -314,17 +344,43 @@ function renderOptions() {
     const catOptions = ATTACK_OPTIONS.filter(o => o.category === cat.id);
     for (const option of catOptions) {
       const enabled = state.optionStates[option.id] ?? false;
+      
+      // Check if property is available (has enough budget)
+      const isProperty = option.category === 'arcane-pool-properties';
+      const canEnable = !isProperty || isPropertyAvailable(option.id) || enabled;
+      const isDisabled = isProperty && !enhancementActive;
+
       const chip = document.createElement('label');
       const colorClass = option.alignment === 'good' ? 'green' : cat.colorClass;
-      chip.className = `toggle-chip ${enabled ? `chip-on-${colorClass}` : 'chip-off'}`;
+      let chipClass = `toggle-chip ${enabled ? `chip-on-${colorClass}` : 'chip-off'}`;
+      if (isDisabled || (!enabled && !canEnable)) {
+        chipClass += ' chip-disabled';
+      }
+      chip.className = chipClass;
       chip.dataset.optionId = option.id;
       chip.title = option.description;
 
       const cb = document.createElement('input');
       cb.type = 'checkbox';
       cb.checked = enabled;
+      cb.disabled = isDisabled;
       cb.addEventListener('change', () => {
+        // Check if we're trying to enable a property without enough budget
+        if (cb.checked && isProperty && !isPropertyAvailable(option.id)) {
+          cb.checked = false;
+          return;
+        }
+
         state.optionStates[option.id] = cb.checked;
+
+        // If disabling master enhancement, auto-deactivate all properties
+        if (option.id === 'arcane-pool-enhance' && !cb.checked) {
+          for (const opt of ATTACK_OPTIONS) {
+            if (opt.category === 'arcane-pool-properties') {
+              state.optionStates[opt.id] = false;
+            }
+          }
+        }
 
         // If enabling spellstrike, ensure a spell is selected
         if (option.id === 'spellstrike' && cb.checked && !state.selectedSpell) {
@@ -352,6 +408,14 @@ function renderOptions() {
         const badge = document.createElement('span');
         badge.className = 'chip-arcane-cost';
         badge.textContent = `${option.arcanePointCost}◆`;
+        chip.appendChild(badge);
+      }
+
+      // Show enhancement cost badge for properties
+      if (option.enhancementCost > 0) {
+        const badge = document.createElement('span');
+        badge.className = 'chip-enhancement-cost';
+        badge.textContent = `+${option.enhancementCost}`;
         chip.appendChild(badge);
       }
 
@@ -518,10 +582,34 @@ function renderCharacterHeader() {
   document.getElementById('char-summary').textContent = char.summary;
 }
 
+function renderEnhancementBudget() {
+  const container = document.getElementById('enhancement-budget-display');
+  if (!container) return;
+
+  const enhancementActive = state.optionStates['arcane-pool-enhance'] ?? false;
+  
+  if (!enhancementActive) {
+    container.style.display = 'none';
+    return;
+  }
+
+  const budget = calculateEnhancementBudget();
+  
+  container.style.display = '';
+  container.innerHTML = `
+    <span class="enhancement-label">Enhancement Bonus:</span>
+    <span class="enhancement-total">+${budget.total}</span>
+    <span class="enhancement-breakdown">
+      (${budget.spent > 0 ? `${budget.spent} on properties, ` : ''}${budget.remaining} to hit/damage)
+    </span>
+  `;
+}
+
 function renderAll() {
   renderCharacterHeader();
   renderWeapon();
   renderArcanePool();
+  renderEnhancementBudget();
   renderOptions();
   renderAttackCard();
   renderSpellSelector();
@@ -534,12 +622,12 @@ function renderAll() {
  *
  * preserveManualToggles = false (initial load / file upload):
  *   Full reset — all optionStates are derived from activeBuffIds and defaultEnabled.
- *   arcanePoolSpent and selectedSpell reset to zero/null.
+ *   selectedSpell reset to null.
  *
  * preserveManualToggles = true (WebSocket live update):
  *   Options with a buffId are updated to match the new activeBuffIds.
  *   Options without a buffId are left as-is (user's manual state preserved).
- *   arcanePoolSpent and selectedSpell are preserved.
+ *   selectedSpell is preserved.
  */
 function applyCharacter(character, { preserveManualToggles = false } = {}) {
   const activeBuffIds = new Set(character.activeBuffIds || []);
@@ -595,7 +683,6 @@ function applyCharacter(character, { preserveManualToggles = false } = {}) {
   state.optionStates = optionStates;
 
   if (!preserveManualToggles) {
-    state.arcanePoolSpent = 0;
     state.selectedSpell = null;
   }
 
@@ -908,6 +995,11 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Reset round button
   document.getElementById('reset-round-btn')?.addEventListener('click', () => {
     for (const option of ATTACK_OPTIONS) {
+      // Reset per-attack decisions and arcane point costs
+      // But preserve arcane pool enhancement (lasts 1 minute, not just 1 round)
+      if (option.category === 'arcane-pool' || option.category === 'arcane-pool-properties') {
+        continue; // Preserve enhancement options across rounds
+      }
       if (option.arcanePointCost > 0 || option.category === 'per-attack') {
         state.optionStates[option.id] = false;
       }
