@@ -16,7 +16,6 @@ point calculations are executed in vanilla JavaScript on the client with Bootstr
 **Language/Version**: JavaScript (Node.js 20 LTS backend, ES2022 browser frontend)  
 **Primary Dependencies**: Express (HTTP API), `chokidar` (file watching), `jszip` (archive read), `fast-xml-parser` (XML parsing), Bootstrap 5 (UI)  
 **Storage**: In-memory backend session state; browser `localStorage` for user preferences and transient option overrides  
-**Testing**: Vitest (frontend/unit), Supertest + Node test runner (backend API), Playwright (critical end-to-end flow)  
 **Target Platform**: Desktop-class modern browsers (Chrome/Edge/Firefox) with local Node.js server
 **Project Type**: Web application (frontend + backend)  
 **Performance Goals**: Initial portfolio parse and baseline render under 2 seconds for representative samples; option-toggle recalculation under 100 ms for common full-attack paths  
@@ -72,36 +71,18 @@ specs/001-eldritch-archer-webapp/
 backend/
 ├── src/
 │   ├── api/
-│   │   ├── routes/
-│   │   └── sse/
 │   ├── services/
-│   │   ├── portfolio-loader/
-│   │   ├── watcher/
-│   │   └── session-store/
 │   ├── parsers/
-│   │   ├── index-parser/
-│   │   ├── statblock-parser/
-│   │   └── buff-parser/
 │   └── models/
 └── tests/
   ├── contract/
-  ├── integration/
+  ├── unit/
   └── fixtures/
 
 frontend/
 ├── src/
-│   ├── app/
-│   ├── state/
-│   ├── calculations/
-│   ├── options/
-│   ├── views/
-│   ├── services/
-│   └── storage/
-└── tests/
-  ├── unit/
-  ├── integration/
-  └── fixtures/
-
+│   ├── js/
+│   └── css/
 shared/
 └── contracts/
 ```

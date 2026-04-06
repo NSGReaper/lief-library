@@ -4,6 +4,9 @@
  * Handles state management, attack calculation, and UI rendering.
  * All state is stored in localStorage to survive page refreshes.
  */
+import { ATTACK_OPTIONS } from './options.js';
+import { DamageCalculator, filterValidSpellstrikeSpells, getSpellByName } from './spells.js';
+import { parseWeaponAttack, formatBonus, parseDamageBonus, buildDamageString } from './utilities.js';
 
 // ─── State ────────────────────────────────────────────────────────────────────
 
@@ -14,7 +17,10 @@ let state = {
   arcanePoolTotal: 0,    // max arcane pool
   arcanePoolLeft: 0,     // remaining arcane pool from portfolio
   selectedSpell: null,   // spell chosen for Spellstrike
+  portfolioSource: null, // { type: 'upload' } | { type: 'local', path: string }
 };
+
+let browseState = null; // { path, parent, dirs, files }
 
 // ─── Local Storage ────────────────────────────────────────────────────────────
 
@@ -25,7 +31,8 @@ function saveState() {
     character: state.character,
     optionStates: state.optionStates,
     arcanePoolSpent: state.arcanePoolSpent,
-    selectedSpell: state.selectedSpell,
+    selectedSpell: state.selectedSpell?.name || null,
+    portfolioSource: state.portfolioSource || null,
   };
   localStorage.setItem(LS_KEY, JSON.stringify(data));
 }
@@ -38,7 +45,8 @@ function loadState() {
     state.character = data.character || null;
     state.optionStates = data.optionStates || {};
     state.arcanePoolSpent = data.arcanePoolSpent || 0;
-    state.selectedSpell = data.selectedSpell || null;
+    state.selectedSpell = data.selectedSpell ? getSpellByName(data.selectedSpell) : null;
+    state.portfolioSource = data.portfolioSource || null;
 
     // Re-compute derived fields if character is present but missing them
     if (state.character && state.character.weaponPrimary == null) {
@@ -61,30 +69,6 @@ function loadState() {
   }
 }
 
-// ─── Utility ──────────────────────────────────────────────────────────────────
-
-function formatBonus(n) {
-  return n >= 0 ? `+${n}` : `${n}`;
-}
-
-/** Parse a weapon attack string like "+15/+15/+15/+10" into an array of integers. */
-function parseWeaponAttack(str) {
-  if (!str) return [];
-  return str.split('/').map(s => parseInt(s.replace(/\s/g, ''), 10)).filter(n => !isNaN(n));
-}
-
-function parseDamageBonus(dmgStr) {
-  // e.g., "1d8+6" → { dice: "1d8", bonus: 6 }
-  const m = dmgStr.match(/^(\d+d\d+)([+-]\d+)?$/);
-  if (!m) return { dice: dmgStr, bonus: 0 };
-  return { dice: m[1], bonus: m[2] ? parseInt(m[2], 10) : 0 };
-}
-
-function buildDamageString(dice, bonus) {
-  if (bonus === 0) return dice;
-  return `${dice}${formatBonus(bonus)}`;
-}
-
 // ─── Attack Calculation ───────────────────────────────────────────────────────
 
 /**
@@ -103,7 +87,7 @@ function buildDamageString(dice, bonus) {
  *  Extra attacks come from options that add extraAttacks when currently enabled.
  *
  * Returns an array of attack objects:
- *   { label, attackBonus, damageString, isSpellstrike, spellstrikeHitBonus }
+ *   { label, attackBonus, damageString, isSpellstrike }
  */
 function calculateAttacks() {
   const char = state.character;
@@ -134,8 +118,8 @@ function calculateAttacks() {
   let totalHitBonus = 0;
   let totalDmgBonus = 0;
   const extraAttacks = [];
+  const extraDamages = [];
   let isSpellstrike = false;
-  let spellstrikeHitBonus = 0;
 
   for (const option of ATTACK_OPTIONS) {
     const enabled = state.optionStates[option.id] ?? false;
@@ -146,16 +130,20 @@ function calculateAttacks() {
     if (eff.hitBonus) totalHitBonus += eff.hitBonus;
     if (eff.damageBonus) totalDmgBonus += eff.damageBonus;
     if (eff.isSpellstrike) isSpellstrike = true;
-    if (eff.spellstrikeHitBonus) spellstrikeHitBonus += eff.spellstrikeHitBonus;
 
     if (eff.extraAttacks) {
       for (const extra of eff.extraAttacks) {
         extraAttacks.push({
           label: extra.label,
-          atIndexOffset: extra.atIndexOffset,
           hitBonusOffset: extra.hitBonusOffset,
           source: option.id,
         });
+      }
+    }
+
+    if (eff.extraDamage) {
+      for (const ed of eff.extraDamage) {
+        extraDamages.push(ed);
       }
     }
   }
@@ -172,23 +160,21 @@ function calculateAttacks() {
       damageBonus: perDmg,
       dmgDice,
       isSpellstrike: false,
-      spellstrikeHitBonus: 0,
       source: 'iterative',
+      extraDamages,
     });
   }
 
   // 4. Add extra attacks from enabled options
   for (const extra of extraAttacks) {
-    const refIdx = Math.min(extra.atIndexOffset, attacks.length - 1);
-    const refAtk = attacks[refIdx];
     attacks.push({
       label: extra.label,
       attackBonus: perAttack + extra.hitBonusOffset,
       damageBonus: perDmg,
       dmgDice,
       isSpellstrike: false,
-      spellstrikeHitBonus: 0,
       source: 'extra',
+      extraDamages,
     });
   }
 
@@ -202,8 +188,6 @@ function calculateAttacks() {
   // 6. Apply spellstrike to first attack
   if (isSpellstrike && attacks.length > 0) {
     attacks[0].isSpellstrike = true;
-    attacks[0].spellstrikeHitBonus = spellstrikeHitBonus;
-    attacks[0].label = 'Spellstrike';
   }
 
   // 7. Build final damage strings
@@ -317,8 +301,9 @@ function renderWeapon() {
 function renderOptions() {
   const categories = [
     { id: 'per-attack', title: 'Per-Attack Decisions', colorClass: 'gold' },
-    { id: 'swift-buff', title: 'Swift-Action Buffs · 1 Round', colorClass: 'teal' },
+    { id: 'arcane-pool', title: 'Arcane Pool', colorClass: 'teal' },
     { id: 'conditional', title: 'Conditional Buffs', colorClass: 'orange' },
+    { id: 'buff', title: 'Active Buffs', colorClass: 'fire' },
   ];
 
   for (const cat of categories) {
@@ -330,7 +315,8 @@ function renderOptions() {
     for (const option of catOptions) {
       const enabled = state.optionStates[option.id] ?? false;
       const chip = document.createElement('label');
-      chip.className = `toggle-chip ${enabled ? `chip-on-${cat.colorClass}` : 'chip-off'}`;
+      const colorClass = option.alignment === 'good' ? 'green' : cat.colorClass;
+      chip.className = `toggle-chip ${enabled ? `chip-on-${colorClass}` : 'chip-off'}`;
       chip.dataset.optionId = option.id;
       chip.title = option.description;
 
@@ -378,6 +364,13 @@ function renderOptions() {
   }
 }
 
+function getDamageTypeClass(expression) {
+  const ENERGY_TYPES = ['acid', 'fire', 'cold', 'electricity', 'sonic', 'force', 'bleed'];
+  const lower = expression.toLowerCase();
+  const match = ENERGY_TYPES.find(t => lower.includes(t));
+  return match ? `dmg-${match}` : '';
+}
+
 function renderAttackCard() {
   const attacks = calculateAttacks();
   const container = document.getElementById('attacks-list');
@@ -404,7 +397,7 @@ function renderAttackCard() {
       <div class="atk-index">${atk.label}</div>
       <div class="atk-label flex-grow-1">
         <strong>${atk.isSpellstrike ? 'Spellstrike Arrow' : 'Arrow'}</strong>
-        <br>${atk.isSpellstrike ? 'Ranged touch · spell on hit' : (atk.source === 'extra' ? `${atk.label} bonus attack` : 'Normal ranged attack')}
+        <br>${atk.isSpellstrike ? 'Spellstrike' : (atk.source === 'extra' ? `${atk.label} bonus attack` : 'Iterative attack')}
       </div>
       <div class="${hitClass}">
         ${hitBonus}
@@ -417,6 +410,27 @@ function renderAttackCard() {
 
     container.appendChild(row);
 
+    // Extra damage tags (Flame Arrow, Shocking Burst, etc.)
+    if (atk.extraDamages?.length > 0) {
+      for (const ed of atk.extraDamages) {
+        const edRow = document.createElement('div');
+        const typeClass = getDamageTypeClass(ed.type || '');
+        const typeClassString = typeClass ? ` ${typeClass}` : '';
+        edRow.className = `extra-dmg-row${typeClassString}`;
+
+        edRow.innerHTML = `
+          <span class="extra-dmg-tag${typeClassString}">${ed.label}</span>
+          <div class="dmg-block">
+            <div class="dmg-dice${typeClassString}">${ed.damage}</div>
+            ${ed.critOnly ? '<div class="extra-dmg-crit"> (on crit)</div>' : ''}
+            <div class="dmg-type${typeClassString}">${ed.type?.toLowerCase() || ''}</div>
+          </div>
+        `;
+
+        container.appendChild(edRow);
+      }
+    }
+
     // Spell banner after spellstrike attack
     if (atk.isSpellstrike && state.selectedSpell) {
       const spell = state.selectedSpell;
@@ -426,12 +440,19 @@ function renderAttackCard() {
         <div class="spell-icon">⚡</div>
         <div class="flex-grow-1">
           <div class="d-flex align-items-baseline justify-content-between">
-            <span class="spell-name">${spell.name}</span>
-            <span class="spell-meta">Lvl ${spell.level} · ${spell.castTime}</span>
+            <span class="spell-item-name">${spell.name}</span>
+            <span class="spell-item-damage">${spell.damageExpression || (Object.hasOwn(spell, 'damageFn') ? spell.damageFn(new DamageCalculator(spell.casterLevel)) : '')}</span>
           </div>
-          <div class="spell-detail">${spell.school}</div>
+          <span class="spell-item-description">${spell.description || (Object.hasOwn(spell, 'descriptionFn') ? spell.descriptionFn(spell.casterLevel) : '')}</span>
         </div>
       `;
+      spellBanner.addEventListener('click', () => {
+        state.selectedSpell = null;
+        saveState();
+        renderAll();
+        document.getElementById('spell-selector-panel').style.display = '';
+        document.getElementById('spell-selector-panel').scrollIntoView({ behavior: 'smooth' });
+      });
       container.appendChild(spellBanner);
     } else if (atk.isSpellstrike && !state.selectedSpell) {
       const spellBanner = document.createElement('div');
@@ -458,23 +479,25 @@ function renderSpellSelector() {
   list.innerHTML = '';
 
   const spells = state.character?.spells || [];
-  const touchSpells = spells.filter(s =>
-    s.range.toLowerCase().includes('touch') || s.range === 'touch');
+  const spellstrikeSpells = filterValidSpellstrikeSpells(spells).sort((a, b) => {
+    if (a.level !== b.level) return a.level - b.level;
+    return a.name.localeCompare(b.name);
+  });
 
-  if (touchSpells.length === 0) {
-    list.innerHTML = '<div class="spell-none">No touch spells available</div>';
+  if (spellstrikeSpells.length === 0) {
+    list.innerHTML = '<div class="spell-none">No spells available for Spellstrike</div>';
     return;
   }
 
-  for (const spell of touchSpells) {
+  for (const spell of spellstrikeSpells) {
     const item = document.createElement('div');
-    item.className = `spell-item${state.selectedSpell?.name === spell.name ? ' selected' : ''}`;
+    item.className = `spell-item${state.selectedSpell?.name === spell.name ? ' selected' : ''}${spell.castsLeft === 0 ? ' spell-depleted' : ''}`;
     item.innerHTML = `
       <div class="d-flex align-items-baseline justify-content-between">
         <span class="spell-item-name">${spell.name}</span>
-        <span class="spell-item-meta">Lvl ${spell.level} · ${spell.castTime}</span>
+        <span class="spell-item-damage">${spell.damageExpression || (Object.hasOwn(spell, 'damageFn') ? spell.damageFn(new DamageCalculator(spell.casterLevel)) : '&nbsp;')}</span>
       </div>
-      <div class="spell-item-detail">${spell.school}</div>
+      <span class="spell-item-description">${spell.description || (Object.hasOwn(spell, 'descriptionFn') ? spell.descriptionFn(spell.casterLevel) : '&nbsp;')}</span>
     `;
     item.addEventListener('click', () => {
       state.selectedSpell = spell;
@@ -504,6 +527,132 @@ function renderAll() {
   renderSpellSelector();
 }
 
+// ─── Apply Character ──────────────────────────────────────────────────────────
+
+/**
+ * Apply a parsed character object to state and re-render.
+ *
+ * preserveManualToggles = false (initial load / file upload):
+ *   Full reset — all optionStates are derived from activeBuffIds and defaultEnabled.
+ *   arcanePoolSpent and selectedSpell reset to zero/null.
+ *
+ * preserveManualToggles = true (WebSocket live update):
+ *   Options with a buffId are updated to match the new activeBuffIds.
+ *   Options without a buffId are left as-is (user's manual state preserved).
+ *   arcanePoolSpent and selectedSpell are preserved.
+ */
+function applyCharacter(character, { preserveManualToggles = false } = {}) {
+  const activeBuffIds = new Set(character.activeBuffIds || []);
+
+  const defaultEnabledOptions = [];
+  const optionStates = preserveManualToggles ? { ...state.optionStates } : {};
+
+  for (const option of ATTACK_OPTIONS) {
+    if (option.buffId) {
+      // Always sync buff-controlled options from the portfolio
+      const isActive = activeBuffIds.has(option.buffId);
+      optionStates[option.id] = isActive;
+      if (isActive) defaultEnabledOptions.push(option.id);
+    } else if (!preserveManualToggles) {
+      optionStates[option.id] = option.defaultEnabled;
+      if (option.defaultEnabled) defaultEnabledOptions.push(option.id);
+    } else {
+      // Manual-only option: keep user's current state, track as default if it was on
+      if (optionStates[option.id]) defaultEnabledOptions.push(option.id);
+    }
+  }
+
+  // Compute weapon primary attack value and iterative attack count
+  const weaponAttackValues = parseWeaponAttack(character.weapon.attack);
+  const weaponPrimary = weaponAttackValues[0] || 0;
+  const iterativeCount = character.charRangedAttackValues.length;
+
+  // Detect unexplained extra attacks and auto-enable options (e.g. Rapid Shot) to account for them
+  const weaponTotalAttacks = weaponAttackValues.length;
+  let explainedExtras = 0;
+  for (const optId of defaultEnabledOptions) {
+    const opt = ATTACK_OPTIONS.find(o => o.id === optId);
+    if (opt?.effect?.extraAttacks) explainedExtras += opt.effect.extraAttacks.length;
+  }
+  const unexplainedExtras = weaponTotalAttacks - iterativeCount - explainedExtras;
+
+  let extrasToAssign = unexplainedExtras;
+  for (const option of ATTACK_OPTIONS) {
+    if (extrasToAssign <= 0) break;
+    if (defaultEnabledOptions.includes(option.id)) continue;
+    if (option.effect?.extraAttacks && option.effect.extraAttacks.length > 0) {
+      optionStates[option.id] = true;
+      defaultEnabledOptions.push(option.id);
+      extrasToAssign -= option.effect.extraAttacks.length;
+    }
+  }
+
+  character.weaponPrimary = weaponPrimary;
+  character.iterativeCount = iterativeCount;
+  character.defaultEnabledOptions = defaultEnabledOptions;
+
+  state.character = character;
+  state.optionStates = optionStates;
+
+  if (!preserveManualToggles) {
+    state.arcanePoolSpent = 0;
+    state.selectedSpell = null;
+  }
+
+  saveState();
+}
+
+// ─── WebSocket live watch ──────────────────────────────────────────────────────
+
+let wsReconnectDelay = 1000;
+let wsInstance = null;
+
+function setWatchIndicator(status) {
+  const el = document.getElementById('watch-indicator');
+  if (!el) return;
+  el.dataset.status = status;
+  el.style.display = status ? '' : 'none';
+  const labels = { live: '● Live', reconnecting: '● Connecting…', lost: '● File moved' };
+  el.textContent = labels[status] ?? '';
+}
+
+function connectWebSocket() {
+  if (wsInstance && wsInstance.readyState <= WebSocket.OPEN) wsInstance.close();
+
+  const ws = new WebSocket(`ws://${location.host}`);
+  wsInstance = ws;
+  setWatchIndicator('reconnecting');
+
+  ws.addEventListener('open', () => {
+    wsReconnectDelay = 1000;
+    setWatchIndicator('live');
+  });
+
+  ws.addEventListener('message', ({ data }) => {
+    try {
+      const msg = JSON.parse(data);
+      if (msg.type === 'character-update') {
+        applyCharacter(msg.character, { preserveManualToggles: true });
+        renderAll();
+        // Brief flash on the indicator to signal an update arrived
+        setWatchIndicator('live');
+      } else if (msg.type === 'watch-lost') {
+        setWatchIndicator('lost');
+      }
+    } catch {
+      // Malformed message — ignore
+    }
+  });
+
+  ws.addEventListener('close', () => {
+    setWatchIndicator('reconnecting');
+    setTimeout(connectWebSocket, wsReconnectDelay);
+    wsReconnectDelay = Math.min(wsReconnectDelay * 2, 30000);
+  });
+
+  ws.addEventListener('error', () => ws.close());
+}
+
 // ─── Portfolio Upload ──────────────────────────────────────────────────────────
 
 async function uploadPortfolio(file) {
@@ -526,60 +675,8 @@ async function uploadPortfolio(file) {
     }
 
     const character = await response.json();
-
-    // Initialize option states from active buffs
-    const defaultEnabledOptions = [];
-    const activeBuffIds = new Set(character.activeBuffIds || []);
-
-    // First pass: detect which options are enabled via Hero Lab buffs
-    const optionStates = {};
-    for (const option of ATTACK_OPTIONS) {
-      if (option.buffId && activeBuffIds.has(option.buffId)) {
-        optionStates[option.id] = true;
-        defaultEnabledOptions.push(option.id);
-      } else {
-        optionStates[option.id] = option.defaultEnabled;
-        if (option.defaultEnabled) defaultEnabledOptions.push(option.id);
-      }
-    }
-
-    // Compute weapon primary attack value and iterative attack count
-    const weaponAttackValues = parseWeaponAttack(character.weapon.attack);
-    const weaponPrimary = weaponAttackValues[0] || 0;
-    const iterativeCount = character.charRangedAttackValues.length; // from BAB
-
-    // Detect "unexplained" extra attacks (not from buff-controlled options)
-    // and auto-enable options like Rapid Shot to account for them
-    const weaponTotalAttacks = weaponAttackValues.length;
-    let explainedExtras = 0;
-    for (const optId of defaultEnabledOptions) {
-      const opt = ATTACK_OPTIONS.find(o => o.id === optId);
-      if (opt?.effect?.extraAttacks) explainedExtras += opt.effect.extraAttacks.length;
-    }
-    const unexplainedExtras = weaponTotalAttacks - iterativeCount - explainedExtras;
-
-    // Assign unexplained extras to options in declaration order (Rapid Shot is first)
-    let extrasToAssign = unexplainedExtras;
-    for (const option of ATTACK_OPTIONS) {
-      if (extrasToAssign <= 0) break;
-      if (defaultEnabledOptions.includes(option.id)) continue; // already assigned
-      if (option.effect?.extraAttacks && option.effect.extraAttacks.length > 0) {
-        optionStates[option.id] = true;
-        defaultEnabledOptions.push(option.id);
-        extrasToAssign -= option.effect.extraAttacks.length;
-      }
-    }
-
-    // Attach computed values to character for use in calculation
-    character.weaponPrimary = weaponPrimary;
-    character.iterativeCount = iterativeCount;
-    character.defaultEnabledOptions = defaultEnabledOptions;
-
-    state.character = character;
-    state.optionStates = optionStates;
-    state.arcanePoolSpent = 0;  // session spending starts fresh (portfolio shows remaining)
-    state.selectedSpell = null;
-
+    applyCharacter(character, { preserveManualToggles: false });
+    state.portfolioSource = { type: 'upload' };
     saveState();
 
     statusEl.textContent = `✓ Loaded: ${character.name}`;
@@ -587,6 +684,7 @@ async function uploadPortfolio(file) {
 
     document.getElementById('upload-section').style.display = 'none';
     document.getElementById('app-section').style.display = '';
+    setWatchIndicator(null);
 
     renderAll();
   } catch (err) {
@@ -595,15 +693,160 @@ async function uploadPortfolio(file) {
   }
 }
 
+// ─── Watch Path ────────────────────────────────────────────────────────────────
+
+async function watchPath(filePath) {
+  const statusEl = document.getElementById('watch-status');
+  statusEl.textContent = 'Loading…';
+  statusEl.className = 'upload-status loading';
+
+  try {
+    const response = await fetch('/api/watch', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ path: filePath }),
+    });
+
+    if (!response.ok) {
+      const err = await response.json();
+      throw new Error(err.error || `HTTP ${response.status}`);
+    }
+
+    const character = await response.json();
+    applyCharacter(character, { preserveManualToggles: false });
+    state.portfolioSource = { type: 'local', path: filePath };
+    saveState();
+
+    statusEl.textContent = '';
+    document.getElementById('upload-section').style.display = 'none';
+    document.getElementById('app-section').style.display = '';
+
+    connectWebSocket();
+    renderAll();
+  } catch (err) {
+    statusEl.textContent = `✗ ${err.message}`;
+    statusEl.className = 'upload-status error';
+  }
+}
+
+// ─── File Browser ────────────────────────────────────────────────────────────
+
+function joinBrowserPath(dir, name) {
+  const sep = dir.includes('\\') ? '\\' : '/';
+  return dir.endsWith(sep) ? dir + name : dir + sep + name;
+}
+
+async function browseTo(dirPath) {
+  try {
+    const res = await fetch(`/api/browse?path=${encodeURIComponent(dirPath)}`);
+    if (!res.ok) {
+      const err = await res.json();
+      console.warn('browse error:', err.error);
+      return;
+    }
+    browseState = await res.json();
+    renderBrowser();
+  } catch (err) {
+    console.warn('browse failed:', err);
+  }
+}
+
+function renderBrowser() {
+  if (!browseState) return;
+
+  const pathInput = document.getElementById('watch-path-input');
+  if (pathInput) pathInput.value = browseState.path;
+
+  const upBtn = document.getElementById('browser-up-btn');
+  if (upBtn) upBtn.disabled = browseState.parent === null;
+
+  const list = document.getElementById('browser-list');
+  if (!list) return;
+  list.innerHTML = '';
+
+  for (const dir of browseState.dirs) {
+    const btn = document.createElement('button');
+    btn.className = 'browser-item is-dir';
+    btn.textContent = '\uD83D\uDCC1 ' + dir;
+    btn.addEventListener('click', () => browseTo(joinBrowserPath(browseState.path, dir)));
+    list.appendChild(btn);
+  }
+
+  if (browseState.dirs.length > 0 && browseState.files.length > 0) {
+    const hr = document.createElement('div');
+    hr.className = 'browser-divider';
+    list.appendChild(hr);
+  }
+
+  for (const file of browseState.files) {
+    const btn = document.createElement('button');
+    btn.className = 'browser-item is-file';
+    btn.textContent = '\uD83D\uDCC4 ' + file;
+    btn.addEventListener('click', () => watchPath(joinBrowserPath(browseState.path, file)));
+    list.appendChild(btn);
+  }
+}
+
+async function initBrowser() {
+  try {
+    const shortcuts = await fetch('/api/browse/shortcuts').then(r => r.json());
+    const grid = document.getElementById('browser-shortcuts');
+    if (grid) {
+      grid.innerHTML = '';
+      for (const sc of shortcuts) {
+        const btn = document.createElement('button');
+        btn.className = 'shortcut-btn';
+        btn.textContent = sc.label;
+        btn.addEventListener('click', () => browseTo(sc.path));
+        grid.appendChild(btn);
+      }
+    }
+    // Auto-navigate to Hero Lab if present, else first shortcut
+    const target = shortcuts.find(s => s.label === 'Hero Lab') || shortcuts[0];
+    if (target) browseTo(target.path);
+  } catch {
+    // ignore — browser panel stays empty
+  }
+}
+
 // ─── Bootstrap the app ────────────────────────────────────────────────────────
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
   // Try to restore from localStorage
   if (loadState() && state.character) {
-    // arcanePoolSpent is restored from localStorage (persisted session spending)
     document.getElementById('upload-section').style.display = 'none';
     document.getElementById('app-section').style.display = '';
     renderAll();
+
+    // If the portfolio was a watched local file, try to resume watching it
+    if (state.portfolioSource?.type === 'local' && state.portfolioSource.path) {
+      const input = document.getElementById('watch-path-input');
+      if (input) input.value = state.portfolioSource.path;
+      try {
+        const response = await fetch('/api/watch', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ path: state.portfolioSource.path }),
+        });
+        if (response.ok) {
+          const character = await response.json();
+          applyCharacter(character, { preserveManualToggles: true });
+          renderAll();
+          connectWebSocket();
+        }
+      } catch {
+        // Server not ready or path gone — silently continue with cached data
+      }
+    }
+  } else {
+    // No cached state — check if the server is already watching (e.g. server restarted,
+    // browser refreshed without localStorage) and reconnect if so
+    try {
+      const status = await fetch('/api/watch-status').then(r => r.json());
+      if (status.watching) connectWebSocket();
+    } catch {
+      // ignore
+    }
   }
 
   // File input change
@@ -630,6 +873,26 @@ document.addEventListener('DOMContentLoaded', () => {
     dropZone.addEventListener('click', () => fileInput?.click());
   }
 
+  // File browser — Up button
+  document.getElementById('browser-up-btn')?.addEventListener('click', () => {
+    if (browseState?.parent) browseTo(browseState.parent);
+  });
+
+  // Path bar — Enter to smart-navigate
+  document.getElementById('watch-path-input')?.addEventListener('keydown', e => {
+    if (e.key === 'Enter') {
+      const val = e.target.value.trim();
+      if (val.toLowerCase().endsWith('.por')) {
+        watchPath(val);
+      } else if (val) {
+        browseTo(val);
+      }
+    }
+  });
+
+  // Initialize file browser
+  initBrowser();
+
   // "Change character" link
   document.getElementById('change-character-link')?.addEventListener('click', e => {
     e.preventDefault();
@@ -644,7 +907,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Reset round button
   document.getElementById('reset-round-btn')?.addEventListener('click', () => {
-    // Turn off all single-round options
     for (const option of ATTACK_OPTIONS) {
       if (option.arcanePointCost > 0 || option.category === 'per-attack') {
         state.optionStates[option.id] = false;

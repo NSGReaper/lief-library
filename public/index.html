@@ -23,6 +23,9 @@
       --teal-dim:       #1a4a6a;
       --orange:         #fb923c;
       --orange-dim:     #7c3a1a;
+      --green:          #68b986;
+      --green-glow:     #86efac;
+      --green-dim:      #1a4030;
       --spell-purple:   #a78bfa;
       --spell-glow:     #7c3aed;
       --text-primary:   #e8dfc8;
@@ -30,6 +33,15 @@
       --crit-red:       #f87171;
       --hit-green:      #86efac;
       --dmg-amber:      #fbbf24;
+
+      /* damage type colours */
+      --dmg-fire:        #f97316;
+      --dmg-acid:        #84cc16;
+      --dmg-cold:        #38bdf8;
+      --dmg-electricity: #facc15;
+      --dmg-sonic:       #a78bfa;
+      --dmg-force:       #c084fc;
+      --dmg-bleed:       #f43f5e;
     }
 
     body {
@@ -293,8 +305,9 @@
     }
 
     .dot-per-attack  { background: var(--gold); box-shadow: 0 0 6px var(--gold); }
-    .dot-swift-buff  { background: var(--teal); box-shadow: 0 0 6px var(--teal); }
+    .dot-arcane-pool  { background: var(--teal); box-shadow: 0 0 6px var(--teal); }
     .dot-conditional { background: var(--orange); box-shadow: 0 0 6px var(--orange); }
+    .dot-buff        { background: var(--dmg-fire); box-shadow: 0 0 6px var(--dmg-fire); }
 
     .section-eyebrow {
       font-family: 'Cinzel', serif;
@@ -304,8 +317,9 @@
     }
 
     .section-eyebrow.per-attack  { color: var(--gold-dim); }
-    .section-eyebrow.swift-buff  { color: var(--teal-dim); }
+    .section-eyebrow.arcane-pool  { color: var(--teal-dim); }
     .section-eyebrow.conditional { color: var(--orange-dim); }
+    .section-eyebrow.buff        { color: var(--dmg-fire); opacity: 0.75; }
 
     .toggle-grid {
       display: flex;
@@ -356,6 +370,12 @@
     }
 
     /* ON states */
+    .chip-on-green {
+      background: #102918;
+      border-color: var(--green-dim);
+      color: var(--green);
+    }
+    
     .chip-on-gold {
       background: #1a1408;
       border-color: var(--gold-dim);
@@ -372,6 +392,12 @@
       background: #1a100a;
       border-color: var(--orange-dim);
       color: var(--orange);
+    }
+
+    .chip-on-fire {
+      background: #1a0d06;
+      border-color: #7c2e10;
+      color: var(--dmg-fire);
     }
 
     /* OFF state */
@@ -455,7 +481,11 @@
       text-shadow: 0 0 10px #a78bfa55;
     }
 
-    .dmg-block { text-align: right; min-width: 80px; }
+    .dmg-block { 
+      display: flex;
+      justify-content: space-between;
+      min-width: 120px; 
+    }
 
     .dmg-dice {
       font-family: 'Cinzel', serif;
@@ -496,8 +526,8 @@
       pointer-events: none;
     }
 
-    .spell-banner-select { cursor: pointer; }
-    .spell-banner-select:hover { border-color: #5040a0; }
+    .spell-banner { cursor: pointer; }
+    .spell-banner:hover { border-color: #5040a0; }
 
     .spell-select-prompt {
       font-family: 'Cinzel', serif;
@@ -580,6 +610,14 @@
 
     .spell-item:hover { border-color: var(--spell-glow); background: #0e0f20; }
 
+    .spell-item.spell-depleted {
+      border-color: #4a1e2d;
+      background: #1a0f14;
+      opacity: 0.75;
+      cursor: default;
+      text-decoration: line-through;
+    }
+
     .spell-item.selected {
       border-color: var(--spell-purple);
       background: #100e20;
@@ -648,6 +686,177 @@
       letter-spacing: 0.5em;
       padding: 0.25rem 0;
     }
+
+    /* ── EXTRA DAMAGE TAGS ───────────────────────────────────── */
+    .extra-dmg-row {
+      padding: 0.1rem 1.4rem 0.3rem 76px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+      justify-content: right;
+    }
+
+    .extra-dmg-tag {
+      font-family: 'Crimson Pro', serif;
+      font-size: 0.72rem;
+      color: var(--dmg-amber);
+      opacity: 0.85;
+      padding-right: 1em;
+    }
+
+    .dmg-fire        { color: var(--dmg-fire); }
+    .dmg-acid        { color: var(--dmg-acid); }
+    .dmg-cold        { color: var(--dmg-cold); }
+    .dmg-electricity { color: var(--dmg-electricity); }
+    .dmg-sonic       { color: var(--dmg-sonic); }
+    .dmg-force       { color: var(--dmg-force); }
+    .dmg-bleed       { color: var(--dmg-bleed); }
+
+    .extra-dmg-crit {
+      font-size: 0.65rem;
+      opacity: 0.65;
+    }
+
+    /* ── WATCH PATH INPUT ──────────────────────────────── */
+    .upload-divider {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin: 1.25rem 0 1rem;
+      color: var(--text-dim);
+      font-family: 'Cinzel', serif;
+      font-size: 0.6rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+    .upload-divider::before,
+    .upload-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border-dim);
+    }
+
+    .watch-row {
+      display: flex;
+      gap: 0.5rem;
+      align-items: stretch;
+    }
+
+    .watch-input {
+      flex: 1;
+      background: #0a0f1a;
+      border: 1px solid var(--border-dim);
+      border-radius: 4px;
+      padding: 0.45em 0.75em;
+      font-family: 'Crimson Pro', serif;
+      font-size: 0.82rem;
+      color: var(--text-primary);
+      outline: none;
+      transition: border-color 0.15s;
+    }
+    .watch-input:focus { border-color: var(--teal-dim); }
+    .watch-input::placeholder { color: var(--text-dim); opacity: 0.6; }
+
+    .watch-btn {
+      font-family: 'Cinzel', serif;
+      font-size: 0.62rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--teal);
+      background: none;
+      border: 1px solid var(--teal-dim);
+      border-radius: 4px;
+      padding: 0.45em 0.9em;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: border-color 0.15s, color 0.15s;
+    }
+    .watch-btn:hover { border-color: var(--teal); color: var(--teal-glow); }
+    .watch-btn:disabled { opacity: 0.35; cursor: default; pointer-events: none; }
+
+    /* ── FILE BROWSER ───────────────────────────────────── */
+    #file-browser { margin-top: 0.1rem; }
+
+    .browser-shortcuts {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .shortcut-btn {
+      font-family: 'Cinzel', serif;
+      font-size: 0.56rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--teal);
+      background: none;
+      border: 1px solid var(--teal-dim);
+      border-radius: 3px;
+      padding: 0.2em 0.6em;
+      cursor: pointer;
+      transition: border-color 0.15s, color 0.15s;
+    }
+    .shortcut-btn:hover { border-color: var(--teal); color: var(--teal-glow); }
+
+    .browser-path-row {
+      display: flex;
+      gap: 0.5rem;
+      align-items: stretch;
+      margin-bottom: 0.4rem;
+    }
+
+    .browser-list {
+      max-height: 220px;
+      overflow-y: auto;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 0.2rem 0;
+      margin-bottom: 0.4rem;
+      scrollbar-width: thin;
+      scrollbar-color: var(--border) transparent;
+    }
+
+    .browser-item {
+      display: block;
+      width: 100%;
+      text-align: left;
+      background: none;
+      border: none;
+      padding: 0.22rem 0.65rem;
+      font-family: 'Crimson Pro', serif;
+      font-size: 0.82rem;
+      cursor: pointer;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      transition: background 0.1s;
+    }
+    .browser-item.is-dir  { color: var(--text-dim); }
+    .browser-item.is-file { color: var(--teal); }
+    .browser-item:hover   { background: #091820; }
+
+    .browser-divider {
+      border: none;
+      border-top: 1px solid var(--border-dim);
+      margin: 0.2rem 0;
+    }
+
+    /* ── LIVE INDICATOR ─────────────────────────────────── */
+    #watch-indicator {
+      display: none;
+      font-family: 'Cinzel', serif;
+      font-size: 0.58rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      border-radius: 3px;
+      padding: 0.2em 0.55em;
+      border: 1px solid transparent;
+    }
+    #watch-indicator[data-status='live']         { color: var(--hit-green); border-color: #166534; background: #052e16; }
+    #watch-indicator[data-status='reconnecting'] { color: var(--dmg-amber); border-color: #713f12; background: #1c0f03; }
+    #watch-indicator[data-status='lost']         { color: var(--crit-red);  border-color: #7f1d1d; background: #1c0f0f; }
   </style>
 </head>
 <body>
@@ -666,6 +875,19 @@
 
   <input type="file" id="portfolio-file" accept=".por" style="display:none" />
   <div id="upload-status" class="upload-status"></div>
+
+  <div class="upload-divider">or browse a local file</div>
+
+  <div id="file-browser">
+    <div id="browser-shortcuts" class="browser-shortcuts"></div>
+    <div class="browser-path-row">
+      <input id="watch-path-input" class="watch-input" type="text"
+             placeholder="C:\path\to\character.por" />
+      <button id="browser-up-btn" class="watch-btn" disabled title="Go up one folder">↑</button>
+    </div>
+    <div id="browser-list" class="browser-list"></div>
+    <div id="watch-status" class="upload-status"></div>
+  </div>
 </div>
 
 <!-- ══════════════════════════════════════════
@@ -683,6 +905,7 @@
       </div>
       <div class="d-flex flex-column align-items-end gap-1">
         <span class="action-badge mt-1">Full Attack</span>
+        <span id="watch-indicator"></span>
         <a href="#" id="change-character-link" class="change-char-link">change character</a>
       </div>
     </div>
@@ -729,19 +952,28 @@
   <!-- SWIFT-ACTION BUFFS -->
   <div class="toggle-section">
     <div class="toggle-section-header">
-      <span class="section-dot dot-swift-buff"></span>
-      <span class="section-eyebrow swift-buff">Swift-Action Buffs · 1 Round</span>
+      <span class="section-dot dot-arcane-pool"></span>
+      <span class="section-eyebrow arcane-pool">Arcane Pool</span>
     </div>
-    <div class="toggle-grid" id="options-grid-swift-buff"></div>
+    <div class="toggle-grid" id="options-grid-arcane-pool"></div>
   </div>
 
   <!-- CONDITIONAL BUFFS -->
   <div class="toggle-section">
     <div class="toggle-section-header">
       <span class="section-dot dot-conditional"></span>
-      <span class="section-eyebrow conditional">Conditional Buffs</span>
+      <span class="section-eyebrow conditional">Conditional</span>
     </div>
     <div class="toggle-grid" id="options-grid-conditional"></div>
+  </div>
+
+  <!-- ACTIVE BUFFS -->
+  <div class="toggle-section">
+    <div class="toggle-section-header">
+      <span class="section-dot dot-buff"></span>
+      <span class="section-eyebrow buff">Active Buffs</span>
+    </div>
+    <div class="toggle-grid" id="options-grid-buff"></div>
   </div>
 
   <!-- ATTACKS -->
@@ -771,7 +1003,6 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script src="/js/options.js"></script>
-<script src="/js/app.js"></script>
+<script type="module" src="/js/app.js"></script>
 </body>
 </html>

@@ -4,12 +4,27 @@ const express = require('express');
 const multer = require('multer');
 const AdmZip = require('adm-zip');
 const path = require('path');
+const fs = require('fs');
 const { DOMParser } = require('@xmldom/xmldom');
+const { WebSocketServer } = require('ws');
+const chokidar = require('chokidar');
+const os = require('os');
 
 const app = express();
 const upload = multer({ storage: multer.memoryStorage() });
+app.use(express.json());
+
+// ─── Watch state ──────────────────────────────────────────────────────────────
+
+let activeWatcher = null;
+let watchedPath = null;
+let portfolioLastModified = null;
 
 app.use(express.static(path.join(__dirname, '..', 'public')));
+
+function log(msg) {
+  console.log(`[${new Date().toISOString()}] ${msg}`);
+}
 
 /**
  * Parse a signed numeric string like "+6", "-2", "+13/+8" into an array of integers.
@@ -62,7 +77,10 @@ function parsePortfolio(buffer) {
   const charName = pcNode.getAttribute('name') || 'Unknown';
 
   // Step 4: Extract character class/level summary
-  const charSummary = pcChar.getAttribute('summary') || '';
+  const classesNode = Array.from(pcNode.getElementsByTagName('classes'))[0];
+  const charSummary = classesNode ? classesNode.getAttribute('summary') || '' : '';
+  const magusClass = Array.from(classesNode.getElementsByTagName('class')).find(cl => cl.getAttribute('name').startsWith('Magus'));
+  const casterLevel = magusClass ? parseInt(magusClass.getAttribute('level') || '0') : 0;
 
   // Step 5: Extract attack information
   const attackNodes = Array.from(pcNode.getElementsByTagName('attack'));
@@ -120,11 +138,29 @@ function parsePortfolio(buffer) {
 
       const fields = Array.from(pick.getElementsByTagName('field'));
       const pIsOnField = fields.find(f => f.getAttribute('id') === 'pIsOn');
+      const abilActiveField = fields.find(f => f.getAttribute('id') === 'abilActive');
+
+      /*
+      <pick thing="fDeadAim" index="2670" batchindex="686" uniqueness="useronce" refcount="0" fieldcount="1" source="fTable">
+<chain index="2671"/>
+<field id="abilActive" user="1."></field>
+</pick>
+*/
+      let pIsEnabled = false;
       if (pIsOnField) {
         const val = pIsOnField.getAttribute('user') || '';
         if (val.startsWith('1')) {
-          activeBuffIds.add(thingId);
+          pIsEnabled = true;
         }
+      } else if (abilActiveField) {
+        const val = abilActiveField.getAttribute('user') || '';
+        if (val.startsWith('1')) {
+          pIsEnabled = true;
+        }
+      }
+
+      if (pIsEnabled) {
+        activeBuffIds.add(thingId);
       }
     }
   }
@@ -143,10 +179,13 @@ function parsePortfolio(buffer) {
       spells.push({
         name: spellNode.getAttribute('name') || '',
         level: parseInt(spellNode.getAttribute('level') || '0', 10),
+        casterLevel: parseInt(spellNode.getAttribute('casterlevel') || '0', 10),
         castTime: spellNode.getAttribute('casttime') || '',
         range: spellNode.getAttribute('range') || '',
-        dc: spellNode.getAttribute('dc') || '',
+        dc: parseInt(spellNode.getAttribute('dc')) || 0,
         school: spellNode.getAttribute('schooltext') || '',
+        spellResistance: spellNode.getAttribute('resist') || '',
+        save: spellNode.getAttribute('save') || '',
         castsLeft: castsleft !== undefined ? parseInt(castsleft, 10) : null,
         unlimited: unlimited === 'yes',
       });
@@ -170,6 +209,7 @@ function parsePortfolio(buffer) {
   return {
     name: charName,
     summary: charSummary,
+    casterLevel: casterLevel,
     baseAttack: baseAttackStr,
     primaryBAB,
     charRangedAttack: rangedAttackStr,
@@ -184,19 +224,168 @@ function parsePortfolio(buffer) {
 
 // POST /api/portfolio — accept a portfolio file upload
 app.post('/api/portfolio', upload.single('portfolio'), (req, res) => {
+  log(`POST /api/portfolio — file: ${req.file?.originalname ?? '(none)'}, size: ${req.file?.size ?? 0} bytes`);
   try {
     if (!req.file) {
       return res.status(400).json({ error: 'No portfolio file uploaded' });
     }
 
     const characterData = parsePortfolio(req.file.buffer);
+    log(`  → parsed character: ${characterData.name} (${characterData.summary})`);
     return res.json(characterData);
   } catch (err) {
+    log(`  → parse error: ${err.message}`);
     return res.status(500).json({ error: err.message });
   }
 });
 
+// POST /api/watch — set a local file path to watch
+app.post('/api/watch', (req, res) => {
+  const filePath = req.body?.path;
+  log(`POST /api/watch — path: ${filePath ?? '(none)'}`);
+  if (!filePath) {
+    return res.status(400).json({ error: 'path is required' });
+  }
+
+  const resolved = path.resolve(filePath);
+  if (!fs.existsSync(resolved)) {
+    log(`  → file not found: ${resolved}`);
+    return res.status(400).json({ error: `File not found: ${resolved}` });
+  }
+
+  try {
+    const character = parsePortfolio(fs.readFileSync(resolved));
+    startWatching(resolved);
+    log(`  → parsed character: ${character.name} (${character.summary}), now watching`);
+    return res.json(character);
+  } catch (err) {
+    log(`  → parse error: ${err.message}`);
+    return res.status(500).json({ error: err.message });
+  }
+});
+
+// GET /api/watch-status — returns current watch state so the client can reconnect on page load
+app.get('/api/watch-status', (_req, res) => {
+  res.json({ watching: activeWatcher !== null, path: watchedPath });
+});
+
+// GET /api/browse/shortcuts — returns OS-resolved shortcut paths
+app.get('/api/browse/shortcuts', (_req, res) => {
+  const shortcuts = [];
+  const heroLab = path.join(os.homedir(), 'Documents', 'Hero Lab', 'portfolios');
+  if (fs.existsSync(heroLab)) {
+    shortcuts.push({ label: 'Hero Lab', path: heroLab });
+  }
+  shortcuts.push(
+    { label: 'Documents', path: path.join(os.homedir(), 'Documents') },
+    { label: 'Downloads', path: path.join(os.homedir(), 'Downloads') },
+    { label: 'Home', path: os.homedir() }
+  );
+  res.json(shortcuts);
+});
+
+// GET /api/browse?path=<dir> — lists a directory (dirs + .por files only)
+app.get('/api/browse', (req, res) => {
+  const requested = req.query.path || os.homedir();
+  const resolved = path.resolve(requested);
+  try {
+    const stat = fs.statSync(resolved);
+    if (!stat.isDirectory()) {
+      return res.status(400).json({ error: 'Not a directory' });
+    }
+    const entries = fs.readdirSync(resolved, { withFileTypes: true });
+    const dirs = entries
+      .filter(e => e.isDirectory())
+      .map(e => e.name)
+      .sort((a, b) => a.localeCompare(b));
+    const files = entries
+      .filter(e => e.isFile() && e.name.toLowerCase().endsWith('.por'))
+      .map(e => e.name)
+      .sort((a, b) => a.localeCompare(b));
+    const parent = (() => {
+      const p = path.dirname(resolved);
+      return p === resolved ? null : p;
+    })();
+    res.json({ path: resolved, parent, dirs, files });
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
+
+// ─── Chokidar helpers ─────────────────────────────────────────────────────────
+
+function broadcast(message) {
+  const payload = JSON.stringify(message);
+  for (const client of wss.clients) {
+    if (client.readyState === client.OPEN) {
+      client.send(payload);
+    }
+  }
+}
+
+function startWatching(filePath) {
+  if (activeWatcher) {
+    activeWatcher.close();
+    activeWatcher = null;
+  }
+
+  watchedPath = filePath;
+  const fileInfo = fs.statSync(filePath);
+  portfolioLastModified = fileInfo.mtimeMs;
+
+  activeWatcher = chokidar.watch(filePath, {
+    persistent: true,
+    ignoreInitial: true,
+    awaitWriteFinish: { stabilityThreshold: 400, pollInterval: 100 },
+  });
+
+  activeWatcher.on('change', () => {
+    log(`Portfolio changed: ${filePath}`);
+    try {
+      const fileInfo = fs.statSync(filePath);
+      portfolioLastModified = fileInfo.mtimeMs;
+      const character = parsePortfolio(fs.readFileSync(filePath));
+      broadcast({ type: 'character-update', character });
+      log(`  → broadcast character-update: ${character.name}, ${wss.clients.size} client(s)`);
+    } catch (err) {
+      log(`  → parse error (skipping): ${err.message}`);
+    }
+  });
+
+  activeWatcher.on('unlink', () => {
+    log(`Portfolio lost: ${filePath} — attempting to re-watch`); // In case of temporary file move (e.g., Hero Lab saving)
+    setTimeout(() => {
+      try {
+        activeWatcher.close();
+        activeWatcher = null;
+        if (fs.existsSync(filePath)) {
+          const fileInfo = fs.statSync(filePath);
+          const lastModified = fileInfo.mtimeMs;
+          if (portfolioLastModified && lastModified > portfolioLastModified) {
+            const character = parsePortfolio(fs.readFileSync(filePath));
+            broadcast({ type: 'character-update', character });
+            log(`Portfolio reappeared: ${filePath} — broadcast character-update: ${character.name}, ${wss.clients.size} client(s)`);
+          }
+          portfolioLastModified = lastModified;
+          log(`Portfolio reappeared: ${filePath} — resuming watch`);
+          startWatching(filePath);
+        } else {
+          log(`Portfolio removed: ${filePath} — broadcasting watch-lost`);
+          broadcast({ type: 'watch-lost', path: filePath });
+          watchedPath = null;
+        }
+      } catch (err) {
+        log(`Error checking portfolio after unlink: ${err.message}`);
+      }
+    }, 1000);
+  });
+}
+
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log(`Eldritch Archer server running at http://localhost:${PORT}`);
 });
+
+// ─── WebSocket server ─────────────────────────────────────────────────────────
+
+const wss = new WebSocketServer({ server });

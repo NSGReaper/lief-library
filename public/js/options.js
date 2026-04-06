@@ -19,8 +19,18 @@
  *      hitBonusOffset = additional offset for THIS extra attack (on top of hitBonus)
  *    removeIterativeAttacks - if true, remove all iterative (non-primary) attacks
  *    isSpellstrike - marks the primary attack as a Spellstrike delivery
+ *    extraDamage - array of additional damage entries applied to every attack; each item:
+ *      { label: string, expression: string, critOnly?: boolean }
+ *      label      = source name shown in the UI (e.g. 'Flame Arrow')
+ *      expression = damage string shown in the UI (e.g. '1d6 fire', '1d10 electricity')
+ *      critOnly   = if true, damage only applies on a critical hit (shown with '(on crit)' annotation)
+ *
+ * Damage type colour conventions (used by getDamageTypeClass in app.js):
+ *   Energy:   acid | fire | cold | electricity | sonic | force | bleed
+ *   Physical: bludgeoning (B) | piercing (P) | slashing (S)  → default colour, abbreviated
+ *   Untyped:  omit type word entirely                         → default colour
  */
-const ATTACK_OPTIONS = [
+export const ATTACK_OPTIONS = [
   // ─── Per-Attack Decisions ────────────────────────────────────────────────
   {
     id: 'spellstrike',
@@ -32,12 +42,16 @@ const ATTACK_OPTIONS = [
     description: 'Deliver a prepared spell through your first ranged attack',
     effect: {
       isSpellstrike: true,
+      extraAttacks: [
+        { hitBonusOffset: 0, label: 'Spellstrike' },
+      ],
     },
   },
   {
     id: 'spell-combat',
     name: 'Spell Combat',
     category: 'per-attack',
+    buffId: 'xAttPenSit',
     buffId: 'xAttPenSit',
     defaultEnabled: false,
     arcanePointCost: 0,
@@ -51,13 +65,14 @@ const ATTACK_OPTIONS = [
     name: 'Rapid Shot',
     category: 'per-attack',
     buffId: 'fRapidShot',
+    buffId: 'fRapidShot',
     defaultEnabled: false,
     arcanePointCost: 0,
     description: 'Fire an extra arrow; −2 to all attacks',
     effect: {
       hitBonus: -2,
       extraAttacks: [
-        { atIndexOffset: 0, hitBonusOffset: 0, label: 'Rapid Shot' },
+        { hitBonusOffset: 0, label: 'Rapid Shot' },
       ],
     },
   },
@@ -68,10 +83,10 @@ const ATTACK_OPTIONS = [
     buffId: 'fDeadAim',
     defaultEnabled: false,
     arcanePointCost: 0,
-    description: '−3 to hit for +6 damage',
+    description: '−2 to hit for +4 damage',
     effect: {
-      hitBonus: -3,
-      damageBonus: 6,
+      hitBonus: -2,
+      damageBonus: 4,
     },
   },
   {
@@ -87,11 +102,10 @@ const ATTACK_OPTIONS = [
     },
   },
 
-  // ─── Swift-Action Buffs (1 round, may cost arcane points) ────────────────
   {
     id: 'arcane-accuracy',
     name: 'Arcane Accuracy',
-    category: 'swift-buff',
+    category: 'per-attack',
     buffId: 'cMagArcAcc',
     defaultEnabled: false,
     arcanePointCost: 1,
@@ -100,10 +114,12 @@ const ATTACK_OPTIONS = [
       hitBonusFromStat: 'intMod',
     },
   },
+
+  /* We need a different way to handle arcane pool, as the enhancement bonus increases for every four magus levels after the 1st, and it can spent to add weapon special abilities instead of attack bonuses.
   {
     id: 'arcane-pool-enhance',
     name: 'Arcane Pool: Enhance',
-    category: 'swift-buff',
+    category: 'per-attack',
     buffId: null,
     defaultEnabled: false,
     arcanePointCost: 1,
@@ -113,6 +129,7 @@ const ATTACK_OPTIONS = [
       damageBonus: 1,
     },
   },
+  */
 
   // ─── Conditional Buffs ───────────────────────────────────────────────────
   {
@@ -120,14 +137,31 @@ const ATTACK_OPTIONS = [
     name: 'Point-Blank Shot',
     category: 'conditional',
     buffId: 'fPointBlnk',
+    buffId: 'fPointBlnk',
     defaultEnabled: false,
     arcanePointCost: 0,
     description: '+1 to hit and damage when target is within 30 ft',
+    alignment: 'good',
     effect: {
       hitBonus: 1,
       damageBonus: 1,
     },
   },
+  {
+    id: 'target-prone',
+    name: 'Target Prone',
+    category: 'conditional',
+    buffId: null,
+    defaultEnabled: false,
+    arcanePointCost: 0,
+    description: '-4 to hit against prone targets',
+    alignment: 'bad',
+    effect: {
+      hitBonus: -4,
+    },
+  },
+
+  /*
   {
     id: 'favored-enemy',
     name: 'Favored Enemy',
@@ -141,6 +175,7 @@ const ATTACK_OPTIONS = [
       damageBonus: 2,
     },
   },
+  
   {
     id: 'flanking',
     name: 'Flanking',
@@ -153,25 +188,63 @@ const ATTACK_OPTIONS = [
       hitBonus: 2,
     },
   },
+  */
+
+  // ─── Active Buffs ────────────────────────────────────────────────────────
+  {
+    id: 'flame-arrow',
+    name: 'Flame Arrow',
+    category: 'buff',
+    buffId: null,
+    defaultEnabled: false,
+    arcanePointCost: 0,
+    description: 'Each arrow deals +1d6 fire damage',
+    effect: {
+      extraDamage: [
+        { label: 'Flame Arrow', damage: '1d6', type: 'fire' },
+      ],
+    },
+  },
+
+  // ─── Locked Buffs ────────────────────────────────────────────────────────
+  // These are not user-toggleable since they're already tracked by the presence of their corresponding buff in lead1.xml, but we want to include them here so their effects are properly calculated and displayed in the UI when active.
+  {
+    id: 'haste',
+    name: 'Haste',
+    category: 'locked',
+    buffId: 'pHaste',
+    defaultEnabled: false,
+    arcanePointCost: 0,
+    description: 'Extra attack at highest BAB',
+    effect: {
+      hitBonus: 1,
+      extraAttacks: [
+        { hitBonusOffset: 0, label: 'Haste' },
+      ],
+    },
+  },
+
+  /*
+  {
+    id: 'shocking-burst',
+    name: 'Shocking Burst',
+    category: 'buff',
+    buffId: null,
+    defaultEnabled: false,
+    arcanePointCost: 0,
+    description: 'Each arrow deals +1d6 electricity; +1d10 electricity on a critical hit',
+    effect: {
+      extraDamage: [
+        { label: 'Shocking Burst', damage: '1d6', type: 'electricity' },
+        { label: 'Shocking Burst', damage: '1d10', type: 'electricity', critOnly: true },
+      ],
+    },
+  },*/
 
   // Others to consider adding:
   // These are longer duration buffs that Hero Lab already applies the bonuses from, but if we wanted to support them as toggleable options:
   /* 
-  {
-    id: 'haste',
-    name: 'Haste',
-    category: 'conditional',
-    buffId: 'pHaste',
-    defaultEnabled: false,
-    arcanePointCost: 0,
-    description: '+1 to hit, extra attack at highest BAB (from Haste spell)',
-    effect: {
-      hitBonus: 1,
-      extraAttacks: [
-        { atIndexOffset: 0, hitBonusOffset: 0, label: 'Haste' },
-      ],
-    },
-  },
+  
   */
  /* 
   {
