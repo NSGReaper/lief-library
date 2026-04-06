@@ -137,6 +137,22 @@
       background: linear-gradient(90deg, transparent, var(--gold), var(--gold-light), var(--gold), transparent);
     }
 
+    /* Responsive: wider layout on larger screens */
+    @media (min-width: 1024px) {
+      .attack-card {
+        max-width: 1200px;
+      }
+
+      .card-content-wrapper {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .card-column-left {
+        border-right: 1px solid var(--border-dim);
+      }
+    }
+
     /* ── HEADER ────────────────────────────────────────────── */
     .card-header-custom {
       padding: 1.1rem 1.4rem 0.9rem;
@@ -939,22 +955,9 @@
     </div>
   </div>
 
-  <!-- WEAPON -->
-  <div class="weapon-row">
-    <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
-      <div class="weapon-name">
-        <span id="weapon-name">—</span>
-        <span class="crit-tag" id="weapon-crit"></span>
-      </div>
-      <div class="d-flex flex-wrap gap-1">
-        <span class="stat-pill">RNG <span id="weapon-range">—</span></span>
-        <span class="stat-pill" id="weapon-dmg-type-pill">Type <span id="weapon-damage-type">—</span></span>
-      </div>
-    </div>
-    <div class="weapon-situational" style="display:none">
-      <small class="text-muted" id="situational-modifiers"></small>
-    </div>
-  </div>
+  <div class="card-content-wrapper">
+    <!-- LEFT COLUMN: Character Options -->
+    <div class="card-column-left">
 
   <!-- PER-ATTACK OPTIONS -->
   <div class="toggle-section">
@@ -994,10 +997,33 @@
     <div class="toggle-grid" id="options-grid-buff"></div>
   </div>
 
+    </div>
+    <!-- End LEFT COLUMN -->
+
+    <!-- RIGHT COLUMN: Weapon & Attacks -->
+    <div class="card-column-right">
+
+  <!-- WEAPON -->
+  <div class="weapon-row">
+    <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+      <div class="weapon-name">
+        <span id="weapon-name">—</span>
+        <span class="crit-tag" id="weapon-crit"></span>
+      </div>
+      <div class="d-flex flex-wrap gap-1">
+        <span class="stat-pill">RNG <span id="weapon-range">—</span></span>
+        <span class="stat-pill" id="weapon-dmg-type-pill">Type <span id="weapon-damage-type">—</span></span>
+      </div>
+    </div>
+    <div class="weapon-situational" style="display:none">
+      <small class="text-muted" id="situational-modifiers"></small>
+    </div>
+  </div>
+
   <!-- ARCANE POOL -->
   <div class="arcane-pool-row">
     <div class="d-flex align-items-center justify-content-between">
-      <span class="pool-label">Arcane Pool</span>
+      <span class="pool-label">Arcane Pool Points</span>
       <div id="arcane-pips"></div>
     </div>
     <div class="arcane-cost-display" id="arcane-cost-display" style="display:none"></div>
@@ -1017,6 +1043,11 @@
     </div>
     <div class="spell-list" id="spell-list"></div>
   </div>
+
+    </div>
+    <!-- End RIGHT COLUMN -->
+  </div>
+  <!-- End card-content-wrapper -->
 
   <!-- FOOTER -->
   <div class="card-footer-custom">
