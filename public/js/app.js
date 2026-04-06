@@ -476,7 +476,16 @@ function renderAttackCard() {
 
     // Extra damage tags (Flame Arrow, Shocking Burst, etc.)
     if (atk.extraDamages?.length > 0) {
-      for (const ed of atk.extraDamages) {
+      // Sort extra damages by type (alphabetically), then by critOnly (regular before crit)
+      const sortedDamages = [...atk.extraDamages].sort((a, b) => {
+        const typeA = (a.type || '').toLowerCase();
+        const typeB = (b.type || '').toLowerCase();
+        if (typeA !== typeB) return typeA.localeCompare(typeB);
+        // Within same type, show regular damage before crit-only damage
+        return (a.critOnly ? 1 : 0) - (b.critOnly ? 1 : 0);
+      });
+
+      for (const ed of sortedDamages) {
         const edRow = document.createElement('div');
         const typeClass = getDamageTypeClass(ed.type || '');
         const typeClassString = typeClass ? ` ${typeClass}` : '';
