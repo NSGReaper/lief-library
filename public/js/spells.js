@@ -32,116 +32,83 @@ export const SPELLSTRIKE_SPELLS = {
 
   'Acid Splash': {
     name: 'Acid Splash',
-    level: 0,
-    school: 'conjuration',
     description: '',
     attackType: 'ranged',
-    spellResistance: false,
     damageExpression: '1d3 acid',
   },
 
   // 1st Level
   'Shocking Grasp': {
     name: 'Shocking Grasp',
-    level: 1,
-    school: 'evocation',
     description: '+3 attack if target wearing or carrying metal',
     attackType: 'melee',
-    spellResistance: true,
     damageFn: (dmg) => dmg.die(6).perCasterLevel().maxCasterLevel(5).type('electricity').calculate(),
   },
 
   'Snowball': {
     name: 'Snowball',
-    level: 1,
-    school: 'evocation',
     description: '',
     attackType: 'ranged',
-    spellResistance: true,
     damageFn: (dmg) => dmg.die(6).perCasterLevel().maxCasterLevel(5).type('cold').calculate(),
   },
   
   'Frostbite': {
     name: 'Frostbite',
-    level: 1,
-    school: 'transmutation',
     attackType: 'melee',
-    spellResistance: true,
     damageFn: (dmg) => dmg.die(1).flatDice(1).casterLevelBonus(1).type('cold').calculate(),
     descriptionFn: (CL) => `Target fatigued. Use attack up to ${CL} times.`
   },
 
   'Corrosive Touch': {
     name: 'Corrosive Touch',
-    level: 1,
-    school: 'conjuration',
     description: '',
     attackType: 'melee',
-    spellResistance: true,
     damageFn: (dmg) => dmg.die(4).perCasterLevel().maxCasterLevel(5).type('acid').calculate()
   },
 
   // 2nd Level
   'Acid Arrow': {
     name: 'Acid Arrow',
-    level: 2,
-    school: 'conjuration',
     attackType: 'ranged',
-    spellResistance: true,
     damageExpression: '2d4 acid damage',
     descriptionFn: (CL) => `Damage repeats every round for ${Math.floor(CL/3)} rounds.`
   },
 
   'Touch of Gracelesness': {
     name: 'Touch of Gracelessness',
-    level: 2,
-    school: 'transmutation',
     attackType: 'melee',
-    spellResistance: true,
     damageExpression: '',
     descriptionFn: (CL) => `1d6+${Math.min(5, Math.floor(CL/2))} dex penalty for ${CL} rounds. Fort save for half.`
   },
 
   'Frigid Touch': {
     name: 'Frigid Touch',
-    level: 2,
     damageExpression: '4d6 cold',
-    school: 'evocation',
     description: 'Target staggered for 1 round',
     attackType: 'melee',
-    spellResistance: true
   },
 
   'Scorching Ray': {
     name: 'Scorching Ray',
-    level: 2,
     damageExpression: '4d6 fire',
-    school: 'evocation',
     attackType: 'ranged',
     descriptionFn: (CL) => `Fire ${Math.max(4, Math.floor((CL - 3) / 4))} rays`,
-    spellResistance: true
   },
 
   // 3rd Level
   'Vampiric Touch': {
     name: 'Vampiric Touch',
-    level: 3,
     damageExpression: '5d6',
-    school: 'necromancy',
     description: 'Gain damage dealt as temporary HP',
     attackType: 'melee',
     damageFn: (dmg) => dmg.die(6).perTwoCasterLevels().maxCasterLevel(10).calculate(),
-    spellResistance: true
   },
 
   'Force Punch': {
     name: 'Force Punch',
-    level: 3,
-    school: 'evocation',
     attackType: 'melee',
     damageFn: (dmg) => dmg.die(4).perCasterLevel().maxCasterLevel(10).type('force').calculate(),
     descriptionFn: (CL) => `Target pushed ${5 * Math.floor(CL / 2)} feet away`,
-    spellResistance: true
   }
 };
 
@@ -150,14 +117,6 @@ export const SPELLSTRIKE_SPELLS = {
  */
 export function getSpellstrikeSpells() {
   return Object.values(SPELLSTRIKE_SPELLS);
-}
-
-/**
- * Get spells by level
- */
-export function getSpellsByLevel(level) {
-  return Object.values(SPELLSTRIKE_SPELLS)
-    .filter(spell => spell.level === level);
 }
 
 /**

@@ -184,7 +184,7 @@ function parsePortfolio(buffer) {
         range: spellNode.getAttribute('range') || '',
         dc: parseInt(spellNode.getAttribute('dc')) || 0,
         school: spellNode.getAttribute('schooltext') || '',
-        spellResistance: spellNode.getAttribute('resist') || '',
+        spellResistance: spellNode.getAttribute('resist') === 'yes',
         save: spellNode.getAttribute('save') || '',
         castsLeft: castsleft !== undefined ? parseInt(castsleft, 10) : null,
         unlimited: unlimited === 'yes',

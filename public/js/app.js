@@ -5,7 +5,7 @@
  * All state is stored in localStorage to survive page refreshes.
  */
 import { ATTACK_OPTIONS } from './options.js';
-import { DamageCalculator, filterValidSpellstrikeSpells, getSpellByName } from './spells.js';
+import { DamageCalculator, filterValidSpellstrikeSpells } from './spells.js';
 import { parseWeaponAttack, formatBonus, parseDamageBonus, buildDamageString } from './utilities.js';
 
 // ─── State ────────────────────────────────────────────────────────────────────
@@ -41,7 +41,9 @@ function loadState() {
     const data = JSON.parse(raw);
     state.character = data.character || null;
     state.optionStates = data.optionStates || {};
-    state.selectedSpell = data.selectedSpell ? getSpellByName(data.selectedSpell) : null;
+    state.selectedSpell = (data.selectedSpell && state.character?.spells)
+      ? (filterValidSpellstrikeSpells(state.character.spells).find(s => s.name === data.selectedSpell) || null)
+      : null;
     state.portfolioSource = data.portfolioSource || null;
     state.lastPortfolioDirectory = data.lastPortfolioDirectory || null;
 
