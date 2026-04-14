@@ -7,6 +7,11 @@
 
 import { buildDamageString } from './utilities.js';
 
+const METAMAGIC_NAMES = [
+  'Empowered',
+  'Maximized',
+  'Intensified'
+]
 
 export const SPELLSTRIKE_SPELLS = {
   // Cantrips
@@ -34,6 +39,7 @@ export const SPELLSTRIKE_SPELLS = {
     spellResistance: false,
     damageExpression: '1d3 acid',
   },
+
   // 1st Level
   'Shocking Grasp': {
     name: 'Shocking Grasp',
@@ -159,19 +165,53 @@ export function getSpellsByLevel(level) {
  */
 export function isValidSpellstrikeSpell(spellName) {
     const normalizedSpellName = normalizeSpellName(spellName);
-    return Object.hasOwn(SPELLSTRIKE_SPELLS, normalizedSpellName);
+    return Object.keys(SPELLSTRIKE_SPELLS).some(
+      k => k.toLowerCase() === normalizedSpellName.toLowerCase()
+    );
+}
+
+function parseSpellName(rawName) {
+  const metamagics = [];
+  let remaining = rawName;
+  let found = true;
+  while (found) {
+    found = false;
+    for (const meta of METAMAGIC_NAMES) {
+      const regex = new RegExp(`^${meta}\\s+`, 'i');
+      if (regex.test(remaining)) {
+        metamagics.push(meta);
+        remaining = remaining.replace(regex, '').trim();
+        found = true;
+        break;
+      }
+    }
+  }
+  const baseName = remaining.replace(/\s*\(.*\)$/, '').trim();
+  const displayName = [...metamagics, baseName].join(' ');
+  return { baseName, metamagics, displayName };
 }
 
 function normalizeSpellName(spellName) {
-  return spellName.replace(/\s*\(.*\)$/, ''); // Remove parenthetical info for matching
+  return parseSpellName(spellName).baseName;
+}
+
+function buildSpellStrikeSpellDisplayName(spellstrikeSpell) {
+  return [...spellstrikeSpell.metamagic, spellstrikeSpell.name].join(' ');
 }
 
 /**
  * Get spell by name
  */
 export function getSpellByName(spellName) {
-  const normalizedSpellName = normalizeSpellName(spellName);
-  return isValidSpellstrikeSpell(normalizedSpellName) ? SPELLSTRIKE_SPELLS[normalizedSpellName] : null;
+  const { baseName, metamagics, displayName } = parseSpellName(spellName);
+  const key = Object.keys(SPELLSTRIKE_SPELLS).find(
+    k => k.toLowerCase() === baseName.toLowerCase()
+  );
+  let spellstrikeSpell = key ? { ...SPELLSTRIKE_SPELLS[key], metamagic: metamagics } : null;
+  if (spellstrikeSpell) {
+    spellstrikeSpell.name = buildSpellStrikeSpellDisplayName(spellstrikeSpell);
+  }
+  return spellstrikeSpell;
 }
 
 /**

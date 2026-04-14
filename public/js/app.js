@@ -29,6 +29,7 @@ function saveState() {
     optionStates: state.optionStates,
     selectedSpell: state.selectedSpell?.name || null,
     portfolioSource: state.portfolioSource || null,
+    lastPortfolioDirectory: state.lastPortfolioDirectory || null,
   };
   localStorage.setItem(LS_KEY, JSON.stringify(data));
 }
@@ -42,6 +43,7 @@ function loadState() {
     state.optionStates = data.optionStates || {};
     state.selectedSpell = data.selectedSpell ? getSpellByName(data.selectedSpell) : null;
     state.portfolioSource = data.portfolioSource || null;
+    state.lastPortfolioDirectory = data.lastPortfolioDirectory || null;
 
     // Re-compute derived fields if character is present but missing them
     if (state.character && state.character.weaponPrimary == null) {
@@ -514,9 +516,9 @@ function renderAttackCard() {
         <div class="flex-grow-1">
           <div class="d-flex align-items-baseline justify-content-between">
             <span class="spell-item-name">${spell.name}</span>
-            <span class="spell-item-damage">${spell.damageExpression || (Object.hasOwn(spell, 'damageFn') ? spell.damageFn(new DamageCalculator(spell.casterLevel)) : '')}</span>
+            <span class="spell-item-damage">${spell.damageExpression || (Object.hasOwn(spell, 'damageFn') ? spell.damageFn(new DamageCalculator(spell.casterLevel, spell.metamagic || []), spell.metamagic || []) : '')}</span>
           </div>
-          <span class="spell-item-description">${spell.description || (Object.hasOwn(spell, 'descriptionFn') ? spell.descriptionFn(spell.casterLevel) : '')}</span>
+          <span class="spell-item-description">${spell.description || (Object.hasOwn(spell, 'descriptionFn') ? spell.descriptionFn(spell.casterLevel, spell.metamagic || []) : '')}</span>
         </div>
       `;
       spellBanner.addEventListener('click', () => {
@@ -568,9 +570,9 @@ function renderSpellSelector() {
     item.innerHTML = `
       <div class="d-flex align-items-baseline justify-content-between">
         <span class="spell-item-name">${spell.name}</span>
-        <span class="spell-item-damage">${spell.damageExpression || (Object.hasOwn(spell, 'damageFn') ? spell.damageFn(new DamageCalculator(spell.casterLevel)) : '&nbsp;')}</span>
+        <span class="spell-item-damage">${spell.damageExpression || (Object.hasOwn(spell, 'damageFn') ? spell.damageFn(new DamageCalculator(spell.casterLevel, spell.metamagic || []), spell.metamagic || []) : '&nbsp;')}</span>
       </div>
-      <span class="spell-item-description">${spell.description || (Object.hasOwn(spell, 'descriptionFn') ? spell.descriptionFn(spell.casterLevel) : '&nbsp;')}</span>
+      <span class="spell-item-description">${spell.description || (Object.hasOwn(spell, 'descriptionFn') ? spell.descriptionFn(spell.casterLevel, spell.metamagic || []) : '&nbsp;')}</span>
     `;
     item.addEventListener('click', () => {
       state.selectedSpell = spell;
@@ -791,7 +793,8 @@ async function uploadPortfolio(file) {
 
 // ─── Watch Path ────────────────────────────────────────────────────────────────
 
-async function watchPath(filePath) {
+async function watchPath(path, filename) {
+  const filePath = joinBrowserPath(path, filename);
   const statusEl = document.getElementById('watch-status');
   statusEl.textContent = 'Loading…';
   statusEl.className = 'upload-status loading';
@@ -811,6 +814,7 @@ async function watchPath(filePath) {
     const character = await response.json();
     applyCharacter(character, { preserveManualToggles: false });
     state.portfolioSource = { type: 'local', path: filePath };
+    state.lastPortfolioDirectory = path;
     saveState();
 
     statusEl.textContent = '';
@@ -878,7 +882,7 @@ function renderBrowser() {
     const btn = document.createElement('button');
     btn.className = 'browser-item is-file';
     btn.textContent = '\uD83D\uDCC4 ' + file;
-    btn.addEventListener('click', () => watchPath(joinBrowserPath(browseState.path, file)));
+    btn.addEventListener('click', () => watchPath(browseState.path, file));
     list.appendChild(btn);
   }
 }
@@ -897,8 +901,8 @@ async function initBrowser() {
         grid.appendChild(btn);
       }
     }
-    // Auto-navigate to Hero Lab if present, else first shortcut
-    const target = shortcuts.find(s => s.label === 'Hero Lab') || shortcuts[0];
+    // Auto-navigate to Hero Lab if present, else last used path, or finally the first shortcut
+    const target = shortcuts.find(s => s.label === 'Hero Lab') || state.lastPortfolioDirectory || shortcuts[0];
     if (target) browseTo(target.path);
   } catch {
     // ignore — browser panel stays empty
@@ -979,7 +983,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (e.key === 'Enter') {
       const val = e.target.value.trim();
       if (val.toLowerCase().endsWith('.por')) {
-        watchPath(val);
+        const path = val.substring(0, val.lastIndexOf('/') || val.lastIndexOf('\\'));
+        watchPath(path, val);
       } else if (val) {
         browseTo(val);
       }
