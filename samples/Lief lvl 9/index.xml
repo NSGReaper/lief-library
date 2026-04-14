@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document signature="Portfolio Index">
+  <game name="Pathfinder Roleplaying Game" folder="pathfinder" publisher="Paizo Inc." url="http://www.paizo.com/">
+    <gameinfo>These data files are published under license from Paizo Inc. © Paizo Inc. All rights reserved. Paizo Inc. and Pathfinder are registered trademarks of Paizo Inc. Pathfinder Roleplaying Game, Pathfinder Society, Pathfinder Chronicles, Pathfinder Modules, and Pathfinder Companion are trademarks of Paizo Inc. The Pathfinder Roleplaying Game is © 2010-2020 Paizo Inc.</gameinfo>
+    <version version="14.19" primary="14" secondary="19" tertiary="" build=""></version>
+    </game>
+  <program name="Hero Lab" url="https://www.wolflair.com">
+    <programinfo>Hero Lab and the Hero Lab logo are Registered Trademarks of LWD Technology, Inc. Free download at https://www.wolflair.com<![CDATA[
+]]>Pathfinder® and associated marks and logos are trademarks of Paizo Inc.®, and are used under license.</programinfo>
+    <version version="8.9h" primary="8" secondary="9" tertiary="h" build="958"></version>
+    </program>
+  <handlers>
+    <handler name="Hero Lab" folder="herolab"></handler>
+    </handlers>
+  <characters>
+    <character name="Liefustus Eilsatra" summary="Elf Mag 9 - N Medium humanoid" isally="yes" allegianceid="algAlly" allegiancename="Ally of Party" playername="Ellen" herolableadindex="1" characterindex="1">
+      <statblocks>
+        <statblock format="text" folder="statblocks_text" filename="1_Liefustus_Eilsatra.txt"/>
+        <statblock format="html" folder="statblocks_html" filename="1_Liefustus_Eilsatra.htm"/>
+        <statblock format="xml" folder="statblocks_xml" filename="1_Liefustus_Eilsatra.xml"/>
+        </statblocks>
+      <images></images>
+      <minions>
+        <character name="Arcane Familiar" summary="Rabbit - N Tiny magical beast" isally="yes" allegianceid="algAlly" allegiancename="Ally of Party" playername="Ellen" herolableadindex="0" characterindex="2">
+          <statblocks>
+            <statblock format="text" folder="statblocks_text" filename="1.1_Arcane_Familiar.txt"/>
+            <statblock format="html" folder="statblocks_html" filename="1.1_Arcane_Familiar.htm"/>
+            </statblocks>
+          <images></images>
+          </character>
+        </minions>
+      </character>
+    </characters>
+  </document>

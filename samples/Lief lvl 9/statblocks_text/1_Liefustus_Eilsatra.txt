@@ -1,0 +1,66 @@
+Liefustus Eilsatra
+Elf magus (eldritch archer) 9 (Pathfinder Player Companion: Heroes of the Street 11, Pathfinder RPG Ultimate Magic 9)
+N Medium humanoid (elf)
+Init +10; Senses low-light vision; Perception +16
+--------------------
+Defense
+--------------------
+AC 24, touch 19, flat-footed 17 (+4 armor, +1 deflection, +6 Dex, +1 dodge, +1 enhancement, +1 natural)
+hp 48 (9d8) (currently 44)
+Fort +8, Ref +12, Will +7; +2 vs. enchantments
+Immune sleep
+--------------------
+Offense
+--------------------
+Speed 60 ft.
+Ranged mwk adaptive seeking composite longbow +12/+12/+12/+7 (1d8+5/×3)
+Special Attacks arcane pool (+3, 9 points), improved spell combat, magus arcana (arcane accuracy[UM], familiar[UM], reach spellstrike, spell blending [2 spells of lower level][UM]), spell recall, spellstrike
+Magus (Eldritch Archer) Spells Prepared (CL 9th; concentration +14)
+   3rd—displacement (2), flame arrow, fly
+   2nd—acid arrow, glitterdust (DC 17), mirror image, scorching ray, intensified snowball[UW]
+   1st—keep watch, shield, intensified shocking grasp (2), shocking grasp, snowball[UW], touch of gracelessness[APG] (DC 16)
+   0 (at will)—acid splash, detect magic, open/close (DC 15), prestidigitation, read magic
+--------------------
+Statistics
+--------------------
+Str 11, Dex 22, Con 11, Int 20, Wis 8, Cha 7
+Base Atk +6; CMB +7; CMD 24
+Feats Alertness, Clustered Shots[UC], Deadly Aim, Intensified Spell[APG], Point-Blank Shot, Precise Shot, Rapid Shot
+Traits clever wordplay, magical lineage, wayang spell hunter
+Skills Acrobatics +7 (+19 to jump), Appraise +8, Bluff -1, Climb +4, Craft (bows) +13, Diplomacy +15, Disable Device +9, Disguise -1, Escape Artist +7, Fly +10, Handle Animal -1, Heal +2, Intimidate +2, Knowledge (arcana) +18, Knowledge (dungeoneering) +11, Knowledge (engineering) +8, Knowledge (geography) +8, Knowledge (history) +8, Knowledge (local) +8, Knowledge (nature) +8, Knowledge (nobility) +8, Knowledge (planes) +11, Knowledge (religion) +8, Linguistics +8, Perception +16, Ride +10, Sense Motive +4, Sleight of Hand +7, Spellcraft +13 (+15 to identify magic item properties), Stealth +7, Survival +2, Swim +4, Use Magic Device -1; Racial Modifiers +2 Perception, +2 Spellcraft to identify magic item properties
+Languages Common, Draconic, Elven, Gnome, Goblin, Orc, Sakvroth, Sylvan
+SQ elven magic, knowledge pool, medium armor, meticulous, ranged spell combat, ranged spellstrike, ranged weapon bond
+Combat Gear cold iron durable arrow (50), pearl of power (1st level) (2), potion of darkvision, potion of fly, potion of water breathing, silver durable arrow (50), wand of gravity bow (50 charges), wand of infernal healing (50 charges), wand of shocking grasp (28 charges), durable arrow (40); Other Gear blunt arrows[APG] (20), mwk adaptive seeking composite longbow, bracers of archery, lesser, efficient quiver, handy haversack, ring of force shield, bedroll, belt pouch, flint and steel, ink, inkpen, magus starting spellbook, masterwork bowyer tools, masterwork thieves' tools, mess kit[UE], pot, soap, speed sheath[UW], speed sheath[UW], spell component pouch, spider's silk rope (50 ft.)[APG], trail rations (5), waterskin, 180 gp, 7 sp, 7 cp
+--------------------
+Special Abilities
+--------------------
+Arcane Accuracy +5 (Su) 1 Arcane Pool: +5 to attack rolls until the end of your turn.
+Arcane Pool +3 (9/day) (Su) Infuse own power into a held weapon, granting enhancement bonus or selected item powers.
+Clustered Shots Total damage from full-round ranged attacks before applying DR
+Deadly Aim -2/+4 Trade a penalty to ranged attacks for a bonus to ranged damage.
+Deliver Touch Spells Through Familiar (Su) Your familiar can deliver touch spells for you.
+Elven Immunities - Sleep You are immune to magic sleep effects.
+Elven Magic +2 to spellcraft checks to determine the properties of a magic item.
+Empathic Link with Familiar (Su) You have an empathic link with your Arcane Familiar.
+Familiar Bonus: +4 to Initiative checks You gain the Alertness feat while your familiar is within arm's reach.
+Improved Spell Combat (Ex) Use weapon in one hand at -2 & cast a spell with the other. Gain additional +2 circumstance bonus on concentration checks when using spell combat.
+Intensified Spell You can cast a spell that can exceed its normal damage die cap by 5 (if you have the caster level to reach beyond that cap).
+Knowledge Pool (Su) Spend Arcane Pool points to prepare a magus spell that is not in your spellbook for 1 day.
+Low-Light Vision See twice as far as a human in dim light, distinguishing color and detail.
+Medium Armor (Ex) Medium armor proficiency and no Arcane Failure chance in medium armor.
+Meticulous -2 on all untrained skill checks
+Point-Blank Shot +1 to attack and damage rolls with ranged weapons at up to 30 feet.
+Precise Shot You don't get -4 to hit when shooting or throwing into melee.
+Ranged Spell Combat (Ex) Must use ranged weapon for spell combat.
+Ranged Spellstrike (Su) As a full rd action, ranged spells can be combined with ranged attacks.
+Ranged Weapon Bond (- Custom / magic weapon - [Str +0]) (Ex) Must have bonded object to cast spells, doesn't interfere with somatic components.
+Rapid Shot You get an extra attack with ranged weapons. Each attack is at -2.
+Reach Spellstrike (Su) Touch spells increase range to close with ranged spellstrike ability.
+Share Spells with Familiar Can cast spells with a target of "You" on the familiar with a range of touch.
+Speak with Animals (Ex) Your familiar can communicate with animals similar to itself.
+Speak with Familiar (Ex) You can communicate verbally with your familiar.
+Spell Recall (Su) Spend your Arcane Pool to recall spells you have already cast.
+Spellstrike (Su) Deliver touch spells as part of a melee attack.
+
+Hero Lab and the Hero Lab logo are Registered Trademarks of LWD Technology, Inc. Free download at https://www.wolflair.com
+Pathfinder® and associated marks and logos are trademarks of Paizo Inc.®, and are used under license.

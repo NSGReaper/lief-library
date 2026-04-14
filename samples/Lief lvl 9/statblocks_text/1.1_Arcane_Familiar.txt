@@ -1,0 +1,41 @@
+Arcane Familiar      CR –
+Female rabbit (Ultimate Wilderness 204)
+N Tiny magical beast (animal)
+Init +3; Senses low-light vision; Perception +12
+--------------------
+Defense
+--------------------
+AC 20, touch 15, flat-footed 17 (+3 Dex, +5 natural, +2 size)
+hp 24 (1d8-1)
+Fort +5, Ref +6, Will +7
+Defensive Abilities improved evasion
+--------------------
+Offense
+--------------------
+Speed 50 ft.
+Melee bite +4 (1d3-4)
+Space 2½ ft.; Reach 0 ft.
+Special Attacks deliver touch spells
+--------------------
+Statistics
+--------------------
+Str 3, Dex 16, Con 9, Int 10, Wis 12, Cha 5
+Base Atk +6; CMB +7; CMD 13
+Feats Run
+Skills Acrobatics +7 (+11 to jump with a running start, +15 to jump), Appraise +1, Bluff -2, Climb +7, Diplomacy +5, Disable Device +2, Disguise -2, Escape Artist +4, Fly +11, Handle Animal -2, Heal +2, Intimidate -2, Linguistics +1, Perception +12, Ride +4, Sense Motive +2, Sleight of Hand +4, Spellcraft +3, Stealth +15, Survival +2, Swim +7, Use Magic Device -2
+Languages speak with animal (same kind only), speak with master
+SQ empathic link
+--------------------
+Special Abilities
+--------------------
+Deliver Touch Spells (Su) Deliever master's touch spells.
+Empathic Link (Su) You have an empathic link with your master.
+Improved Evasion (Ex) No damage on successful reflex save; half on failed save.
+Low-Light Vision See twice as far as a human in dim light, distinguishing color and detail.
+Run Run 5x your speed in light/medium armor or 4x speed in heavy armor and keep Dex when running.
+Share Spells Spells with a target of "You" can be delivered by a familiar with a range of touch.
+Speak with Animals of its Kind (Ex) You can communicate verbally with animals similar to yourself.
+Speak with Master (Ex) You can communicate verbally with your master.
+
+Hero Lab and the Hero Lab logo are Registered Trademarks of LWD Technology, Inc. Free download at https://www.wolflair.com
+Pathfinder® and associated marks and logos are trademarks of Paizo Inc.®, and are used under license.
