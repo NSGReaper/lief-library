@@ -258,13 +258,32 @@ export class DamageCalculator {
             }
         }
         if (this._maxCasterLevel) {
-            const isIntensified = this._metamagic.includes('Intensified Spell');
-            numDice = Math.min(numDice, isIntensified ? this._maxCasterLevel + 5 : this._maxCasterLevel);
+            numDice = Math.min(numDice, this._isIntensified() ? this._maxCasterLevel + 5 : this._maxCasterLevel);
         }
         if (this._casterLevelBonus) {
             bonus += Math.floor(this._casterLevelBonus * this._casterLevel);
         }
         const dmgTypeString = this._dmgType ? ` ${this._dmgType}` : '';
+        if (this._isMaximized() && this._isEmpowered()) {
+          return (numDice * this._dieSize + bonus) + ' + 0.5 * ' + buildDamageString(`${numDice}d${this._dieSize}`, bonus) + dmgTypeString;
+        }
+        if (this._isMaximized()) {
+          return (numDice * this._dieSize + bonus) + dmgTypeString;
+        } if (this._isEmpowered()) {
+          return '1.5 * ' + buildDamageString(`${numDice}d${this._dieSize}`, bonus) + dmgTypeString;
+        }
         return buildDamageString(`${numDice}d${this._dieSize}`, bonus) + dmgTypeString;
+    }
+
+    _isIntensified() {
+        return this._metamagic.some((meta) => meta.toLowerCase() === 'intensified');
+    }
+
+    _isEmpowered() {
+        return this._metamagic.some((meta) => meta.toLowerCase() === 'empowered');
+    }
+
+    _isMaximized() {
+        return this._metamagic.some((meta) => meta.toLowerCase() === 'maximized');
     }
 }

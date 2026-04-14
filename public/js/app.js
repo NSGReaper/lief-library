@@ -62,6 +62,25 @@ function loadState() {
         });
     }
 
+    // Re-validate feature gating: force-disable any option unavailable for this character
+    if (state.character) {
+      const featureIds = new Set(state.character.characterFeatureIds || []);
+      const magusLevel = state.character.magusLevel || 0;
+      const unavailableOptionIds = new Set();
+      for (const option of ATTACK_OPTIONS) {
+        if (option.requiresFeatureId && !featureIds.has(option.requiresFeatureId)) {
+          unavailableOptionIds.add(option.id);
+        }
+        if (option.requiresMinMagusLevel && magusLevel < option.requiresMinMagusLevel) {
+          unavailableOptionIds.add(option.id);
+        }
+      }
+      state.character.unavailableOptionIds = Array.from(unavailableOptionIds);
+      for (const id of unavailableOptionIds) {
+        state.optionStates[id] = false;
+      }
+    }
+
     return !!state.character;
   } catch {
     return false;
@@ -345,7 +364,8 @@ function renderOptions() {
     if (!grid) continue;
     grid.innerHTML = '';
 
-    const catOptions = ATTACK_OPTIONS.filter(o => o.category === cat.id);
+    const unavailable = new Set(state.character?.unavailableOptionIds || []);
+    const catOptions = ATTACK_OPTIONS.filter(o => o.category === cat.id && !unavailable.has(o.id));
     for (const option of catOptions) {
       const enabled = state.optionStates[option.id] ?? false;
       
@@ -644,11 +664,31 @@ function renderAll() {
  */
 function applyCharacter(character, { preserveManualToggles = false } = {}) {
   const activeBuffIds = new Set(character.activeBuffIds || []);
+  const featureIds = new Set(character.characterFeatureIds || []);
+  const magusLevel = character.magusLevel || 0;
+
+  // Determine which options are unavailable for this character
+  const unavailableOptionIds = new Set();
+  for (const option of ATTACK_OPTIONS) {
+    if (option.requiresFeatureId && !featureIds.has(option.requiresFeatureId)) {
+      unavailableOptionIds.add(option.id);
+    }
+    if (option.requiresMinMagusLevel && magusLevel < option.requiresMinMagusLevel) {
+      unavailableOptionIds.add(option.id);
+    }
+  }
+  character.unavailableOptionIds = Array.from(unavailableOptionIds);
 
   const defaultEnabledOptions = [];
   const optionStates = preserveManualToggles ? { ...state.optionStates } : {};
 
   for (const option of ATTACK_OPTIONS) {
+    // Unavailable options are always off
+    if (unavailableOptionIds.has(option.id)) {
+      optionStates[option.id] = false;
+      continue;
+    }
+
     if (option.buffId) {
       // Always sync buff-controlled options from the portfolio
       const isActive = activeBuffIds.has(option.buffId);

@@ -9,6 +9,10 @@
  *  category   - grouping: 'per-attack' | 'swift-buff' | 'conditional'
  *  buffId     - Hero Lab buff thing-ID (optional) — if set, the option is defaultEnabled
  *               when that buff is active in lead1.xml
+ *  requiresFeatureId - Hero Lab thing-ID (optional) — option is hidden if the character
+ *               does not have a pick with this ID in their portfolio (e.g. 'fRapidShot')
+ *  requiresMinMagusLevel - minimum magus level required (optional) — option is hidden
+ *               if the character's magus level is below this value
  *  defaultEnabled - initial state if no buffId is provided
  *  arcanePointCost - arcane pool points consumed (only for single-round / single-use options)
  *  effect     - describes the mechanical effect (used by the calculation engine)
@@ -37,6 +41,7 @@ export const ATTACK_OPTIONS = [
     name: 'Spellstrike',
     category: 'per-attack',
     buffId: null,
+    requiresMinMagusLevel: 2,
     defaultEnabled: false,
     arcanePointCost: 0,
     description: 'Deliver a prepared spell through your first ranged attack',
@@ -52,7 +57,6 @@ export const ATTACK_OPTIONS = [
     name: 'Spell Combat',
     category: 'per-attack',
     buffId: 'xAttPenSit',
-    buffId: 'xAttPenSit',
     defaultEnabled: false,
     arcanePointCost: 0,
     description: 'Cast a spell and make ranged attacks; −2 to all attacks',
@@ -65,7 +69,7 @@ export const ATTACK_OPTIONS = [
     name: 'Rapid Shot',
     category: 'per-attack',
     buffId: 'fRapidShot',
-    buffId: 'fRapidShot',
+    requiresFeatureId: 'fRapidShot',
     defaultEnabled: false,
     arcanePointCost: 0,
     description: 'Fire an extra arrow; −2 to all attacks',
@@ -81,6 +85,7 @@ export const ATTACK_OPTIONS = [
     name: 'Deadly Aim',
     category: 'per-attack',
     buffId: 'fDeadAim',
+    requiresFeatureId: 'fDeadAim',
     defaultEnabled: false,
     arcanePointCost: 0,
     description: '−2 to hit for +4 damage',
@@ -94,6 +99,7 @@ export const ATTACK_OPTIONS = [
     name: 'Manyshot',
     category: 'per-attack',
     buffId: null,
+    requiresFeatureId: 'fManyshot',
     defaultEnabled: false,
     arcanePointCost: 0,
     description: 'First attack fires two arrows (double damage on first hit)',
@@ -107,6 +113,7 @@ export const ATTACK_OPTIONS = [
     name: 'Arcane Accuracy',
     category: 'per-attack',
     buffId: 'cMagArcAcc',
+    requiresFeatureId: 'cMagArcAcc',
     defaultEnabled: false,
     arcanePointCost: 1,
     description: 'Expend 1 arcane pool point: +INT insight bonus to all attacks for 1 round',
@@ -245,7 +252,7 @@ export const ATTACK_OPTIONS = [
     name: 'Point-Blank Shot',
     category: 'conditional',
     buffId: 'fPointBlnk',
-    buffId: 'fPointBlnk',
+    requiresFeatureId: 'fPointBlnk',
     defaultEnabled: false,
     arcanePointCost: 0,
     description: '+1 to hit and damage when target is within 30 ft',

@@ -126,6 +126,8 @@ function parsePortfolio(buffer) {
   // Step 8: Read lead1.xml for active buffs
   const leadEntry = zip.getEntry('herolab/lead1.xml');
   const activeBuffIds = new Set();
+  const characterFeatureIds = new Set();
+  let magusLevel = 0;
 
   if (leadEntry) {
     const leadXml = leadEntry.getData().toString('utf8');
@@ -136,16 +138,23 @@ function parsePortfolio(buffer) {
       const thingId = pick.getAttribute('thing');
       if (!thingId) continue;
 
+      // Every pick represents a feature the character has — collect all IDs
+      characterFeatureIds.add(thingId);
+
+      // Track magus level by counting cMagus level entries
+      if (thingId === 'cMagus') {
+        const cIndexField = Array.from(pick.getElementsByTagName('field'))
+          .find(f => f.getAttribute('id') === 'cIndex');
+        if (cIndexField) {
+          const lvl = parseFloat(cIndexField.getAttribute('value') || '0');
+          if (lvl > magusLevel) magusLevel = Math.floor(lvl);
+        }
+      }
+
       const fields = Array.from(pick.getElementsByTagName('field'));
       const pIsOnField = fields.find(f => f.getAttribute('id') === 'pIsOn');
       const abilActiveField = fields.find(f => f.getAttribute('id') === 'abilActive');
 
-      /*
-      <pick thing="fDeadAim" index="2670" batchindex="686" uniqueness="useronce" refcount="0" fieldcount="1" source="fTable">
-<chain index="2671"/>
-<field id="abilActive" user="1."></field>
-</pick>
-*/
       let pIsEnabled = false;
       if (pIsOnField) {
         const val = pIsOnField.getAttribute('user') || '';
@@ -218,6 +227,8 @@ function parsePortfolio(buffer) {
     weapon,
     arcanePool,
     activeBuffIds: Array.from(activeBuffIds),
+    characterFeatureIds: Array.from(characterFeatureIds),
+    magusLevel,
     spells,
   };
 }
