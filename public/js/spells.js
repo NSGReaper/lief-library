@@ -66,19 +66,19 @@ export const SPELLSTRIKE_SPELLS = {
     damageFn: (dmg) => dmg.die(4).perCasterLevel().maxCasterLevel(5).type('acid').calculate()
   },
 
+  'Touch of Gracelessness': {
+    name: 'Touch of Gracelessness',
+    attackType: 'melee',
+    damageExpression: '',
+    descriptionFn: (CL) => `1d6+${Math.min(5, Math.floor(CL/2))} dex penalty for ${CL} rounds. Fort save for half.`
+  },
+
   // 2nd Level
   'Acid Arrow': {
     name: 'Acid Arrow',
     attackType: 'ranged',
     damageExpression: '2d4 acid damage',
     descriptionFn: (CL) => `Damage repeats every round for ${Math.floor(CL/3)} rounds.`
-  },
-
-  'Touch of Gracelesness': {
-    name: 'Touch of Gracelessness',
-    attackType: 'melee',
-    damageExpression: '',
-    descriptionFn: (CL) => `1d6+${Math.min(5, Math.floor(CL/2))} dex penalty for ${CL} rounds. Fort save for half.`
   },
 
   'Frigid Touch': {
@@ -146,8 +146,8 @@ function parseSpellName(rawName) {
     }
   }
   const baseName = remaining.replace(/\s*\(.*\)$/, '').trim();
-  const displayName = [...metamagics, baseName].join(' ');
-  return { baseName, metamagics, displayName };
+  console.log(`Parsed spell name: "${rawName}" -> base: "${baseName}", metamagics: [${metamagics.join(', ')}]`);
+  return { baseName, metamagics };
 }
 
 function normalizeSpellName(spellName) {
@@ -162,7 +162,7 @@ function buildSpellStrikeSpellDisplayName(spellstrikeSpell) {
  * Get spell by name
  */
 export function getSpellByName(spellName) {
-  const { baseName, metamagics, displayName } = parseSpellName(spellName);
+  const { baseName, metamagics } = parseSpellName(spellName);
   const key = Object.keys(SPELLSTRIKE_SPELLS).find(
     k => k.toLowerCase() === baseName.toLowerCase()
   );
@@ -194,9 +194,10 @@ export function filterValidSpellstrikeSpells(characterSpells) {
 }
 
 export class DamageCalculator {
-    constructor(casterLevel, metamagic = []) {
+    constructor(casterLevel, metamagic = [], defaultType = '') {
         this._casterLevel = parseInt(casterLevel) || 0;
         this._metamagic = metamagic;
+        this._defaultDmgType = defaultType;
     }
   
     die(dieSize) {
@@ -263,7 +264,7 @@ export class DamageCalculator {
         if (this._casterLevelBonus) {
             bonus += Math.floor(this._casterLevelBonus * this._casterLevel);
         }
-        const dmgTypeString = this._dmgType ? ` ${this._dmgType}` : '';
+        const dmgTypeString = (this._dmgType || this._defaultDmgType) ? ` ${this._dmgType || this._defaultDmgType}` : '';
         if (this._isMaximized() && this._isEmpowered()) {
           return (numDice * this._dieSize + bonus) + ' + 0.5 * ' + buildDamageString(`${numDice}d${this._dieSize}`, bonus) + dmgTypeString;
         }

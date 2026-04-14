@@ -531,16 +531,34 @@ function renderAttackCard() {
     // Spell banner after spellstrike attack
     if (atk.isSpellstrike && state.selectedSpell) {
       const spell = state.selectedSpell;
+      const char = state.character;
       const spellBanner = document.createElement('div');
       spellBanner.className = 'spell-banner d-flex align-items-start gap-2';
+
+      const hasSR = spell.spellResistance;
+      const srPenLine = (spell.spellResistance && char?.spellPenetrationBonus != null)
+        ? `SR: ${char.spellPenetrationBonus >= 0 ? '+' : ''}${char.spellPenetrationBonus}`
+        : '';
+      
+      const saveLine = spell.save && spell.save !== 'none' ? spell.save : '';
+
+      const defensiveCastDC = 15 + (2 * (spell.level || 0));
+      const concBonus = char?.concentrationBonus ?? 0;
+      const concLine = `Cast Defensively: ${concBonus >= 0 ? '+' : ''}${concBonus} vs DC ${defensiveCastDC}`;
+
       spellBanner.innerHTML = `
         <div class="spell-icon">⚡</div>
         <div class="flex-grow-1">
           <div class="d-flex align-items-baseline justify-content-between">
             <span class="spell-item-name">${spell.name}</span>
-            <span class="spell-item-damage">${spell.damageExpression || (Object.hasOwn(spell, 'damageFn') ? spell.damageFn(new DamageCalculator(spell.casterLevel, spell.metamagic || []), spell.metamagic || []) : '')}</span>
+            <span class="spell-item-damage">${spell.damageExpression || (Object.hasOwn(spell, 'damageFn') ? spell.damageFn(new DamageCalculator(spell.casterLevel, spell.metamagic || [], spell.descriptorText || ''), spell.metamagic || []) : '')}</span>
           </div>
-          <span class="spell-item-description">${spell.description || (Object.hasOwn(spell, 'descriptionFn') ? spell.descriptionFn(spell.casterLevel, spell.metamagic || []) : '')}</span>
+          <div class="d-flex align-items-baseline justify-content-between">
+            ${hasSR ? `<div class="spell-detail">${srPenLine}</div>` : ''}
+            <div class="spell-detail">${concLine}</div>
+            ${saveLine ? `<div class="spell-detail">${saveLine}</div>` : ''}
+          </div>
+          <div class="spell-detail">${spell.description || (Object.hasOwn(spell, 'descriptionFn') ? spell.descriptionFn(spell.casterLevel, spell.metamagic || []) : '')}</div>
         </div>
       `;
       spellBanner.addEventListener('click', () => {
@@ -589,12 +607,18 @@ function renderSpellSelector() {
   for (const spell of spellstrikeSpells) {
     const item = document.createElement('div');
     item.className = `spell-item${state.selectedSpell?.name === spell.name ? ' selected' : ''}${spell.castsLeft === 0 ? ' spell-depleted' : ''}`;
+
+    const srText = spell.spellResistance ? `SR: Yes` : '';
+    const saveText = spell.save && spell.save !== 'none' ? spell.save : '';
+    const metaParts = [`Lvl ${spell.level}`, srText, saveText].filter(Boolean);
+
     item.innerHTML = `
       <div class="d-flex align-items-baseline justify-content-between">
         <span class="spell-item-name">${spell.name}</span>
-        <span class="spell-item-damage">${spell.damageExpression || (Object.hasOwn(spell, 'damageFn') ? spell.damageFn(new DamageCalculator(spell.casterLevel, spell.metamagic || []), spell.metamagic || []) : '&nbsp;')}</span>
+        <span class="spell-item-damage">${spell.damageExpression || (Object.hasOwn(spell, 'damageFn') ? spell.damageFn(new DamageCalculator(spell.casterLevel, spell.metamagic || [], spell.descriptorText || ''), spell.metamagic || []) : '&nbsp;')}</span>
       </div>
-      <span class="spell-item-description">${spell.description || (Object.hasOwn(spell, 'descriptionFn') ? spell.descriptionFn(spell.casterLevel, spell.metamagic || []) : '&nbsp;')}</span>
+      <span class="spell-item-meta">${metaParts.join(' · ')}</span>
+      <span class="spell-item-detail">${spell.description || (Object.hasOwn(spell, 'descriptionFn') ? spell.descriptionFn(spell.casterLevel, spell.metamagic || []) : '')}</span>
     `;
     item.addEventListener('click', () => {
       state.selectedSpell = spell;

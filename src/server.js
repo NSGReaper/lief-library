@@ -81,6 +81,9 @@ function parsePortfolio(buffer) {
   const charSummary = classesNode ? classesNode.getAttribute('summary') || '' : '';
   const magusClass = Array.from(classesNode.getElementsByTagName('class')).find(cl => cl.getAttribute('name').startsWith('Magus'));
   const casterLevel = magusClass ? parseInt(magusClass.getAttribute('level') || '0') : 0;
+  const concentrationBonus = magusClass ? parseInt(magusClass.getAttribute('concentrationcheck') || '0') : 0;
+  const spellPenetrationBonus = magusClass ? parseInt(magusClass.getAttribute('overcomespellresistance') || '0') : 0;
+  const baseSpellDC = magusClass ? parseInt(magusClass.getAttribute('basespelldc') || '0') : 0;
 
   // Step 5: Extract attack information
   const attackNodes = Array.from(pcNode.getElementsByTagName('attack'));
@@ -195,6 +198,7 @@ function parsePortfolio(buffer) {
         school: spellNode.getAttribute('schooltext') || '',
         spellResistance: spellNode.getAttribute('resist') === 'yes',
         save: spellNode.getAttribute('save') || '',
+        descriptorText: spellNode.getAttribute('descriptortext') || '',
         castsLeft: castsleft !== undefined ? parseInt(castsleft, 10) : null,
         unlimited: unlimited === 'yes',
       });
@@ -229,6 +233,8 @@ function parsePortfolio(buffer) {
     activeBuffIds: Array.from(activeBuffIds),
     characterFeatureIds: Array.from(characterFeatureIds),
     magusLevel,
+    concentrationBonus,
+    spellPenetrationBonus,
     spells,
   };
 }

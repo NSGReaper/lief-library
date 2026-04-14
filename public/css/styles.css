@@ -686,6 +686,12 @@ body {
     padding: 0.5rem;
 }
 
+.inline-icon {
+  height: 1em;
+  width: 1em;
+  vertical-align: middle; /* or -0.125em for a slightly better optical baseline */
+}
+
 /* ── CARD FOOTER ─────────────────────────────────────────── */
 .card-footer-custom {
     padding: 0.6rem 1.4rem 0.9rem;
