@@ -7,6 +7,63 @@
 
 import { buildDamageString } from './utilities.js';
 
+/**
+ * Metamagic feats that can be applied to Spellstrike spells.
+ * Hero Lab encodes a metamagic-enhanced spell as "Feat Name (Base Spell Name)".
+ */
+const METAMAGIC_FEATS = [
+  'Intensify Spell',
+  'Empower Spell',
+  'Maximise Spell',
+  'Maximize Spell',
+];
+
+/**
+ * Map a metamagic feat name to a short display label.
+ */
+function getMetamagicLabel(feat) {
+  const labels = {
+    'Intensify Spell': 'Intensified',
+    'Empower Spell': 'Empowered',
+    'Maximise Spell': 'Maximised',
+    'Maximize Spell': 'Maximised',
+  };
+  return labels[feat] || feat;
+}
+
+/**
+ * Build a display name for a spell, appending metamagic labels where present.
+ * e.g. buildSpellDisplayName('Shocking Grasp', ['Intensify Spell']) → 'Shocking Grasp (Intensified)'
+ */
+export function buildSpellDisplayName(baseName, metamagic) {
+  if (!metamagic || metamagic.length === 0) return baseName;
+  const labels = metamagic.map(getMetamagicLabel);
+  return `${baseName} (${labels.join(', ')})`;
+}
+
+/**
+ * Parse a spell name that may include a metamagic prefix (Hero Lab format) or
+ * a count suffix (e.g., "(x3)").
+ *
+ * Hero Lab encodes metamagic spells as "Feat Name (Base Spell Name)".
+ *   "Intensify Spell (Shocking Grasp)" → { baseName: 'Shocking Grasp', metamagic: 'Intensify Spell' }
+ *
+ * Count suffixes are stripped:
+ *   "Snowball (x3)" → { baseName: 'Snowball', metamagic: null }
+ */
+function parseSpellName(spellName) {
+  const trimmed = spellName.trim();
+  for (const feat of METAMAGIC_FEATS) {
+    const prefix = feat + ' (';
+    if (trimmed.toLowerCase().startsWith(prefix.toLowerCase()) && trimmed.endsWith(')')) {
+      const baseName = trimmed.slice(prefix.length, -1).trim();
+      return { baseName, metamagic: feat };
+    }
+  }
+  // Strip count/qualifier in parentheses, e.g. "(x3)"
+  const baseName = trimmed.replace(/\s*\(.*\)$/, '');
+  return { baseName, metamagic: null };
+}
 
 export const SPELLSTRIKE_SPELLS = {
   // Cantrips
@@ -86,7 +143,7 @@ export const SPELLSTRIKE_SPELLS = {
     descriptionFn: (CL) => `Damage repeats every round for ${Math.floor(CL/3)} rounds.`
   },
 
-  'Touch of Gracelesness': {
+  'Touch of Gracelessness': {
     name: 'Touch of Gracelessness',
     level: 2,
     school: 'transmutation',
@@ -140,6 +197,14 @@ export const SPELLSTRIKE_SPELLS = {
 };
 
 /**
+ * Case-insensitive lookup map (lowercase key → spell definition).
+ * Built once at module load time.
+ */
+const SPELLSTRIKE_BY_LOWERCASE = Object.fromEntries(
+  Object.entries(SPELLSTRIKE_SPELLS).map(([key, value]) => [key.toLowerCase(), value])
+);
+
+/**
  * Get all valid spellstrike spells
  */
 export function getSpellstrikeSpells() {
@@ -155,28 +220,46 @@ export function getSpellsByLevel(level) {
 }
 
 /**
- * Check if a spell is valid for spellstrike
+ * Normalize a raw spell name (from portfolio) to the canonical base spell name
+ * by stripping metamagic prefixes and count suffixes.
+ */
+function normalizeSpellName(spellName) {
+  return parseSpellName(spellName).baseName;
+}
+
+/**
+ * Check if a spell is valid for spellstrike (case-insensitive).
+ * Handles metamagic prefixes such as "Intensify Spell (Shocking Grasp)".
  */
 export function isValidSpellstrikeSpell(spellName) {
-    const normalizedSpellName = normalizeSpellName(spellName);
-    return Object.hasOwn(SPELLSTRIKE_SPELLS, normalizedSpellName);
-}
-
-function normalizeSpellName(spellName) {
-  return spellName.replace(/\s*\(.*\)$/, ''); // Remove parenthetical info for matching
+  const { baseName } = parseSpellName(spellName);
+  return baseName.toLowerCase() in SPELLSTRIKE_BY_LOWERCASE;
 }
 
 /**
- * Get spell by name
+ * Get spell definition by name (case-insensitive).
+ * Handles metamagic prefixes — the returned spell will include a `metamagic` array
+ * and a `displayName` showing the applied metamagic.
  */
 export function getSpellByName(spellName) {
-  const normalizedSpellName = normalizeSpellName(spellName);
-  return isValidSpellstrikeSpell(normalizedSpellName) ? SPELLSTRIKE_SPELLS[normalizedSpellName] : null;
+  const raw = typeof spellName === 'string' ? spellName : spellName?.name;
+  if (!raw) return null;
+  const { baseName, metamagic } = parseSpellName(raw);
+  const spell = SPELLSTRIKE_BY_LOWERCASE[baseName.toLowerCase()];
+  if (!spell) return null;
+  const metamagicList = metamagic ? [metamagic] : [];
+  return {
+    ...spell,
+    metamagic: metamagicList,
+    displayName: buildSpellDisplayName(spell.name, metamagicList),
+  };
 }
 
 /**
- * Filter character's prepared spells to only include spellstrike-valid spells
- * 
+ * Filter character's prepared spells to only include spellstrike-valid spells.
+ * Portfolio data (level, casterLevel, school, spellResistance) takes precedence
+ * over any hardcoded values in SPELLSTRIKE_SPELLS.
+ *
  * @param {Array} characterSpells - Spells from character data
  * @returns {Array} Filtered spells valid for spellstrike
  */
@@ -187,11 +270,28 @@ export function filterValidSpellstrikeSpells(characterSpells) {
 
   return characterSpells
     .filter(spell => isValidSpellstrikeSpell(spell.name))
-    .map(spell => ({
-        name: normalizeSpellName(spell.name),
-        ...spell,
-        ...getSpellByName(spell.name),
-    }));
+    .map(spell => {
+      const { baseName, metamagic } = parseSpellName(spell.name);
+      const spellDef = SPELLSTRIKE_BY_LOWERCASE[baseName.toLowerCase()];
+      const metamagicList = metamagic ? [metamagic] : [];
+
+      return {
+        // Gameplay mechanics from SPELLSTRIKE_SPELLS (damageFn, attackType, etc.)
+        ...spellDef,
+        // Portfolio is source of truth for these attributes
+        name: baseName,
+        displayName: buildSpellDisplayName(baseName, metamagicList),
+        level: spell.level,
+        casterLevel: spell.casterLevel,
+        school: spell.school,
+        spellResistance: spell.spellResistance === 'yes',
+        dc: spell.dc,
+        castTime: spell.castTime,
+        castsLeft: spell.castsLeft,
+        unlimited: spell.unlimited,
+        metamagic: metamagicList,
+      };
+    });
 }
 
 export class DamageCalculator {
@@ -259,13 +359,32 @@ export class DamageCalculator {
             }
         }
         if (this._maxCasterLevel) {
-            const isIntensified = this._metamagic.includes('Intensified Spell');
+            const isIntensified = this._metamagic.includes('Intensify Spell');
             numDice = Math.min(numDice, isIntensified ? this._maxCasterLevel + 5 : this._maxCasterLevel);
         }
         if (this._casterLevelBonus) {
             bonus += Math.floor(this._casterLevelBonus * this._casterLevel);
         }
+
+        const isMaximised = this._metamagic.includes('Maximise Spell') || this._metamagic.includes('Maximize Spell');
+        const isEmpowered = this._metamagic.includes('Empower Spell');
         const dmgTypeString = this._dmgType ? ` ${this._dmgType}` : '';
-        return buildDamageString(`${numDice}d${this._dieSize}`, bonus) + dmgTypeString;
+
+        if (isMaximised && isEmpowered) {
+            // Both: maximise all dice then apply +50%
+            const maxTotal = Math.floor((numDice * this._dieSize + bonus) * 1.5);
+            return `${maxTotal}${dmgTypeString} [maximised, empowered]`;
+        }
+        if (isMaximised) {
+            const maxTotal = numDice * this._dieSize + bonus;
+            return `${maxTotal}${dmgTypeString} [maximised]`;
+        }
+
+        const baseExpr = buildDamageString(`${numDice}d${this._dieSize}`, bonus);
+        if (isEmpowered) {
+            return `${baseExpr}${dmgTypeString} ×1.5`;
+        }
+
+        return baseExpr + dmgTypeString;
     }
 }

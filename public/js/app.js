@@ -5,7 +5,7 @@
  * All state is stored in localStorage to survive page refreshes.
  */
 import { ATTACK_OPTIONS } from './options.js';
-import { DamageCalculator, filterValidSpellstrikeSpells, getSpellByName } from './spells.js';
+import { DamageCalculator, filterValidSpellstrikeSpells, getSpellByName, buildSpellDisplayName } from './spells.js';
 import { parseWeaponAttack, formatBonus, parseDamageBonus, buildDamageString } from './utilities.js';
 
 // ─── State ────────────────────────────────────────────────────────────────────
@@ -27,7 +27,9 @@ function saveState() {
   const data = {
     character: state.character,
     optionStates: state.optionStates,
-    selectedSpell: state.selectedSpell?.name || null,
+    selectedSpell: state.selectedSpell
+      ? { name: state.selectedSpell.name, casterLevel: state.selectedSpell.casterLevel || 0, metamagic: state.selectedSpell.metamagic || [] }
+      : null,
     portfolioSource: state.portfolioSource || null,
   };
   localStorage.setItem(LS_KEY, JSON.stringify(data));
@@ -40,7 +42,34 @@ function loadState() {
     const data = JSON.parse(raw);
     state.character = data.character || null;
     state.optionStates = data.optionStates || {};
-    state.selectedSpell = data.selectedSpell ? getSpellByName(data.selectedSpell) : null;
+
+    // Restore selected spell — support both old string format and new object format
+    const savedSpell = data.selectedSpell;
+    if (savedSpell) {
+      const spellName = typeof savedSpell === 'string' ? savedSpell : savedSpell.name;
+      const base = getSpellByName(spellName);
+      if (base) {
+        if (typeof savedSpell === 'object') {
+          // Merge saved portfolio data (casterLevel, metamagic) back onto the base definition
+          state.selectedSpell = {
+            ...base,
+            casterLevel: savedSpell.casterLevel || base.casterLevel || 0,
+            metamagic: savedSpell.metamagic || base.metamagic || [],
+          };
+          // Rebuild displayName from restored metamagic
+          state.selectedSpell.displayName = buildSpellDisplayName(
+            state.selectedSpell.name, state.selectedSpell.metamagic
+          );
+        } else {
+          state.selectedSpell = base;
+        }
+      } else {
+        state.selectedSpell = null;
+      }
+    } else {
+      state.selectedSpell = null;
+    }
+
     state.portfolioSource = data.portfolioSource || null;
 
     // Re-compute derived fields if character is present but missing them
@@ -513,8 +542,8 @@ function renderAttackCard() {
         <div class="spell-icon">⚡</div>
         <div class="flex-grow-1">
           <div class="d-flex align-items-baseline justify-content-between">
-            <span class="spell-item-name">${spell.name}</span>
-            <span class="spell-item-damage">${spell.damageExpression || (Object.hasOwn(spell, 'damageFn') ? spell.damageFn(new DamageCalculator(spell.casterLevel)) : '')}</span>
+            <span class="spell-item-name">${spell.displayName || spell.name}</span>
+            <span class="spell-item-damage">${spell.damageExpression || (Object.hasOwn(spell, 'damageFn') ? spell.damageFn(new DamageCalculator(spell.casterLevel, spell.metamagic || [])) : '')}</span>
           </div>
           <span class="spell-item-description">${spell.description || (Object.hasOwn(spell, 'descriptionFn') ? spell.descriptionFn(spell.casterLevel) : '')}</span>
         </div>
@@ -554,7 +583,7 @@ function renderSpellSelector() {
   const spells = state.character?.spells || [];
   const spellstrikeSpells = filterValidSpellstrikeSpells(spells).sort((a, b) => {
     if (a.level !== b.level) return a.level - b.level;
-    return a.name.localeCompare(b.name);
+    return (a.displayName || a.name).localeCompare(b.displayName || b.name);
   });
 
   if (spellstrikeSpells.length === 0) {
@@ -564,11 +593,16 @@ function renderSpellSelector() {
 
   for (const spell of spellstrikeSpells) {
     const item = document.createElement('div');
-    item.className = `spell-item${state.selectedSpell?.name === spell.name ? ' selected' : ''}${spell.castsLeft === 0 ? ' spell-depleted' : ''}`;
+    const selectedMeta = state.selectedSpell?.metamagic || [];
+    const spellMeta = spell.metamagic || [];
+    const isSelected = state.selectedSpell?.name === spell.name &&
+      selectedMeta.length === spellMeta.length &&
+      selectedMeta.every((m, i) => m === spellMeta[i]);
+    item.className = `spell-item${isSelected ? ' selected' : ''}${spell.castsLeft === 0 ? ' spell-depleted' : ''}`;
     item.innerHTML = `
       <div class="d-flex align-items-baseline justify-content-between">
-        <span class="spell-item-name">${spell.name}</span>
-        <span class="spell-item-damage">${spell.damageExpression || (Object.hasOwn(spell, 'damageFn') ? spell.damageFn(new DamageCalculator(spell.casterLevel)) : '&nbsp;')}</span>
+        <span class="spell-item-name">${spell.displayName || spell.name}</span>
+        <span class="spell-item-damage">${spell.damageExpression || (Object.hasOwn(spell, 'damageFn') ? spell.damageFn(new DamageCalculator(spell.casterLevel, spell.metamagic || [])) : '&nbsp;')}</span>
       </div>
       <span class="spell-item-description">${spell.description || (Object.hasOwn(spell, 'descriptionFn') ? spell.descriptionFn(spell.casterLevel) : '&nbsp;')}</span>
     `;
