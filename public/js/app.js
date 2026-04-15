@@ -729,6 +729,7 @@ function applyCharacter(character, { preserveManualToggles = false } = {}) {
 
   const defaultEnabledOptions = [];
   const optionStates = preserveManualToggles ? { ...state.optionStates } : {};
+  const previousBuffIds = new Set(state.character?.activeBuffIds || []);
 
   for (const option of ATTACK_OPTIONS) {
     // Unavailable options are always off
@@ -738,9 +739,11 @@ function applyCharacter(character, { preserveManualToggles = false } = {}) {
     }
 
     if (option.buffId) {
-      // Always sync buff-controlled options from the portfolio
       const isActive = activeBuffIds.has(option.buffId);
-      optionStates[option.id] = isActive;
+      if (!preserveManualToggles || previousBuffIds.has(option.buffId) !== isActive) {
+        // Full reset, or buff changed in portfolio — override user's state
+        optionStates[option.id] = isActive;
+      }
       if (isActive) defaultEnabledOptions.push(option.id);
     } else if (!preserveManualToggles) {
       optionStates[option.id] = option.defaultEnabled;
