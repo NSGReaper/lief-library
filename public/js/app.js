@@ -87,6 +87,17 @@ function loadState() {
   }
 }
 
+function clearState() {
+  state = {
+    character: null,
+    optionStates: {},
+    selectedSpell: null,
+    portfolioSource: null,
+    lastPortfolioDirectory: null,
+  };
+  saveState();
+}
+
 // ─── Attack Calculation ───────────────────────────────────────────────────────
 
 /**
@@ -219,7 +230,16 @@ function calculateAttacks() {
     .sort((a, b) => b.attackBonus - a.attackBonus);
   attacks = [...extras, ...iterative];
 
-  // 6. Apply spellstrike to first attack
+  // 6. Apply spellstrike to the first attack if enabled
+
+  // Spell Combat lets the magus cast and make a full attack on the same turn.
+  // Without it, using Spellstrike means casting takes the action — only the one
+  // spellstrike attack itself is made.
+  const spellCombatEnabled = state.optionStates['spell-combat'] ?? false;
+  if (isSpellstrike && !spellCombatEnabled) {
+    attacks = attacks.slice(0, 1);
+  }
+
   if (isSpellstrike && attacks.length > 0) {
     attacks[0].isSpellstrike = true;
   }
@@ -982,41 +1002,48 @@ async function initBrowser() {
 // ─── Bootstrap the app ────────────────────────────────────────────────────────
 
 document.addEventListener('DOMContentLoaded', async () => {
-  // Try to restore from localStorage
-  if (loadState() && state.character) {
-    document.getElementById('upload-section').style.display = 'none';
-    document.getElementById('app-section').style.display = '';
-    renderAll();
+  try {
+    // Try to restore from localStorage
+    if (loadState() && state.character) {
+      document.getElementById('upload-section').style.display = 'none';
+      document.getElementById('app-section').style.display = '';
+      renderAll();
 
-    // If the portfolio was a watched local file, try to resume watching it
-    if (state.portfolioSource?.type === 'local' && state.portfolioSource.path) {
-      const input = document.getElementById('watch-path-input');
-      if (input) input.value = state.portfolioSource.path;
-      try {
-        const response = await fetch('/api/watch', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ path: state.portfolioSource.path }),
-        });
-        if (response.ok) {
-          const character = await response.json();
-          applyCharacter(character, { preserveManualToggles: true });
-          renderAll();
-          connectWebSocket();
+      // If the portfolio was a watched local file, try to resume watching it
+      if (state.portfolioSource?.type === 'local' && state.portfolioSource.path) {
+        const input = document.getElementById('watch-path-input');
+        if (input) input.value = state.portfolioSource.path;
+        try {
+          const response = await fetch('/api/watch', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ path: state.portfolioSource.path }),
+          });
+          if (response.ok) {
+            const character = await response.json();
+            applyCharacter(character, { preserveManualToggles: true });
+            renderAll();
+            connectWebSocket();
+          }
+        } catch {
+          // Server not ready or path gone — silently continue with cached data
         }
+      }
+    } else {
+      // No cached state — check if the server is already watching (e.g. server restarted,
+      // browser refreshed without localStorage) and reconnect if so
+      try {
+        const status = await fetch('/api/watch-status').then(r => r.json());
+        if (status.watching) connectWebSocket();
       } catch {
-        // Server not ready or path gone — silently continue with cached data
+        // ignore
       }
     }
-  } else {
-    // No cached state — check if the server is already watching (e.g. server restarted,
-    // browser refreshed without localStorage) and reconnect if so
-    try {
-      const status = await fetch('/api/watch-status').then(r => r.json());
-      if (status.watching) connectWebSocket();
-    } catch {
-      // ignore
-    }
+  } catch (err) {
+    console.error('Failed to load state:', err);
+    console.error('Clearing corrupted state and starting fresh.');
+    clearState();
+    location.reload();
   }
 
   // File input change

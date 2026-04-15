@@ -159,7 +159,6 @@ function parseSpellName(rawName) {
     }
   }
   const baseName = remaining.replace(/\s*\(.*\)$/, '').trim();
-  console.log(`Parsed spell name: "${rawName}" -> base: "${baseName}", metamagics: [${metamagics.join(', ')}]`);
   return { baseName, metamagics };
 }
 
