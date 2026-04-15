@@ -5,7 +5,7 @@
  * All state is stored in localStorage to survive page refreshes.
  */
 import { ATTACK_OPTIONS } from './options.js';
-import { DamageCalculator, filterValidSpellstrikeSpells } from './spells.js';
+import { DamageCalculator, filterValidSpellstrikeSpells, resolveSpellAttackCount } from './spells.js';
 import { parseWeaponAttack, formatBonus, parseDamageBonus, buildDamageString } from './utilities.js';
 
 // ─── State ────────────────────────────────────────────────────────────────────
@@ -241,7 +241,14 @@ function calculateAttacks() {
   }
 
   if (isSpellstrike && attacks.length > 0) {
-    attacks[0].isSpellstrike = true;
+    const spellAttackCount = resolveSpellAttackCount(
+      state.selectedSpell,
+      state.selectedSpell?.casterLevel ?? 1
+    );
+    const markedCount = Math.min(spellAttackCount, attacks.length);
+    for (let i = 0; i < markedCount; i++) {
+      attacks[i].isSpellstrike = true;
+    }
   }
 
   // 7. Build final damage strings

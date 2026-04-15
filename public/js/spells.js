@@ -42,7 +42,8 @@ export const SPELLSTRIKE_SPELLS = {
     name: 'Chill Touch',
     attackType: 'melee',
     damageExpression: '1d6 negative energy',
-    descriptionFn: (CL) => `Target also takes 1 point of strength damage unless it makes a Fort save. Use attack up to ${CL} times.`
+    attackCountFn: (CL) => CL,
+    descriptionFn: (CL) => `Target also takes 1 point of strength damage unless it makes a Fort save. Undead must make Will save or flee as if panicked for 1d4 + ${CL} rounds.`
   },
 
   'Shocking Grasp': {
@@ -63,6 +64,7 @@ export const SPELLSTRIKE_SPELLS = {
     name: 'Frostbite',
     attackType: 'melee',
     damageFn: (dmg) => dmg.die(1).flatDice(1).casterLevelBonus(1).type('cold').calculate(),
+    attackCountFn: (CL) => CL,
     descriptionFn: (CL) => `Target fatigued. Use attack up to ${CL} times.`
   },
 
@@ -105,7 +107,8 @@ export const SPELLSTRIKE_SPELLS = {
     name: 'Scorching Ray',
     damageExpression: '4d6 fire',
     attackType: 'ranged',
-    descriptionFn: (CL) => `Fire ${Math.max(4, Math.floor((CL - 3) / 4))} rays`,
+    attackCountFn: (CL) => Math.min(3, 1 + Math.floor((CL - 3) / 4)),
+    descriptionFn: (CL) => `Fire ${Math.min(3, 1 + Math.floor((CL - 3) / 4))} rays`,
   },
 
   // 3rd Level
@@ -124,6 +127,26 @@ export const SPELLSTRIKE_SPELLS = {
     descriptionFn: (CL) => `Target pushed ${5 * Math.floor(CL / 2)} feet away`,
   }
 };
+
+/**
+ * Resolve how many attacks a spellstrike spell provides for a given caster level.
+ * Spells with `attackCountFn` use a formula; spells with `attackCount` use a fixed value;
+ * all others default to 1.
+ *
+ * @param {object} spellstrikeSpell - Entry from SPELLSTRIKE_SPELLS (or getSpellByName result)
+ * @param {number} CL - Caster level
+ * @returns {number}
+ */
+export function resolveSpellAttackCount(spellstrikeSpell, CL) {
+  if (!spellstrikeSpell) return 1;
+  if (typeof spellstrikeSpell.attackCountFn === 'function') {
+    return spellstrikeSpell.attackCountFn(CL);
+  }
+  if (typeof spellstrikeSpell.attackCount === 'number') {
+    return spellstrikeSpell.attackCount;
+  }
+  return 1;
+}
 
 /**
  * Get all valid spellstrike spells
