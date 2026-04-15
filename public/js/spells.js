@@ -38,6 +38,13 @@ export const SPELLSTRIKE_SPELLS = {
   },
 
   // 1st Level
+  'Chill Touch': {
+    name: 'Chill Touch',
+    attackType: 'melee',
+    damageExpression: '1d6 negative energy',
+    descriptionFn: (CL) => `Target also takes 1 point of strength damage unless it makes a Fort save. Use attack up to ${CL} times.`
+  },
+
   'Shocking Grasp': {
     name: 'Shocking Grasp',
     description: '+3 attack if target wearing or carrying metal',
@@ -70,14 +77,20 @@ export const SPELLSTRIKE_SPELLS = {
     name: 'Touch of Gracelessness',
     attackType: 'melee',
     damageExpression: '',
-    descriptionFn: (CL) => `1d6+${Math.min(5, Math.floor(CL/2))} dex penalty for ${CL} rounds. Fort save for half.`
+    descriptionFn: (CL) => `1d6+${Math.min(5, Math.floor(CL/2))} dex penalty for ${CL} rounds. Save for half.`
+  },
+
+  'Ray of Enfeeblement': {
+    name: 'Ray of Enfeeblement',
+    attackType: 'ranged',
+    descriptionFn: (CL) => `1d6+${Math.min(5, Math.floor(CL/2))} strength penalty for ${CL} rounds. Save for half.`
   },
 
   // 2nd Level
   'Acid Arrow': {
     name: 'Acid Arrow',
     attackType: 'ranged',
-    damageExpression: '2d4 acid damage',
+    damageFn: (dmg) => dmg.die(4).flatDice(2).calculate(),
     descriptionFn: (CL) => `Damage repeats every round for ${Math.floor(CL/3)} rounds.`
   },
 
@@ -215,7 +228,7 @@ export class DamageCalculator {
         return this;
     }
 
-    casterLevelBonus(bonusPerLevel) {
+    bonusPerCasterLevel(bonusPerLevel) {
         this._casterLevelBonus = bonusPerLevel;
         return this;
     }

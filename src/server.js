@@ -198,7 +198,7 @@ function parsePortfolio(buffer) {
         school: spellNode.getAttribute('schooltext') || '',
         spellResistance: spellNode.getAttribute('resist') === 'yes',
         save: spellNode.getAttribute('save') || '',
-        descriptorText: spellNode.getAttribute('descriptortext') || '',
+        descriptorText: spellNode.getAttribute('descriptortext')?.toLocaleLowerCase() || '',
         castsLeft: castsleft !== undefined ? parseInt(castsleft, 10) : null,
         unlimited: unlimited === 'yes',
       });

@@ -455,8 +455,10 @@ function renderOptions() {
 function getDamageTypeClass(expression) {
   const ENERGY_TYPES = ['acid', 'fire', 'cold', 'electricity', 'sonic', 'force', 'bleed'];
   const lower = expression.toLowerCase();
-  const match = ENERGY_TYPES.find(t => lower.includes(t));
-  return match ? `dmg-${match}` : '';
+  for (const type of ENERGY_TYPES) {
+    if (lower.includes(type)) return `dmg-${type}`;
+  }
+  return '';
 }
 
 function renderAttackCard() {
@@ -546,12 +548,14 @@ function renderAttackCard() {
       const concBonus = char?.concentrationBonus ?? 0;
       const concLine = `Cast Defensively: ${concBonus >= 0 ? '+' : ''}${concBonus} vs DC ${defensiveCastDC}`;
 
+      const spellDamage = spell.damageExpression || (Object.hasOwn(spell, 'damageFn') ? spell.damageFn(new DamageCalculator(spell.casterLevel, spell.metamagic, spell.descriptorText)) : '');
+      
       spellBanner.innerHTML = `
         <div class="spell-icon">⚡</div>
         <div class="flex-grow-1">
           <div class="d-flex align-items-baseline justify-content-between">
             <span class="spell-item-name">${spell.name}</span>
-            <span class="spell-item-damage">${spell.damageExpression || (Object.hasOwn(spell, 'damageFn') ? spell.damageFn(new DamageCalculator(spell.casterLevel, spell.metamagic || [], spell.descriptorText || ''), spell.metamagic || []) : '')}</span>
+            <span class="spell-item-damage ${getDamageTypeClass(spellDamage)}">${spellDamage}</span>
           </div>
           <div class="d-flex align-items-baseline justify-content-between">
             ${hasSR ? `<div class="spell-detail">${srPenLine}</div>` : ''}
