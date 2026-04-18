@@ -122,6 +122,7 @@ components:
         - characterIndex
         - baseAttack
         - rangedAttackBase
+        - abilityModifiers
         - weapon
         - baselineAttacks
       properties:
@@ -133,6 +134,22 @@ components:
           type: integer
         rangedAttackBase:
           type: integer
+        abilityModifiers:
+          type: object
+          required: [str, dex, con, int, wis, cha]
+          properties:
+            str:
+              type: integer
+            dex:
+              type: integer
+            con:
+              type: integer
+            int:
+              type: integer
+            wis:
+              type: integer
+            cha:
+              type: integer
         weapon:
           type: object
           required: [name, attack, damage, crit, damageType]

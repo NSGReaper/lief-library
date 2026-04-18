@@ -70,6 +70,14 @@ level.
 4. Remember: actual pool tracking happens in Hero Lab; this app only shows what the current
    attack plan costs.
 
+## 5c. Validate Arcane Accuracy INT modifier application
+
+1. Load a sample portfolio where Intelligence modifier is known (for example Lief level 8 with modified INT +5).
+2. Record baseline attack bonuses with Arcane Accuracy disabled.
+3. Enable Arcane Accuracy.
+4. Confirm every attack bonus increases by exactly the modified INT bonus from parsed attributes.
+5. Disable Arcane Accuracy and confirm attack bonuses return to baseline values.
+
 ## 6. Validate local storage behavior
 
 1. Set UI preferences and temporary option overrides.

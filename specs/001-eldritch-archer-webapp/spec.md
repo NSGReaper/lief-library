@@ -152,6 +152,9 @@ single-use arcane point costs contribute to the displayed total.
 - **FR-009**: The full-attack card MUST show the complete attack sequence that would be made
   for a full attack, including changes to attack count, attack bonuses, damage expressions,
   critical information, and extra damage added by enabled options.
+- **FR-009a**: The system MUST extract modified ability modifiers (`str`, `dex`, `con`,
+  `int`, `wis`, `cha`) from authoritative statblock attribute data and apply stat-driven
+  option effects (e.g., Arcane Accuracy adds modified INT bonus to attack rolls).
 - **FR-010**: The system MUST support special-case attack options, including options that add
   attacks or attach an additional spell effect to an attack, without requiring unrelated
   options to be rewritten.

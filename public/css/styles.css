@@ -13,6 +13,8 @@
     --teal-dim:       #1a4a6a;
     --orange:         #fb923c;
     --orange-dim:     #7c3a1a;
+    --red:            #f87171;
+    --red-dim:        #7f1d1d;
     --green:          #68b986;
     --green-glow:     #86efac;
     --green-dim:      #1a4030;
@@ -428,6 +430,12 @@ body {
     color: var(--orange);
 }
 
+.chip-on-red {
+    background: #1a0a0a;
+    border-color: var(--red-dim);
+    color: var(--red);
+}
+
 .chip-on-fire {
     background: #1a0d06;
     border-color: #7c2e10;
@@ -444,6 +452,16 @@ body {
 .chip-off:hover {
     border-color: #2a3a55;
     color: var(--text-primary);
+}
+
+.bonus-positive {
+    color: var(--green);
+    font-weight: bold;
+}
+
+.bonus-negative {
+    color: var(--red);
+    font-weight: bold;
 }
 
 /* ── ATTACK SECTION ─────────────────────────────────────── */

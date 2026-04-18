@@ -30,6 +30,8 @@
   - `weaponDamageType` (string, required)
   - `rangeIncrement` (string, optional)
   - `situationalModifiers` (string, optional)
+  - `abilityModifiers` (object, required): Ability bonus map using modified values from statblock attributes.
+    Keys: `str`, `dex`, `con`, `int`, `wis`, `cha` (all integers).
   - `baselineAttacks` (array<AttackLine>, required): Derived baseline attack sequence.
 - Relationships:
   - One-to-many with `AttackLine`.

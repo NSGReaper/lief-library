@@ -35,6 +35,16 @@ function parseAttackString(str) {
 }
 
 /**
+ * Parse signed numeric modifier strings like "+5" or "-1" to an integer.
+ * Falls back to 0 for malformed values.
+ */
+function parseModifier(value) {
+  if (typeof value !== 'string') return 0;
+  const parsed = parseInt(value.trim(), 10);
+  return Number.isNaN(parsed) ? 0 : parsed;
+}
+
+/**
  * Parse a Hero Lab portfolio (.por zip file) and return character data.
  * @param {Buffer} buffer - Raw bytes of the .por file
  * @returns {Object} Parsed character data
@@ -84,6 +94,46 @@ function parsePortfolio(buffer) {
   const concentrationBonus = magusClass ? parseInt(magusClass.getAttribute('concentrationcheck') || '0') : 0;
   const spellPenetrationBonus = magusClass ? parseInt(magusClass.getAttribute('overcomespellresistance') || '0') : 0;
   const baseSpellDC = magusClass ? parseInt(magusClass.getAttribute('basespelldc') || '0') : 0;
+
+  // Step 4a: Extract ability modifiers (use modified values from statblock)
+  const abilityNameToKey = {
+    Strength: 'str',
+    Dexterity: 'dex',
+    Constitution: 'con',
+    Intelligence: 'int',
+    Wisdom: 'wis',
+    Charisma: 'cha',
+  };
+  const abilityModifiers = {
+    str: 0,
+    dex: 0,
+    con: 0,
+    int: 0,
+    wis: 0,
+    cha: 0,
+  };
+  const attributesNode = Array.from(pcNode.getElementsByTagName('attributes'))
+    .find(n => n.parentNode === pcNode) || Array.from(pcNode.getElementsByTagName('attributes'))[0];
+
+  if (attributesNode) {
+    const attributeNodes = Array.from(attributesNode.getElementsByTagName('attribute'));
+    for (const attributeNode of attributeNodes) {
+      const abilityName = attributeNode.getAttribute('name');
+      const abilityKey = abilityNameToKey[abilityName];
+      if (!abilityKey) continue;
+
+      const attrBonusNode = Array.from(attributeNode.getElementsByTagName('attrbonus'))[0];
+      if (!attrBonusNode) {
+        log(`  → warning: missing attrbonus node for ability ${abilityName}; defaulting to 0`);
+        continue;
+      }
+
+      const modified = attrBonusNode.getAttribute('modified') || attrBonusNode.getAttribute('base') || attrBonusNode.getAttribute('text') || '0';
+      abilityModifiers[abilityKey] = parseModifier(modified);
+    }
+  } else {
+    log('  → warning: no attributes node found for PC character; defaulting all ability modifiers to 0');
+  }
 
   // Step 5: Extract attack information
   const attackNodes = Array.from(pcNode.getElementsByTagName('attack'));
@@ -233,6 +283,7 @@ function parsePortfolio(buffer) {
     activeBuffIds: Array.from(activeBuffIds),
     characterFeatureIds: Array.from(characterFeatureIds),
     magusLevel,
+    abilityModifiers,
     concentrationBonus,
     spellPenetrationBonus,
     spells,

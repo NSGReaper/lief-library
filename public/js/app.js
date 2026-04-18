@@ -122,6 +122,25 @@ function calculateAttacks() {
   const char = state.character;
   if (!char) return [];
 
+  function resolveStatModifier(statKey) {
+    if (typeof statKey !== 'string' || statKey.length === 0) return 0;
+
+    // Preferred canonical source from backend parser.
+    const mapped = statKey.endsWith('Mod') ? statKey.slice(0, -3) : statKey;
+    const fromMap = char.abilityModifiers?.[mapped];
+    if (typeof fromMap === 'number' && Number.isFinite(fromMap)) {
+      return fromMap;
+    }
+
+    // Compatibility fallback for older payload shapes.
+    const fromLegacy = char[statKey];
+    if (typeof fromLegacy === 'number' && Number.isFinite(fromLegacy)) {
+      return fromLegacy;
+    }
+
+    return 0;
+  }
+
   const weaponPrimary = char.weaponPrimary;           // first value from weapon rangedattack
   const iterativeCount = char.iterativeCount;         // number of BAB iterative attacks
   const iterativeStep = 5;                            // Pathfinder standard iterative step
@@ -137,6 +156,7 @@ function calculateAttacks() {
     if (!isDefault) continue;
     const eff = option.effect;
     if (eff.hitBonus) defaultHitBonus += eff.hitBonus;
+    if (eff.hitBonusFromStat) defaultHitBonus += resolveStatModifier(eff.hitBonusFromStat);
     if (eff.damageBonus) defaultDmgBonus += eff.damageBonus;
   }
 
@@ -157,6 +177,7 @@ function calculateAttacks() {
     const eff = option.effect;
 
     if (eff.hitBonus) totalHitBonus += eff.hitBonus;
+    if (eff.hitBonusFromStat) totalHitBonus += resolveStatModifier(eff.hitBonusFromStat);
     if (eff.damageBonus) totalDmgBonus += eff.damageBonus;
     if (eff.isSpellstrike) isSpellstrike = true;
 
@@ -374,6 +395,23 @@ function renderWeapon() {
   }
 }
 
+function escapeHtml(value) {
+  return value
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#39;');
+}
+
+function colorizeBonuses(description) {
+  const safeDescription = escapeHtml(description);
+  return safeDescription.replace(/([+\-−]\d+(?![Dd])(?: (to )?(hit and damage|hit|damage|dmg))?)/gi, (match) => {
+    const className = match.startsWith('+') ? 'bonus-positive' : 'bonus-negative';
+    return `<span class="${className}">${match}</span>`;
+  });
+}
+
 function renderOptions() {
   const categories = [
     { id: 'per-attack', title: 'Per-Attack Decisions', colorClass: 'gold' },
@@ -402,7 +440,11 @@ function renderOptions() {
       const isDisabled = isProperty && !enhancementActive;
 
       const chip = document.createElement('label');
-      const colorClass = option.alignment === 'good' ? 'green' : cat.colorClass;
+      const colorClass = option.alignment === 'good'
+        ? 'green'
+        : option.alignment === 'bad'
+          ? 'red'
+          : cat.colorClass;
       let chipClass = `toggle-chip ${enabled ? `chip-on-${colorClass}` : 'chip-off'}`;
       if (isDisabled || (!enabled && !canEnable)) {
         chipClass += ' chip-disabled';
@@ -452,7 +494,7 @@ function renderOptions() {
 
       const effect = document.createElement('span');
       effect.className = 'chip-effect';
-      effect.textContent = ` — ${option.description.split(';')[0].split(':').pop().trim()}`;
+      effect.innerHTML = ` — ${colorizeBonuses(option.description.split(';')[0].split(':').pop().trim())}`;
 
       // Show arcane cost badge
       if (option.arcanePointCost > 0) {
