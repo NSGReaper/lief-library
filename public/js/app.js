@@ -572,7 +572,8 @@ function renderAttackCard() {
       const saveLine = spell.save && spell.save !== 'none' ? spell.save : '';
 
       const defensiveCastDC = 15 + (2 * (spell.level || 0));
-      const concBonus = char?.concentrationBonus ?? 0;
+      const improvedSpellCombatBonus = (state.optionStates['spell-combat'] && (char?.magusLevel ?? 0) >= 8) ? 2 : 0;
+      const concBonus = (char?.concentrationBonus ?? 0) + improvedSpellCombatBonus;
       const concLine = `Cast Defensively: ${concBonus >= 0 ? '+' : ''}${concBonus} vs DC ${defensiveCastDC}`;
 
       const spellDamage = spell.damageExpression || (Object.hasOwn(spell, 'damageFn') ? spell.damageFn(new DamageCalculator(spell.casterLevel, spell.metamagic, spell.descriptorText)) : '');
