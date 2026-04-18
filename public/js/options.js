@@ -15,7 +15,9 @@
  *               if the character's magus level is below this value
  *  defaultEnabled - initial state if no buffId is provided
  *  arcanePointCost - arcane pool points consumed (only for single-round / single-use options)
+ *  descriptionFn(context) - optional function to compute description from current character context
  *  effect     - describes the mechanical effect (used by the calculation engine)
+ *  effectFn(context) - optional function to compute effect from current character context
  *    hitBonus   - flat bonus/penalty applied to ALL attacks
  *    extraAttacks - array of extra attacks added; each item:
  *      { atIndexOffset: number, hitBonusOffset: number, label: string }
@@ -34,6 +36,28 @@
  *   Physical: bludgeoning (B) | piercing (P) | slashing (S)  → default colour, abbreviated
  *   Untyped:  omit type word entirely                         → default colour
  */
+
+function getStatModifier(context, statKey) {
+  if (!context || typeof statKey !== 'string') return 0;
+  const mapped = statKey.endsWith('Mod') ? statKey.slice(0, -3) : statKey;
+  const fromMap = context.abilityModifiers?.[mapped];
+  if (typeof fromMap === 'number' && Number.isFinite(fromMap)) return fromMap;
+
+  const fromContext = context[statKey];
+  if (typeof fromContext === 'number' && Number.isFinite(fromContext)) return fromContext;
+
+  return 0;
+}
+
+function getDeadlyAimTier(context) {
+  const bab = Number.isFinite(context?.primaryBAB) ? context.primaryBAB : 0;
+  return 1 + Math.floor(Math.max(0, bab) / 4);
+}
+
+function formatSigned(value) {
+  return `${value >= 0 ? '+' : ''}${value}`;
+}
+
 export const ATTACK_OPTIONS = [
   // ─── Per-Attack Decisions ────────────────────────────────────────────────
   {
@@ -88,10 +112,16 @@ export const ATTACK_OPTIONS = [
     requiresFeatureId: 'fDeadAim',
     defaultEnabled: false,
     arcanePointCost: 0,
-    description: '−2 to hit for +4 damage',
-    effect: {
-      hitBonus: -2,
-      damageBonus: 4,
+    descriptionFn: (context) => {
+      const tier = getDeadlyAimTier(context);
+      return `${formatSigned(-tier)} to hit for ${formatSigned(2 * tier)} damage`;
+    },
+    effectFn: (context) => {
+      const tier = getDeadlyAimTier(context);
+      return {
+        hitBonus: -tier,
+        damageBonus: 2 * tier,
+      };
     },
   },
   {
@@ -116,9 +146,15 @@ export const ATTACK_OPTIONS = [
     requiresFeatureId: 'cMagArcAcc',
     defaultEnabled: false,
     arcanePointCost: 1,
-    description: 'Expend 1 arcane pool point: +INT insight bonus to all attacks for 1 round',
-    effect: {
-      hitBonusFromStat: 'intMod',
+    descriptionFn: (context) => {
+      const intMod = getStatModifier(context, 'intMod');
+      return `${formatSigned(intMod)} insight bonus to all attacks for 1 round`;
+    },
+    effectFn: (context) => {
+      const intMod = getStatModifier(context, 'intMod');
+      return {
+        hitBonus: intMod,
+      };
     },
   },
 

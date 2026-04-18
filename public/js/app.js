@@ -98,6 +98,62 @@ function clearState() {
   saveState();
 }
 
+function resolveStatModifierFromCharacter(character, statKey) {
+  if (!character || typeof statKey !== 'string' || statKey.length === 0) return 0;
+
+  const mapped = statKey.endsWith('Mod') ? statKey.slice(0, -3) : statKey;
+  const fromMap = character.abilityModifiers?.[mapped];
+  if (typeof fromMap === 'number' && Number.isFinite(fromMap)) {
+    return fromMap;
+  }
+
+  const fromLegacy = character[statKey];
+  if (typeof fromLegacy === 'number' && Number.isFinite(fromLegacy)) {
+    return fromLegacy;
+  }
+
+  return 0;
+}
+
+function buildOptionContext(character = state.character) {
+  return {
+    character,
+    abilityModifiers: character?.abilityModifiers || {},
+    primaryBAB: character?.primaryBAB || 0,
+    magusLevel: character?.magusLevel || 0,
+    casterLevel: character?.casterLevel || 0,
+    intMod: resolveStatModifierFromCharacter(character, 'intMod'),
+    resolveStatModifier: (statKey) => resolveStatModifierFromCharacter(character, statKey),
+  };
+}
+
+function resolveOptionDescription(option, context) {
+  if (typeof option?.descriptionFn === 'function') {
+    try {
+      return option.descriptionFn(context) || '';
+    } catch {
+      return option.description || '';
+    }
+  }
+  return option?.description || '';
+}
+
+function resolveOptionEffect(option, context) {
+  if (typeof option?.effectFn === 'function') {
+    try {
+      return option.effectFn(context) || {};
+    } catch {
+      return option.effect || {};
+    }
+  }
+  return option?.effect || {};
+}
+
+function getChipEffectText(description) {
+  if (!description) return '';
+  return description.split(';')[0].split(':').pop().trim();
+}
+
 // ─── Attack Calculation ───────────────────────────────────────────────────────
 
 /**
@@ -121,25 +177,7 @@ function clearState() {
 function calculateAttacks() {
   const char = state.character;
   if (!char) return [];
-
-  function resolveStatModifier(statKey) {
-    if (typeof statKey !== 'string' || statKey.length === 0) return 0;
-
-    // Preferred canonical source from backend parser.
-    const mapped = statKey.endsWith('Mod') ? statKey.slice(0, -3) : statKey;
-    const fromMap = char.abilityModifiers?.[mapped];
-    if (typeof fromMap === 'number' && Number.isFinite(fromMap)) {
-      return fromMap;
-    }
-
-    // Compatibility fallback for older payload shapes.
-    const fromLegacy = char[statKey];
-    if (typeof fromLegacy === 'number' && Number.isFinite(fromLegacy)) {
-      return fromLegacy;
-    }
-
-    return 0;
-  }
+  const optionContext = buildOptionContext(char);
 
   const weaponPrimary = char.weaponPrimary;           // first value from weapon rangedattack
   const iterativeCount = char.iterativeCount;         // number of BAB iterative attacks
@@ -154,9 +192,9 @@ function calculateAttacks() {
   for (const option of ATTACK_OPTIONS) {
     const isDefault = char.defaultEnabledOptions?.includes(option.id);
     if (!isDefault) continue;
-    const eff = option.effect;
+    const eff = resolveOptionEffect(option, optionContext);
     if (eff.hitBonus) defaultHitBonus += eff.hitBonus;
-    if (eff.hitBonusFromStat) defaultHitBonus += resolveStatModifier(eff.hitBonusFromStat);
+    if (eff.hitBonusFromStat) defaultHitBonus += optionContext.resolveStatModifier(eff.hitBonusFromStat);
     if (eff.damageBonus) defaultDmgBonus += eff.damageBonus;
   }
 
@@ -174,10 +212,10 @@ function calculateAttacks() {
     const enabled = state.optionStates[option.id] ?? false;
     if (!enabled) continue;
 
-    const eff = option.effect;
+    const eff = resolveOptionEffect(option, optionContext);
 
     if (eff.hitBonus) totalHitBonus += eff.hitBonus;
-    if (eff.hitBonusFromStat) totalHitBonus += resolveStatModifier(eff.hitBonusFromStat);
+    if (eff.hitBonusFromStat) totalHitBonus += optionContext.resolveStatModifier(eff.hitBonusFromStat);
     if (eff.damageBonus) totalDmgBonus += eff.damageBonus;
     if (eff.isSpellstrike) isSpellstrike = true;
 
@@ -406,7 +444,7 @@ function escapeHtml(value) {
 
 function colorizeBonuses(description) {
   const safeDescription = escapeHtml(description);
-  return safeDescription.replace(/([+\-−]\d+(?![Dd])(?: (to )?(hit and damage|hit|damage|dmg))?)/gi, (match) => {
+  return safeDescription.replace(/([+\-−]\d+(?![Dd])(?: \w+ bonus)?(?: (to )?(hit and damage|hit|damage|dmg))?)/gi, (match) => {
     const className = match.startsWith('+') ? 'bonus-positive' : 'bonus-negative';
     return `<span class="${className}">${match}</span>`;
   });
@@ -432,6 +470,8 @@ function renderOptions() {
     const unavailable = new Set(state.character?.unavailableOptionIds || []);
     const catOptions = ATTACK_OPTIONS.filter(o => o.category === cat.id && !unavailable.has(o.id));
     for (const option of catOptions) {
+      const optionContext = buildOptionContext(state.character);
+      const optionDescription = resolveOptionDescription(option, optionContext);
       const enabled = state.optionStates[option.id] ?? false;
       
       // Check if property is available (has enough budget)
@@ -451,7 +491,7 @@ function renderOptions() {
       }
       chip.className = chipClass;
       chip.dataset.optionId = option.id;
-      chip.title = option.description;
+      chip.title = optionDescription;
 
       const cb = document.createElement('input');
       cb.type = 'checkbox';
@@ -494,7 +534,7 @@ function renderOptions() {
 
       const effect = document.createElement('span');
       effect.className = 'chip-effect';
-      effect.innerHTML = ` — ${colorizeBonuses(option.description.split(';')[0].split(':').pop().trim())}`;
+      effect.innerHTML = ` — ${colorizeBonuses(getChipEffectText(optionDescription))}`;
 
       // Show arcane cost badge
       if (option.arcanePointCost > 0) {
@@ -814,7 +854,8 @@ function applyCharacter(character, { preserveManualToggles = false } = {}) {
   let explainedExtras = 0;
   for (const optId of defaultEnabledOptions) {
     const opt = ATTACK_OPTIONS.find(o => o.id === optId);
-    if (opt?.effect?.extraAttacks) explainedExtras += opt.effect.extraAttacks.length;
+    const eff = resolveOptionEffect(opt, buildOptionContext(character));
+    if (eff?.extraAttacks) explainedExtras += eff.extraAttacks.length;
   }
   const unexplainedExtras = weaponTotalAttacks - iterativeCount - explainedExtras;
 
@@ -822,10 +863,11 @@ function applyCharacter(character, { preserveManualToggles = false } = {}) {
   for (const option of ATTACK_OPTIONS) {
     if (extrasToAssign <= 0) break;
     if (defaultEnabledOptions.includes(option.id)) continue;
-    if (option.effect?.extraAttacks && option.effect.extraAttacks.length > 0) {
+    const eff = resolveOptionEffect(option, buildOptionContext(character));
+    if (eff?.extraAttacks && eff.extraAttacks.length > 0) {
       optionStates[option.id] = true;
       defaultEnabledOptions.push(option.id);
-      extrasToAssign -= option.effect.extraAttacks.length;
+      extrasToAssign -= eff.extraAttacks.length;
     }
   }
 
