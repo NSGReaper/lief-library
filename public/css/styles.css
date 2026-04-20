@@ -42,6 +42,13 @@ body {
     padding: 2rem 1rem 4rem;
     font-family: 'Crimson Pro', Georgia, serif;
     color: var(--text-primary);
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* Prevent double-tap zoom and 300ms delay on interactive elements */
+button, a, label,
+.toggle-chip, .spell-item, .spell-banner, .browser-item, .drop-zone {
+    touch-action: manipulation;
 }
 
 /* ── UPLOAD SCREEN ─────────────────────────────────────── */
@@ -79,10 +86,16 @@ body {
     background: var(--bg-card);
 }
 
-.drop-zone:hover,
 .drop-zone.drag-over {
     border-color: var(--gold);
     background: #0e1525;
+}
+
+@media (hover: hover) {
+    .drop-zone:hover {
+        border-color: var(--gold);
+        background: #0e1525;
+    }
 }
 
 .drop-zone-icon { font-size: 2.5rem; margin-bottom: 0.75rem; }
@@ -191,7 +204,9 @@ body {
     opacity: 0.6;
 }
 
-.change-char-link:hover { opacity: 1; color: var(--gold-dim); }
+@media (hover: hover) {
+    .change-char-link:hover { opacity: 1; color: var(--gold-dim); }
+}
 
 /* ── ARCANE POOL ───────────────────────────────────────── */
 .arcane-pool-row {
@@ -449,9 +464,11 @@ body {
     color: var(--text-dim);
 }
 
-.chip-off:hover {
-    border-color: #2a3a55;
-    color: var(--text-primary);
+@media (hover: hover) {
+    .chip-off:hover {
+        border-color: #2a3a55;
+        color: var(--text-primary);
+    }
 }
 
 .bonus-positive {
@@ -485,14 +502,18 @@ body {
     transition: background 0.15s;
 }
 
-.attack-row:hover { background: #111827; }
+@media (hover: hover) {
+    .attack-row:hover { background: #111827; }
+}
 
 .attack-row.spellstrike {
     background: #0e0f1f;
     border-left: 3px solid var(--spell-purple);
 }
 
-.attack-row.spellstrike:hover { background: #12132a; }
+@media (hover: hover) {
+    .attack-row.spellstrike:hover { background: #12132a; }
+}
 
 .atk-index {
     font-family: 'Cinzel', serif;
@@ -579,7 +600,10 @@ body {
 }
 
 .spell-banner { cursor: pointer; }
-.spell-banner:hover { border-color: #5040a0; }
+
+@media (hover: hover) {
+    .spell-banner:hover { border-color: #5040a0; }
+}
 
 .spell-select-prompt {
     font-family: 'Cinzel', serif;
@@ -647,7 +671,9 @@ body {
     letter-spacing: 0.08em;
 }
 
-.spell-selector-close:hover { color: var(--text-primary); }
+@media (hover: hover) {
+    .spell-selector-close:hover { color: var(--text-primary); }
+}
 
 .spell-list { display: flex; flex-direction: column; gap: 0.3rem; }
 
@@ -660,7 +686,9 @@ body {
     transition: border-color 0.15s, background 0.15s;
 }
 
-.spell-item:hover { border-color: var(--spell-glow); background: #0e0f20; }
+@media (hover: hover) {
+    .spell-item:hover { border-color: var(--spell-glow); background: #0e0f20; }
+}
 
 .spell-item.spell-depleted {
     border-color: #4a1e2d;
@@ -735,7 +763,9 @@ body {
     transition: border-color 0.15s, color 0.15s;
 }
 
-.reset-btn:hover { border-color: var(--gold-dim); color: var(--gold-dim); }
+@media (hover: hover) {
+    .reset-btn:hover { border-color: var(--gold-dim); color: var(--gold-dim); }
+}
 
 .divider-rune {
     text-align: center;
@@ -830,7 +860,9 @@ body {
     white-space: nowrap;
     transition: border-color 0.15s, color 0.15s;
 }
-.watch-btn:hover { border-color: var(--teal); color: var(--teal-glow); }
+@media (hover: hover) {
+    .watch-btn:hover { border-color: var(--teal); color: var(--teal-glow); }
+}
 .watch-btn:disabled { opacity: 0.35; cursor: default; pointer-events: none; }
 
 /* ── FILE BROWSER ───────────────────────────────────── */
@@ -856,7 +888,10 @@ body {
     cursor: pointer;
     transition: border-color 0.15s, color 0.15s;
 }
-.shortcut-btn:hover { border-color: var(--teal); color: var(--teal-glow); }
+
+@media (hover: hover) {
+    .shortcut-btn:hover { border-color: var(--teal); color: var(--teal-glow); }
+}
 
 .browser-path-row {
     display: flex;
@@ -893,7 +928,10 @@ body {
 }
 .browser-item.is-dir  { color: var(--text-dim); }
 .browser-item.is-file { color: var(--teal); }
-.browser-item:hover   { background: #091820; }
+
+@media (hover: hover) {
+    .browser-item:hover { background: #091820; }
+}
 
 .browser-divider {
     border: none;
@@ -915,3 +953,182 @@ body {
 #watch-indicator[data-status='live']         { color: var(--hit-green); border-color: #166534; background: #052e16; }
 #watch-indicator[data-status='reconnecting'] { color: var(--dmg-amber); border-color: #713f12; background: #1c0f03; }
 #watch-indicator[data-status='lost']         { color: var(--crit-red);  border-color: #7f1d1d; background: #1c0f0f; }
+
+/* ── TABLET LAYOUT (portrait 13") ──────────────────────── */
+@media (min-width: 768px) and (max-width: 1023px) {
+    .attack-card {
+        max-width: 700px;
+    }
+}
+
+/* ── TOUCH / COARSE-POINTER OVERRIDES ──────────────────── */
+/* Applied when the primary pointer is a finger (touch screen).  */
+/* Mouse and trackpad users see the original compact layout.     */
+@media (pointer: coarse) {
+
+    /* ── Tap target sizing ────────────────────────────── */
+
+    .toggle-chip {
+        font-size: 0.75rem;
+        padding: 0.55em 0.85em;
+    }
+
+    .toggle-grid {
+        gap: 0.6rem;
+    }
+
+    /* Push badge clear of enlarged chip edges */
+    .chip-arcane-cost,
+    .chip-enhancement-cost {
+        top: -6px;
+        right: -6px;
+    }
+
+    .reset-btn {
+        font-size: 0.7rem;
+        padding: 0.5em 1em;
+    }
+
+    .watch-btn {
+        font-size: 0.7rem;
+        padding: 0.5em 1em;
+    }
+
+    .shortcut-btn {
+        font-size: 0.65rem;
+        padding: 0.4em 0.8em;
+    }
+
+    .browser-shortcuts {
+        gap: 0.5rem;
+    }
+
+    .spell-list {
+        gap: 0.5rem;
+    }
+
+    .spell-item {
+        padding: 0.6rem 0.85rem;
+    }
+
+    .spell-selector-close {
+        padding: 0.5em 0.8em;
+    }
+
+    .browser-item {
+        padding: 0.5rem 0.75rem;
+    }
+
+    .change-char-link {
+        font-size: 0.68rem;
+        padding: 0.3em 0.5em;
+    }
+
+    .pool-pip {
+        width: 20px;
+        height: 20px;
+        margin: 0 4px;
+    }
+
+    .spell-banner {
+        padding: 0.6rem 1rem;
+    }
+
+    .watch-input {
+        font-size: 0.9rem;
+        padding: 0.6em 0.85em;
+    }
+
+    /* ── Font readability ─────────────────────────────── */
+
+    .section-eyebrow {
+        font-size: 0.7rem;
+    }
+
+    .section-label {
+        font-size: 0.68rem;
+    }
+
+    .pool-label {
+        font-size: 0.7rem;
+    }
+
+    .crit-tag {
+        font-size: 0.62rem;
+    }
+
+    .stat-pill {
+        font-size: 0.7rem;
+    }
+
+    .spell-item-meta {
+        font-size: 0.65rem;
+    }
+
+    .chip-effect {
+        font-size: 0.9em;
+    }
+
+    /* ── Touch feedback via :active ──────────────────── */
+
+    .chip-off:active {
+        border-color: #2a3a55;
+        color: var(--text-primary);
+    }
+
+    .chip-on-green:active  { background: #163520; border-color: var(--green-dim); }
+    .chip-on-gold:active   { background: #221a08; border-color: var(--gold-dim); }
+    .chip-on-teal:active   { background: #0d2030; border-color: var(--teal-dim); }
+    .chip-on-orange:active { background: #221408; border-color: var(--orange-dim); }
+    .chip-on-fire:active   { background: #221008; border-color: #9c3e18; }
+
+    .spell-item:active {
+        border-color: var(--spell-glow);
+        background: #0e0f20;
+    }
+
+    .spell-banner:active {
+        border-color: #5040a0;
+        background: #100e22;
+    }
+
+    .reset-btn:active {
+        border-color: var(--gold-dim);
+        color: var(--gold-dim);
+    }
+
+    .watch-btn:active {
+        border-color: var(--teal);
+        color: var(--teal-glow);
+    }
+
+    .shortcut-btn:active {
+        border-color: var(--teal);
+        color: var(--teal-glow);
+    }
+
+    .browser-item:active {
+        background: #091820;
+    }
+
+    .change-char-link:active {
+        opacity: 1;
+        color: var(--gold-dim);
+    }
+
+    .spell-selector-close:active {
+        color: var(--text-primary);
+    }
+
+    .drop-zone:active {
+        border-color: var(--gold);
+        background: #0e1525;
+    }
+
+    /* ── Scroll container improvements ───────────────── */
+
+    .browser-list {
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior: contain;
+    }
+}

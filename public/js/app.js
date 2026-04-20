@@ -1212,5 +1212,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
     saveState();
     renderAll();
+    document.getElementById('options-grid-per-attack').scrollIntoView({ behavior: 'smooth' });
   });
 });
